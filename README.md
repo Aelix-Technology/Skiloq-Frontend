@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Aelix-Frontend
+Skills-first hiring platform with verification, task-based matching, and global job access
 
-## Getting Started
+## Tech Stack
 
-First, run the development server:
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- Zustand (global state)
+- TanStack React Query (server state)
+- 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+##  Project Structure
+PLEASE FOLLOW THE FOLDER STRUCTURE IN THE TECHNICAL ACHITECTURE BLUEPRINT; Ref: 03, page 7
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Architecture Rules (STRICT)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. `app/` is for routing only  
+   - No business logic  
+   - Keep pages thin  
 
-## Learn More
+2. All business logic must live in `features/`  
+   - Each feature is self-contained  
+   - Includes components, hooks, services  
 
-To learn more about Next.js, take a look at the following resources:
+3. `components/` is for reusable UI only  
+   - Buttons, inputs, layouts  
+   - No feature-specific logic  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. Feature-first development  
+   - Build systems, not pages  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Routing Overview
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Public
+- `/`
+- `/login`
+- `/signup`
+- `/how-it-works`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Worker
+- `/worker/dashboard`
+- `/worker/opportunities`
+- `/worker/bookings`
+- `/worker/messages`
+- `/worker/wallet`
+- `/worker/profile`
+- `/worker/verification`
+
+### Employer
+- `/employer/dashboard`
+- `/employer/jobs`
+- `/employer/find-talent`
+- `/employer/messages`
+- `/employer/payments`
+
+### Admin
+- `/admin/dashboard`
+- `/admin/verification-queue`
+- `/admin/users`
+
+### Agent
+- `/agent/dashboard`
+- `/agent/tasks`
+
+---
+
+## State Management
+
+### Global State (Zustand)
+- authStore  
+- uiStore  
+- notificationStore  
+
+### Server State (React Query)
+- worker profiles  
+- jobs  
+- messages  
+- wallet  
+
+  
