@@ -1,84 +1,101 @@
-# Aelix-Frontend
-Skills-first hiring platform with verification, task-based matching, and global job access
+# Skiloq-Frontend
+
+Skills-first hiring platform with verification, task-based matching, and global job access. Built for African workers — MoMo-first, 2G-ready, proof-of-work verified.
 
 ## Tech Stack
 
-- Next.js (App Router)
-- TypeScript
-- Tailwind CSS
-- Zustand (global state)
-- TanStack React Query (server state)
-- 
+- **Framework:** Next.js 16 (App Router) + TypeScript
+- **Styling:** Tailwind CSS + shadcn/ui + Radix + Lucide Icons
+- **State:** Zustand (client), TanStack React Query (server)
+- **Animation:** Framer Motion
 
-##  Project Structure
-PLEASE FOLLOW THE FOLDER STRUCTURE IN THE TECHNICAL ACHITECTURE BLUEPRINT; Ref: 03, page 7
+## Project Structure
+src/
+├── app/ # Next.js App Router — routing only
+│ ├── (auth)/ # Auth route group (no layout wrapper in URL)
+│ │ ├── login/page.tsx
+│ │ ├── register/page.tsx
+│ │ └── onboarding/page.tsx
+│ ├── worker/ # Worker portal
+│ │ ├── layout.tsx # Protected route + WorkerLayout
+│ │ ├── dashboard/page.tsx
+│ │ ├── opportunities/
+│ │ │ ├── page.tsx # Job listings
+│ │ │ └── [id]/page.tsx # Job detail
+│ │ ├── messages/
+│ │ │ ├── page.tsx # Thread list
+│ │ │ └── [threadId]/page.tsx
+│ │ ├── wallet/page.tsx
+│ │ └── profile/page.tsx
+│ ├── layout.tsx # Root layout + providers
+│ ├── providers.tsx # QueryClient, Toaster, Auth init
+│ └── page.tsx # Landing page (Skiloq)
+│
+├── components/ # Reusable UI components
+│ ├── ui/ # shadcn primitives (Button, Input, Badge, etc.)
+│ ├── layout/ # WorkerLayout, BottomTabBar
+│ ├── auth/ # PhoneInput, OTPInput, PINInput, ProtectedRoute
+│ ├── onboarding/ # OnboardingWizard + 6 step components
+│ ├── dashboard/ # VerificationChecklist, TrustScoreRing, EarningsSummary
+│ ├── opportunities/ # JobCard, SmartFilterPanel, SortDropdown, ApplyModal
+│ ├── wallet/ # BalanceDisplay, TransactionHistory, WithdrawFlow
+│ ├── profile/ # ProfileHeader, SkillDisplay, PortfolioGrid, ReviewsList
+│ ├── messages/ # MessageBubble, MessageInput, ThreadList
+│ └── ErrorState.tsx # Generic error component
+│
+├── hooks/ # React Query hooks (one file per domain)
+│ ├── useAuth.ts # Login, register, verifyOTP, setPIN, logout
+│ ├── useWorker.ts # Dashboard, verification status
+│ ├── useJobs.ts # Job listings, detail, apply
+│ ├── useWallet.ts # Balance, transactions, withdraw
+│ ├── useProfile.ts # Worker profile, update
+│ ├── useMessages.ts # Threads, messages, send
+│ └── useOnboarding.ts # Categories, skills, assessment
+│
+├── stores/ # Zustand stores (client state)
+│ ├── auth.store.ts # User, tokens, login/logout
+│ ├── ui.store.ts # Mobile nav, bottom tab, theme
+│ └── onboarding.store.ts # Onboarding progress (persisted)
+│
+├── lib/ # Utilities
+│ ├── api.ts # Central API client (auth headers, token refresh)
+│ ├── toasts.ts # Centralized toast messages
+│ ├── mock-delay.ts # Mock API delay utility (dev only)
+│ ├── mock-dashboard.ts # Mock data (dev only)
+│ ├── mock-jobs.ts # Mock data (dev only)
+│ ├── mock-wallet.ts # Mock data (dev only)
+│ ├── mock-messages.ts # Mock data (dev only)
+│ ├── categories.ts # Category/district/language config
+│ └── skill-tags.ts # Skill taxonomy (dev only)
+│
+├── types/ # TypeScript interfaces
+│ ├── auth.ts
+│ ├── worker.ts
+│ ├── job.ts
+│ ├── dashboard.ts
+│ ├── wallet.ts
+│ ├── onboarding.ts
+│ └── messages.ts
+│
+├── middleware.ts # Next.js Edge middleware (auth redirects)
+└── .env.local # Environment variables (not committed)
 
+## Key Architecture Decisions
 
-## Architecture Rules (STRICT)
+### 1. app/ is for routing only
+Pages are thin wrappers. Business logic lives in `hooks/` and `stores/`. Reusable UI lives in `components/`.
 
-1. `app/` is for routing only  
-   - No business logic  
-   - Keep pages thin  
+### 2. One hook file per domain
+`hooks/useAuth.ts`, `hooks/useJobs.ts`, `hooks/useWallet.ts` — each handles one business domain. No mixing.
 
-2. All business logic must live in `features/`  
-   - Each feature is self-contained  
-   - Includes components, hooks, services  
+### 3. Mock-to-API pattern
+Every hook currently returns mock data. When the backend is ready, change `queryFn` from `mockDelay()` + mock data to `apiClient.get("/endpoint")`. Zero component changes needed.
 
-3. `components/` is for reusable UI only  
-   - Buttons, inputs, layouts  
-   - No feature-specific logic  
+### 4. Design tokens
+Colors: `#1A1F36` (Primary), `#4F6AF5` (Accent), `#22C55E` (Success). Typography: Inter. Spacing: 4px base unit.
 
-4. Feature-first development  
-   - Build systems, not pages  
+## Getting Started
 
----
-
-## Routing Overview
-
-### Public
-- `/`
-- `/login`
-- `/signup`
-- `/how-it-works`
-
-### Worker
-- `/worker/dashboard`
-- `/worker/opportunities`
-- `/worker/bookings`
-- `/worker/messages`
-- `/worker/wallet`
-- `/worker/profile`
-- `/worker/verification`
-
-### Employer
-- `/employer/dashboard`
-- `/employer/jobs`
-- `/employer/find-talent`
-- `/employer/messages`
-- `/employer/payments`
-
-### Admin
-- `/admin/dashboard`
-- `/admin/verification-queue`
-- `/admin/users`
-
-### Agent
-- `/agent/dashboard`
-- `/agent/tasks`
-
----
-
-## State Management
-
-### Global State (Zustand)
-- authStore  
-- uiStore  
-- notificationStore  
-
-### Server State (React Query)
-- worker profiles  
-- jobs  
-- messages  
-- wallet  
-
-  
+```bash
+npm install
+npm run dev
