@@ -1,26 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+@theme {
+  /* ── Brand Colors ── */
+  --color-primary: #1A1F36;
+  --color-primary-50: #E8E9F0;
+  --color-primary-100: #C5C7D4;
+  --color-primary-200: #9EA2B8;
+  --color-primary-300: #777C9C;
+  --color-primary-400: #5A6084;
+  --color-primary-500: #1A1F36;
+  --color-primary-600: #161B2F;
+  --color-primary-700: #111526;
+  --color-primary-800: #0D101E;
+  --color-primary-900: #070A14;
+
+  --color-accent: #4F6AF5;
+  --color-accent-50: #EDEFFF;
+  --color-accent-100: #D0D6FD;
+  --color-accent-200: #A3AFFB;
+  --color-accent-300: #7688F9;
+  --color-accent-400: #4F6AF5;
+  --color-accent-500: #3B50DB;
+  --color-accent-600: #2C3DB5;
+  --color-accent-700: #1F2D8F;
+  --color-accent-800: #141E69;
+  --color-accent-900: #0B1143;
+
+  --color-success: #22C55E;
+  --color-success-50: #F0FDF4;
+  --color-success-100: #DCFCE7;
+  --color-success-500: #22C55E;
+  --color-success-700: #15803D;
+
+  --color-warning: #F59E0B;
+  --color-warning-50: #FFFBEB;
+  --color-warning-100: #FEF3C7;
+  --color-warning-500: #F59E0B;
+  --color-warning-700: #B45309;
+
+  --color-danger: #EF4444;
+  --color-danger-50: #FEF2F2;
+  --color-danger-100: #FEE2E2;
+  --color-danger-500: #EF4444;
+  --color-danger-700: #B91C1C;
+
+  /* ── Typography ── */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'Courier New', monospace;
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-base: 14px;
+  --text-md: 16px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: 30px;
+
+  /* ── Border Radius ── */
+  --radius-input: 4px;
+  --radius-card: 8px;
+  --radius-modal: 12px;
+  --radius-pill: 9999px;
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Base Styles ── */
+* {
+  border-color: var(--color-primary-50);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: white;
+  color: var(--color-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
+
+/* Budget Android optimizations */
+@media (max-width: 480px) {
+  * {
+    animation-duration: 0s !important;
+  }
+}
+
+/* Trust Score utility classes */
+.trust-low { color: var(--color-danger); }
+.trust-mid { color: var(--color-warning); }
+.trust-high { color: var(--color-success); }
