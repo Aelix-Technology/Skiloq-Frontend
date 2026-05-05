@@ -123,3 +123,60 @@ export const mockJobs: Job[] = [
     is_remote: true,
   },
 ];
+
+
+
+import type { PendingApplication } from "@/types/employer";
+
+export interface MockJobDetail extends Job {
+  applications: PendingApplication[];
+  hired_worker?: string;
+}
+
+export const mockJobDetail: MockJobDetail = {
+  id: "j001",
+  employer_id: "e001",
+  employer_name: "FinTech Ghana Ltd",
+  employer_rating: 4.5,
+  title: "React Frontend Developer for Mobile Banking Dashboard",
+  description: "We need an experienced React developer to build a mobile-first dashboard for our banking app. The dashboard will display account balances, transaction history, fund transfer UI, and bill payment integration. Must be proficient in React, TypeScript, and responsive design. Experience with fintech or financial applications is a plus.\n\nDeliverables:\n- Interactive dashboard with real-time data updates\n- Transaction history with filtering\n- Fund transfer flow with confirmation screens\n- Bill payment integration\n- Responsive design for mobile and tablet",
+  budget_ghs: 3000,
+  status: "open",
+  skills_required: ["React Developer", "TypeScript", "UI Designer"],
+  posted_at: "2026-02-15T10:00:00Z",
+  applications_count: 8,
+  location_district: "Accra Metropolitan",
+  is_remote: true,
+  applications: [
+    {
+      id: "app001",
+      job_id: "j001",
+      job_title: "React Frontend Developer",
+      worker_id: "w001",
+      worker_name: "Akua Serwaa",
+      worker_trust_score: 82.5,
+      cover_note: "I have 3 years of React experience building fintech dashboards. My portfolio includes similar mobile banking projects for Ghanaian startups.",
+      applied_at: "2026-02-16T08:00:00Z",
+    },
+    {
+      id: "app002",
+      job_id: "j001",
+      job_title: "React Frontend Developer",
+      worker_id: "w003",
+      worker_name: "Ama Nyarko",
+      worker_trust_score: 55.0,
+      cover_note: "I am a fast learner with React and TypeScript. I have completed 7 projects on the platform with 5-star reviews.",
+      applied_at: "2026-02-16T09:30:00Z",
+    },
+    {
+      id: "app005",
+      job_id: "j001",
+      job_title: "React Frontend Developer",
+      worker_id: "w005",
+      worker_name: "Kojo Essel",
+      worker_trust_score: 73.0,
+      cover_note: "Full-stack developer with 5 years experience. Built 3 fintech applications. Available immediately.",
+      applied_at: "2026-02-16T11:00:00Z",
+    },
+  ],
+};

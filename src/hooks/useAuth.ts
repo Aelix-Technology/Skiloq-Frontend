@@ -1,10 +1,9 @@
 // src/hooks/useAuth.ts
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { authEndpoints } from "@/services/endpoints/auth.endpoints";
+import { apiClient, ApiError } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth.store";
-import { ApiError } from "@/lib/api";
+import { toasts } from "@/lib/toasts";
 import type {
   RegisterPhoneRequest,
   VerifyOTPRequest,
@@ -12,55 +11,63 @@ import type {
   LoginRequest,
 } from "@/types/auth";
 
+/**
+ * Sends OTP to the provided phone number.
+ * Used in Step 1 of registration.
+ */
 export function useRegisterPhone() {
   return useMutation({
-    mutationFn: (data: RegisterPhoneRequest) => authEndpoints.registerPhone(data),
-    onSuccess: () => {
-      toast.success("OTP sent to your phone");
-    },
+    mutationFn: (data: RegisterPhoneRequest) =>
+      apiClient.post("/auth/register/phone", data),
+    onSuccess: () => toasts.otpSent(),
     onError: (error: ApiError) => {
-      toast.error(error.detail || "Failed to send OTP");
+      toasts.error(error.detail || "Failed to send OTP");
     },
   });
 }
 
+/**
+ * Verifies the OTP and sets auth state.
+ * Used in Step 2 of registration.
+ * Does NOT redirect — the register page handles the next step (PIN setup).
+ */
 export function useVerifyOTP() {
   const setAuth = useAuthStore((s) => s.setAuth);
 
   return useMutation({
-    mutationFn: (data: VerifyOTPRequest) => authEndpoints.verifyOTP(data),
+    mutationFn: (data: VerifyOTPRequest) =>
+      apiClient.post("/auth/verify-otp", data),
     onSuccess: (data) => {
       setAuth(data.user, { accessToken: data.accessToken });
-      toast.success("Phone verified!");
+      toasts.otpVerified();
     },
     onError: (error: ApiError) => {
-      toast.error(error.detail || "Invalid OTP");
+      toasts.error(error.detail || "Invalid OTP");
     },
   });
 }
 
-
+/**
+ * Logs in with phone and PIN.
+ * Routes to the correct dashboard based on user role.
+ */
 export function useLogin() {
   const setAuth = useAuthStore((s) => s.setAuth);
   const router = useRouter();
 
   return useMutation({
-    mutationFn: (data: LoginRequest) => authEndpoints.login(data),
+    mutationFn: (data: LoginRequest) =>
+      apiClient.post("/auth/login", data),
     onSuccess: (data) => {
       setAuth(data.user, { accessToken: data.accessToken });
-      toast.success(`Welcome back!`);
+      toasts.welcomeBack();
 
-      // Route based on role AND onboarding status
+      // Route based on role
       switch (data.user.role) {
         case "worker":
-          // Check if worker has completed onboarding
-          // This will come from the user object or a separate check
-          const needsOnboarding = !data.user.phone_verified; // Simplified check
-          if (needsOnboarding) {
-            router.push("/worker/onboarding");
-          } else {
-            router.push("/worker/dashboard");
-          }
+          // TODO: Replace with actual onboarding check from API response
+          const needsOnboarding = !data.user.phone_verified;
+          router.push(needsOnboarding ? "/worker/onboarding" : "/worker/dashboard");
           break;
         case "employer":
           router.push("/employer/dashboard");
@@ -75,9 +82,9 @@ export function useLogin() {
     },
     onError: (error: ApiError) => {
       if (error.code === "LOCKED") {
-        toast.error("Account locked. Try again in 15 minutes.");
+        toasts.accountLocked();
       } else if (error.code === "INVALID_PIN") {
-        toast.error("Invalid PIN. Please try again.");
+        toasts.invalidPIN();
       } else {
         toast.error(error.detail || "Login failed");
       }
@@ -85,31 +92,48 @@ export function useLogin() {
   });
 }
 
+/**
+ * Sets the user's 4-digit PIN after OTP verification.
+ * Routes to the appropriate onboarding/dashboard.
+ */
 export function useSetPIN() {
   const router = useRouter();
+  const user = useAuthStore((s) => s.user);
 
   return useMutation({
-    mutationFn: (data: SetPINRequest) => authEndpoints.setPIN(data),
+    mutationFn: (data: SetPINRequest) =>
+      apiClient.post("/auth/set-pin", data),
     onSuccess: () => {
-      toast.success("PIN set successfully!");
-      router.push("/worker/onboarding");
+      toasts.pinSet();
+
+      // Route based on role set during registration
+      if (user?.role === "employer") {
+        router.push("/employer/dashboard");
+      } else {
+        // Workers go to onboarding, others to their dashboard
+        router.push("/worker/onboarding");
+      }
     },
     onError: (error: ApiError) => {
-      toast.error(error.detail || "Failed to set PIN");
+      toasts.error(error.detail || "Failed to set PIN");
     },
   });
 }
 
+/**
+ * Logs out the user.
+ * Forces logout even if the API call fails.
+ */
 export function useLogout() {
   const logout = useAuthStore((s) => s.logout);
   const router = useRouter();
 
   return useMutation({
-    mutationFn: () => authEndpoints.logout(),
+    mutationFn: () => apiClient.post("/auth/logout"),
     onSuccess: () => {
       logout();
       router.push("/login");
-      toast.success("Logged out");
+      toasts.loggedOut();
     },
     onError: () => {
       // Force logout even if API fails
