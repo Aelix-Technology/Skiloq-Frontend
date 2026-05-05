@@ -7,16 +7,6 @@ import { useEffect, useState, type ReactNode } from "react";
 
 const IS_DEV = process.env.NEXT_PUBLIC_API_MODE === "mock";
 
-// Create the mock user once outside the component
-const MOCK_WORKER = {
-  id: "u001",
-  phone: "+233241234567",
-  phone_verified: true,
-  role: "worker" as const,
-  is_active: true,
-  created_at: new Date().toISOString(),
-};
-
 interface ProtectedRouteProps {
   children: ReactNode;
   allowedRoles?: string[];
@@ -29,23 +19,38 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
   const pathname = usePathname();
   const [isReady, setIsReady] = useState(false);
 
-  // In dev mode, immediately set auth state before any redirect
+  // Dev mode: set role based on the current route
   useEffect(() => {
     if (IS_DEV) {
-      // Directly set the store state
+      const role = pathname.startsWith("/employer")
+        ? "employer"
+        : pathname.startsWith("/admin")
+        ? "admin"
+        : pathname.startsWith("/agent")
+        ? "agent"
+        : "worker";
+
       useAuthStore.setState({
-        user: MOCK_WORKER,
+        user: {
+          id: "u001",
+          phone: "+233241234567",
+          phone_verified: true,
+          role: role as "worker" | "employer" | "admin" | "agent",
+          is_active: true,
+          created_at: new Date().toISOString(),
+        },
         accessToken: "mock-token",
         isAuthenticated: true,
       });
     }
     setIsReady(true);
-  }, []);
+  }, [pathname]);
 
+  // Redirect only in production
   useEffect(() => {
-    if (!isReady) return;
+    if (IS_DEV || !isReady) return;
 
-    if (!isAuthenticated && !IS_DEV) {
+    if (!isAuthenticated) {
       router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }
@@ -59,9 +64,9 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
       };
       router.push(dashboards[user.role] || "/");
     }
-  }, [isReady, isAuthenticated, user, allowedRoles, router, pathname]);
+  }, [IS_DEV, isReady, isAuthenticated, user, allowedRoles, router, pathname]);
 
-  // Show loading until auth state is initialized
+  // Loading state
   if (!isReady) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-primary-50">
@@ -70,9 +75,10 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     );
   }
 
-  // In dev mode, always allow
+  // Dev mode: always allow, no checks
   if (IS_DEV) return <>{children}</>;
 
+  // Production: not authenticated
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-primary-50">

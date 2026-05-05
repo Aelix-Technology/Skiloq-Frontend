@@ -1,6 +1,7 @@
 // src/app/page.tsx
 import Link from "next/link";
-import { Search, Star, Shield, Briefcase, ChevronRight, Check, ArrowRight } from "lucide-react";
+import { Star, Shield, Briefcase, ChevronRight, Check, ArrowRight } from "lucide-react";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/fade-in";
 
 export default function LandingPage() {
   return (
@@ -42,8 +43,8 @@ export default function LandingPage() {
       </header>
 
       {/* ── Hero ── */}
-      <section className="relative bg-gradient-to-b from-primary-50 to-white pt-16 pb-24 md:pt-24 md:pb-32">
-        <div className="max-w-6xl mx-auto px-4 text-center">
+      <section className="relative overflow-hidden bg-gradient-to-b from-primary-50 to-white pt-16 pb-24 md:pt-24 md:pb-32">
+        <FadeIn className="max-w-6xl mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-primary leading-tight tracking-tight max-w-4xl mx-auto">
             How work<br className="md:hidden" /> should work
           </h1>
@@ -69,119 +70,123 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row justify-center gap-3 mt-8">
             <Link
               href="/register"
-              className="bg-accent text-white font-semibold px-8 py-3.5 rounded-input hover:bg-accent-600 transition-colors text-md inline-flex items-center justify-center gap-2"
+              className="group bg-accent text-white font-semibold px-8 py-3.5 rounded-input hover:bg-accent-600 hover:shadow-md transition-all text-md inline-flex items-center justify-center gap-2"
             >
               Find Work
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="/find-talent"
-              className="bg-white text-primary font-semibold px-8 py-3.5 rounded-input border-2 border-primary-100 hover:border-primary-200 transition-colors text-md inline-flex items-center justify-center gap-2"
+              className="bg-white text-primary font-semibold px-8 py-3.5 rounded-input border-2 border-primary-100 hover:border-primary-200 hover:bg-primary-50 transition-all text-md inline-flex items-center justify-center gap-2"
             >
               Find Talent
             </Link>
           </div>
-        </div>
+        </FadeIn>
       </section>
 
       {/* ── Trusted By ── */}
       <section className="py-12 border-b border-primary-50">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <p className="text-sm text-primary-300 mb-6">Trusted by businesses across Africa</p>
-          <div className="flex flex-wrap justify-center items-center gap-8 opacity-50">
+        <FadeIn delay={0.2} className="max-w-6xl mx-auto px-4 text-center">
+          <p className="text-sm text-primary-500 mb-6">Trusted by businesses across Africa</p>
+          <div className="flex flex-wrap justify-center items-center gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
             {["FinTech Ghana", "TechHub Accra", "Kumasi Homes", "Green Energy", "PayHub"].map((name) => (
-              <span key={name} className="text-md font-semibold text-primary-300">{name}</span>
+              <span key={name} className="text-md font-semibold text-slate-700 hover:text-primary transition-colors">{name}</span>
             ))}
           </div>
-        </div>
+        </FadeIn>
       </section>
 
       {/* ── Categories ── */}
       <section className="py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-primary text-center mb-4">
-            Four ways to work
-          </h2>
-          <p className="text-md text-primary-300 text-center mb-12 max-w-xl mx-auto">
-            Whatever your skill, there&apos;s a place for you on Skiloq
-          </p>
+          <FadeIn>
+            <h2 className="text-2xl md:text-3xl font-bold text-primary text-center mb-4">
+              Four ways to work
+            </h2>
+            <p className="text-md text-primary-300 text-center mb-12 max-w-xl mx-auto">
+              Whatever your skill, there&apos;s a place for you on Skiloq
+            </p>
+          </FadeIn>
 
-          // Replace the entire categories grid with this:
 
-<div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-  {[
-    {
-      icon: "💻",
-      title: "Digital & Remote",
-      desc: "Developers, designers, VAs, copywriters — get verified and land remote jobs with global clients.",
-      href: "/register?category=digital",
-      phase: false,
-    },
-    {
-      icon: "🔧",
-      title: "Trade & Skilled",
-      desc: "Tailors, electricians, plumbers, mechanics — get booked through your calendar, not your contacts.",
-      href: "/register?category=trade",
-      phase: false,
-    },
-    {
-      icon: "📚",
-      title: "Educators & Tutors",
-      desc: "Academic, language, music, coding tutors — sell session bundles. Coming Phase 2.",
-      href: "#",
-      phase: true,
-    },
-    {
-      icon: "📊",
-      title: "Online Income",
-      desc: "Data entry, transcription, micro-tasks — curated verified listings only. Coming Phase 2.",
-      href: "#",
-      phase: true,
-    },
-  ].map((cat) =>
-    cat.phase ? (
-      <div
-        key={cat.title}
-        className="relative bg-white rounded-card border-2 border-primary-50 opacity-70 p-6"
-      >
-        <span className="absolute top-3 right-3 bg-warning/10 text-warning text-xs font-semibold px-2 py-0.5 rounded-pill">
-          Phase 2
-        </span>
-        <span className="text-3xl block mb-3">{cat.icon}</span>
-        <h3 className="font-semibold text-primary text-md mb-1">{cat.title}</h3>
-        <p className="text-sm text-primary-300 leading-relaxed">{cat.desc}</p>
-      </div>
-    ) : (
-      
-      <Link
-        key={cat.title}
-        href={cat.href}
-        className="relative group bg-white rounded-card border-2 border-primary-100 p-6 hover:border-accent-200 hover:shadow-md transition-all"
-      >
-        <span className="text-3xl block mb-3">{cat.icon}</span>
-        <h3 className="font-semibold text-primary text-md mb-1">{cat.title}</h3>
-        <p className="text-sm text-primary-300 leading-relaxed">{cat.desc}</p>
-        <span className="inline-flex items-center gap-1 text-sm font-medium text-accent mt-3 group-hover:gap-2 transition-all">
-          Get started <ChevronRight className="w-4 h-4" />
-        </span>
-      </Link>
-    )
-  )}
-</div>
+
+          <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              {
+                icon: "💻",
+                title: "Digital & Remote",
+                desc: "Developers, designers, VAs, copywriters — get verified and land remote jobs with global clients.",
+                href: "/register?category=digital",
+                phase: false,
+              },
+              {
+                icon: "🔧",
+                title: "Trade & Skilled",
+                desc: "Tailors, electricians, plumbers, mechanics — get booked through your calendar, not your contacts.",
+                href: "/register?category=trade",
+                phase: false,
+              },
+              {
+                icon: "📚",
+                title: "Educators & Tutors",
+                desc: "Academic, language, music, coding tutors — sell session bundles. Coming Phase 2.",
+                href: "#",
+                phase: true,
+              },
+              {
+                icon: "📊",
+                title: "Online Income",
+                desc: "Data entry, transcription, micro-tasks — curated verified listings only. Coming Phase 2.",
+                href: "#",
+                phase: true,
+              },
+            ].map((cat) =>
+              cat.phase ? (
+                <StaggerItem
+                  key={cat.title}
+                  className="relative bg-white rounded-card border-2 border-primary-50 opacity-70 p-6 transition-all"
+                >
+                  <span className="absolute top-3 right-3 bg-warning/10 text-warning text-xs font-semibold px-2 py-0.5 rounded-pill">
+                    Phase 2
+                  </span>
+                  <span className="text-3xl block mb-3">{cat.icon}</span>
+                  <h3 className="font-semibold text-primary text-md mb-1">{cat.title}</h3>
+                  <p className="text-sm text-primary-300 leading-relaxed">{cat.desc}</p>
+                </StaggerItem>
+              ) : (
+                <StaggerItem key={cat.title}>
+                  <Link
+                    href={cat.href}
+                    className="relative group bg-white rounded-card border-2 border-primary-100 p-6 hover:border-accent-200 hover:shadow-lg transition-all duration-300 block h-full"
+                  >
+                    <span className="text-3xl block mb-3 group-hover:scale-110 transition-transform origin-left">{cat.icon}</span>
+                    <h3 className="font-semibold text-primary text-md mb-1 group-hover:text-accent transition-colors">{cat.title}</h3>
+                    <p className="text-sm text-primary-300 leading-relaxed">{cat.desc}</p>
+                    <span className="inline-flex items-center gap-1 text-sm font-medium text-accent mt-3 group-hover:gap-2 transition-all">
+                      Get started <ChevronRight className="w-4 h-4" />
+                    </span>
+                  </Link>
+                </StaggerItem>
+              )
+            )}
+          </StaggerContainer>
         </div>
       </section>
 
       {/* ── How it Works ── */}
       <section className="py-16 md:py-24 bg-primary-50">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-primary text-center mb-4">
-            Proof of work, not CV claims
-          </h2>
-          <p className="text-md text-primary-300 text-center mb-12 max-w-xl mx-auto">
-            Every profile on Skiloq is an earned record of demonstrated ability
-          </p>
+          <FadeIn>
+            <h2 className="text-2xl md:text-3xl font-bold text-primary text-center mb-4">
+              Proof of work, not CV claims
+            </h2>
+            <p className="text-md text-primary-300 text-center mb-12 max-w-xl mx-auto">
+              Every profile on Skiloq is an earned record of demonstrated ability
+            </p>
+          </FadeIn>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <StaggerContainer className="grid md:grid-cols-3 gap-8">
             {[
               {
                 step: "01",
@@ -199,27 +204,27 @@ export default function LandingPage() {
                 desc: "Employers find you. Payment held in escrow. MoMo payout. Fair for everyone.",
               },
             ].map((item) => (
-              <div key={item.step} className="text-center">
-                <div className="w-14 h-14 rounded-full bg-accent/10 text-accent flex items-center justify-center mx-auto mb-4">
+              <StaggerItem key={item.step} className="text-center group">
+                <div className="w-14 h-14 rounded-full bg-accent/10 text-accent flex items-center justify-center mx-auto mb-4 group-hover:bg-accent group-hover:text-white transition-colors duration-300 shadow-sm">
                   <span className="text-lg font-bold">{item.step}</span>
                 </div>
                 <h3 className="font-semibold text-primary text-md mb-2">{item.title}</h3>
-                <p className="text-sm text-primary-300">{item.desc}</p>
-              </div>
+                <p className="text-sm text-primary-300 leading-relaxed">{item.desc}</p>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* ── Why Skiloq ── */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-24 overflow-hidden">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-primary mb-6">
+            <FadeIn direction="right">
+              <h2 className="text-2xl md:text-3xl font-bold text-primary mb-6 leading-tight">
                 Built for African<br />workers and employers
               </h2>
-              <div className="space-y-4">
+              <StaggerContainer className="space-y-4">
                 {[
                   "Mobile Money-first payments — MTN MoMo, Vodafone Cash, AirtelTigo",
                   "Works on budget Android phones and 2G/3G networks",
@@ -227,46 +232,51 @@ export default function LandingPage() {
                   "Physical agent verification for trade workers",
                   "No international bank account required",
                 ].map((item) => (
-                  <div key={item} className="flex items-start gap-3">
+                  <StaggerItem key={item} className="flex items-start gap-3">
                     <div className="w-5 h-5 rounded-full bg-success/10 flex items-center justify-center shrink-0 mt-0.5">
                       <Check className="w-3 h-3 text-success" />
                     </div>
                     <p className="text-sm text-primary-300">{item}</p>
-                  </div>
+                  </StaggerItem>
                 ))}
-              </div>
+              </StaggerContainer>
               <Link
                 href="/register"
-                className="inline-flex items-center gap-2 mt-8 bg-accent text-white font-semibold px-8 py-3.5 rounded-input hover:bg-accent-600 transition-colors"
+                className="group inline-flex items-center gap-2 mt-8 bg-accent text-white font-semibold px-8 py-3.5 rounded-input hover:bg-accent-600 hover:shadow-lg transition-all"
               >
                 Create your free account
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
-            </div>
+            </FadeIn>
 
             {/* Stats card */}
-            <div className="bg-primary rounded-card p-8 text-white">
-              <div className="grid grid-cols-2 gap-6">
-                {[
-                  { number: "10K+", label: "Verified Workers" },
-                  { number: "500+", label: "Businesses Hiring" },
-                  { number: "GHS 2M+", label: "Paid to Workers" },
-                  { number: "98%", label: "Satisfaction Rate" },
-                ].map((stat) => (
-                  <div key={stat.label}>
-                    <p className="text-2xl md:text-3xl font-bold">{stat.number}</p>
-                    <p className="text-sm text-primary-200 mt-1">{stat.label}</p>
-                  </div>
-                ))}
+            <FadeIn direction="left">
+              <div className="bg-primary rounded-card p-8 text-white shadow-xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="grid grid-cols-2 gap-6 relative z-10">
+                  {[
+                    { number: "10K+", label: "Verified Workers" },
+                    { number: "500+", label: "Businesses Hiring" },
+                    { number: "GHS 2M+", label: "Paid to Workers" },
+                    { number: "98%", label: "Satisfaction Rate" },
+                  ].map((stat) => (
+                    <div key={stat.label} className="group/stat">
+                      <p className="text-2xl md:text-3xl font-bold text-white group-hover/stat:text-accent-200 transition-colors">{stat.number}</p>
+                      <p className="text-sm text-primary-200 mt-1">{stat.label}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            </FadeIn>
           </div>
         </div>
       </section>
 
       {/* ── CTA Banner ── */}
-      <section className="py-16 md:py-24 bg-gradient-to-r from-primary to-primary-700">
-        <div className="max-w-3xl mx-auto px-4 text-center">
+      <section className="py-16 md:py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary-700" />
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay" />
+        <FadeIn className="max-w-3xl mx-auto px-4 text-center relative z-10">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
             Ready to prove what you can do?
           </h2>
@@ -276,18 +286,18 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row justify-center gap-3">
             <Link
               href="/register"
-              className="bg-white text-primary font-semibold px-8 py-3.5 rounded-input hover:bg-primary-50 transition-colors text-md"
+              className="bg-white text-primary font-semibold px-8 py-3.5 rounded-input hover:bg-primary-50 hover:scale-105 transition-all text-md"
             >
               Sign Up as a Worker
             </Link>
             <Link
               href="/register?role=employer"
-              className="bg-accent text-white font-semibold px-8 py-3.5 rounded-input hover:bg-accent-600 transition-colors text-md"
+              className="bg-accent text-white font-semibold px-8 py-3.5 rounded-input border border-accent-400 hover:bg-accent-600 hover:scale-105 transition-all text-md shadow-lg"
             >
               Hire Talent
             </Link>
           </div>
-        </div>
+        </FadeIn>
       </section>
 
       {/* ── Footer ── */}

@@ -1,9 +1,18 @@
 // src/lib/toasts.ts
 import { toast } from "sonner";
 
-// Centralized toast messages — one place to update copy
+/**
+ * Centralized toast messages.
+ * All user-facing toast copy lives here — update once, applies everywhere.
+ *
+ * Usage:
+ *   import { toasts } from "@/lib/toasts";
+ *   toasts.otpSent();
+ *   toasts.withdrawSuccess(500);
+ */
+
 export const toasts = {
-  // Auth
+  // ── Auth ──────────────────────────────────
   otpSent: () => toast.success("OTP sent to your phone"),
   otpVerified: () => toast.success("Phone verified!"),
   invalidOTP: () => toast.error("Invalid OTP. Please try again."),
@@ -13,14 +22,17 @@ export const toasts = {
   welcomeBack: () => toast.success("Welcome back!"),
   accountLocked: () => toast.error("Account locked. Try again in 15 minutes."),
 
-  // Onboarding
-  onboardingComplete: () => toast.success("Onboarding complete! Welcome to Aelix."),
+  // ── Onboarding ────────────────────────────
+  onboardingComplete: () => toast.success("Onboarding complete! Welcome to Skiloq."),
 
-  // Jobs
+  // ── Jobs ──────────────────────────────────
   applicationSubmitted: () => toast.success("Application submitted!"),
   applicationError: () => toast.error("Failed to submit application."),
+  jobPosted: () => toast.success("Job posted successfully!"),
+  jobPostError: () => toast.error("Failed to post job. Try again."),
+  offerSent: (workerName: string) => toast.success(`Offer sent to ${workerName}!`),
 
-  // Wallet
+  // ── Wallet ────────────────────────────────
   withdrawSuccess: (amount: number) =>
     toast.success(`GHS ${amount} sent. Arriving in 0-2 minutes.`),
   withdrawError: () => toast.error("Withdrawal failed. Try again."),
@@ -29,10 +41,20 @@ export const toasts = {
   dailyLimit: () => toast.error("Daily limit is GHS 10,000"),
   invalidWithdrawPIN: () => toast.error("Invalid security PIN"),
 
-  // Profile
+  // ── Profile ───────────────────────────────
   profileUpdated: () => toast.success("Profile updated!"),
   profileError: () => toast.error("Failed to update profile."),
 
-  // Income Certificate
+  // ── Income Certificate ────────────────────
   certificateDownloaded: () => toast.success("Income Certificate downloaded"),
+
+  // ── SOS / Emergency ───────────────────────
+  sosActivated: () =>
+    toast.success("Emergency alert sent! Help is on the way.", {
+      description: "Your emergency contact and platform security have been notified.",
+      duration: 5000,
+    }),
+
+  // ── General ───────────────────────────────
+  comingSoon: () => toast.info("Coming in Phase 2"),
 };

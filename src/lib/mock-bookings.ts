@@ -1,0 +1,105 @@
+// src/lib/mock-bookings.ts
+import type { Booking } from "@/types/job";
+import type { VerificationStatus } from "@/types/worker";
+
+export const mockBookings: Booking[] = [
+  {
+    id: "b001",
+    worker_id: "w001",
+    client_id: "e001",
+    client_name: "Abena Dapaah",
+    client_phone: "024****890",
+    service_type: "Residential Wiring",
+    scheduled_at: "2026-03-01T09:00:00Z",
+    duration_minutes: 180,
+    status: "confirmed",
+    is_in_person: true,
+    location: "47 Oxford Street, Osu, Accra",
+    notes: "Bring voltage tester and wire strippers. Customer has a puppy.",
+    fee_ghs: 350.00,
+  },
+  {
+    id: "b002",
+    worker_id: "w001",
+    client_id: "e002",
+    client_name: "Kofi Asante",
+    client_phone: "020****123",
+    service_type: "Solar Panel Inspection",
+    scheduled_at: "2026-03-03T14:00:00Z",
+    duration_minutes: 120,
+    status: "in_progress",
+    is_in_person: true,
+    location: "12 Liberation Road, Airport Residential, Accra",
+    notes: "12-panel system. Check inverter and battery connections.",
+    fee_ghs: 500.00,
+  },
+  {
+    id: "b003",
+    worker_id: "w001",
+    client_id: "e003",
+    client_name: "Grace Tagoe",
+    client_phone: "055****456",
+    service_type: "Electrical Safety Audit",
+    scheduled_at: "2026-03-05T10:00:00Z",
+    duration_minutes: 240,
+    status: "pending",
+    is_in_person: true,
+    location: "Block C, Faanofa Street, Adenta, Accra",
+    notes: "Full building audit. 3 floors. Report required within 24 hours.",
+    fee_ghs: 800.00,
+  },
+  {
+    id: "b004",
+    worker_id: "w001",
+    client_id: "e004",
+    client_name: "Michael Blankson",
+    client_phone: "027****789",
+    service_type: "Emergency Outlet Repair",
+    scheduled_at: "2026-02-20T08:00:00Z",
+    duration_minutes: 60,
+    status: "completed",
+    is_in_person: true,
+    location: "22 Independence Avenue, Labone, Accra",
+    notes: "Burnt outlet in kitchen. Urgent.",
+    fee_ghs: 150.00,
+  },
+];
+
+export const mockVerificationStatus: VerificationStatus = {
+  verification_level: "partial",
+  steps: [
+    {
+      name: "Phone Verification",
+      status: "completed",
+      description: "Your phone number has been verified via OTP",
+    },
+    {
+      name: "Identity Document",
+      status: "completed",
+      description: "Ghana Card verified on 15 Feb 2026",
+    },
+    {
+      name: "Skill Assessment",
+      status: "in_review",
+      eta: "24 hours",
+      description: "Your assessment is being reviewed by our team",
+    },
+    {
+      name: "Portfolio Moderation",
+      status: "in_review",
+      eta: "48 hours",
+      description: "Work samples under review",
+    },
+    {
+      name: "Agent Physical Verification",
+      status: "pending",
+      description: "A field agent will visit your workspace to verify your tools and setup",
+    },
+    {
+      name: "Profile Completion",
+      status: "completed",
+      description: "Your profile is 100% complete",
+    },
+  ],
+  overall_progress: 67,
+};
