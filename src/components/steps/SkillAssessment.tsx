@@ -17,8 +17,7 @@ export function SkillAssessment({ onComplete }: SkillAssessmentProps) {
   const [timeLeft, setTimeLeft] = useState(questions[0]?.time_limit_seconds || 30);
   const [isFinished, setIsFinished] = useState(false);
   const [result, setResult] = useState<AssessmentResult | null>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-
+  const timerRef = useRef<NodeJS.Timeout>();
   const question = questions[currentQuestion];
   const isLast = currentQuestion === questions.length - 1;
 
