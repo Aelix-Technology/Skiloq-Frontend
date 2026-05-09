@@ -7,12 +7,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { OnboardingProgress } from "./OnboardingProgress";
-import { CategorySelection } from "@/components/steps/CategorySelection";
-import { IdentityUpload } from "@/components/steps/IdentityUpload";
-import { ProfileSetup } from "@/components/steps/ProfileSetup";
-import { SkillTagSelection } from "@/components/steps/SkillTagSelection";
-import { SkillAssessment } from "@/components/steps/SkillAssessment";
-import { PortfolioSubmission } from "@/components/steps/PortfolioSubmission";
+import { CategorySelection } from "@/components/onboarding/steps/CategorySelection";
+import { IdentityUpload } from "@/components/onboarding/steps/IdentityUpload";
+import { ProfileSetup } from "@/components/onboarding/steps/ProfileSetup";
+import { SkillTagSelection } from "@/components/onboarding/steps/SkillTagSelection";
+import { SkillAssessment } from "@/components/onboarding/steps/SkillAssessment";
+import { PortfolioSubmission } from "@/components/onboarding/steps/PortfolioSubmission";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { WorkerCategory } from "@/types/onboarding";
 
