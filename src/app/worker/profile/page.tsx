@@ -11,6 +11,7 @@ import { EditProfileModal } from "@/components/profile/EditProfileModal";
 import { ProfileSkeleton } from "@/components/profile/ProfileSkeleton";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { useWorkerProfile, useUpdateProfile } from "@/hooks/useProfile";
+import { PremiumCard } from "@/components/ui/premium-card";
 
 export default function ProfilePage() {
   const { data: profile, isLoading, error, refetch } = useWorkerProfile();
@@ -43,7 +44,7 @@ export default function ProfilePage() {
 
   return (
     <WorkerLayout>
-      <div className="space-y-8">
+      <div className="space-y-6">
         {/* Profile Header */}
         <ProfileHeader
           profile={profile}
@@ -52,10 +53,10 @@ export default function ProfilePage() {
 
         {/* Bio */}
         {profile.bio && (
-          <section>
-            <h2 className="text-md font-semibold text-primary mb-2">About</h2>
+          <PremiumCard>
+            <h2 className="text-md font-semibold tracking-tight text-primary mb-2">About</h2>
             <p className="text-sm text-primary-300 leading-relaxed">{profile.bio}</p>
-          </section>
+          </PremiumCard>
         )}
 
         {/* Skills */}

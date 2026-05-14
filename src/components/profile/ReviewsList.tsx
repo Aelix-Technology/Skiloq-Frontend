@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { Star, ChevronDown } from "lucide-react";
 import type { Review } from "@/types/worker";
+import { MotionDiv, listContainer, listItem } from "@/components/ui/motion-list";
 
 interface ReviewsListProps {
   reviews: Review[];
@@ -21,7 +22,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
     <section>
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <h2 className="text-md font-semibold text-primary">Reviews</h2>
+          <h2 className="text-md font-semibold tracking-tight text-primary">Reviews</h2>
           <span className="flex items-center gap-1 text-sm text-primary-300">
             <Star className="w-4 h-4 text-warning fill-warning" />
             {averageRating}
@@ -30,9 +31,9 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
         </div>
       </div>
 
-      <div className="grid gap-2">
+      <MotionDiv variants={listContainer} initial="hidden" animate="show" className="grid gap-3">
         {displayed.map((review) => (
-          <div key={review.id} className="bg-white rounded-card border border-primary-100 p-4">
+          <MotionDiv key={review.id} variants={listItem} className="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-accent/10">
             <div className="flex items-center justify-between mb-2">
               <div>
                 <p className="text-sm font-medium text-primary">{review.reviewer_name}</p>
@@ -58,14 +59,14 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
               </div>
             </div>
             <p className="text-sm text-primary-300 leading-relaxed">{review.comment}</p>
-          </div>
+          </MotionDiv>
         ))}
-      </div>
+      </MotionDiv>
 
       {reviews.length > 3 && (
         <button
           onClick={() => setShowAll(!showAll)}
-          className="w-full mt-3 py-2.5 flex items-center justify-center gap-1.5 text-sm text-accent font-medium hover:bg-accent-50 rounded-input transition-colors"
+          className="mt-3 flex min-h-11 w-full items-center justify-center gap-1.5 rounded-xl py-2.5 text-sm font-semibold text-accent transition-all hover:-translate-y-1 hover:bg-accent-50 hover:shadow-lg active:scale-95"
         >
           {showAll ? "Show less" : `Show all ${reviews.length} reviews`}
           <ChevronDown className={`w-4 h-4 transition-transform ${showAll ? "rotate-180" : ""}`} />

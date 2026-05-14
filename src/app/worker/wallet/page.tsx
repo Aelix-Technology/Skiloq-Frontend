@@ -51,7 +51,7 @@ export default function WalletPage() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-xl font-bold text-primary">Wallet</h1>
+          <h1 className="text-xl font-bold tracking-tight text-primary">Wallet</h1>
           <p className="text-sm text-primary-300 mt-0.5">Manage your earnings and withdrawals</p>
         </div>
 
@@ -69,7 +69,7 @@ export default function WalletPage() {
         <button
           onClick={() => setShowWithdraw(true)}
           disabled={wallet.available_ghs < 10}
-          className="w-full bg-white border-2 border-accent text-accent font-semibold py-3 rounded-input hover:bg-accent-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 touch-target"
+          className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border-2 border-accent bg-white/80 py-3 font-semibold text-accent shadow-sm backdrop-blur-xl transition-all hover:-translate-y-1 hover:bg-accent-50 hover:shadow-xl hover:shadow-accent/10 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <ArrowUpRight className="w-4 h-4" />
           Withdraw

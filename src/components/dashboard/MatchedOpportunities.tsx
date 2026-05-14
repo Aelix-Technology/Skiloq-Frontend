@@ -2,8 +2,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Star, MapPin, Briefcase, ChevronRight } from "lucide-react";
+import { Star, Briefcase, ChevronRight } from "lucide-react";
 import type { MatchedJob } from "@/types/dashboard";
+import { IconTile, PremiumCard } from "@/components/ui/premium-card";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { MotionDiv, listContainer, listItem } from "@/components/ui/motion-list";
 
 interface MatchedOpportunitiesProps {
   jobs: MatchedJob[];
@@ -14,32 +17,34 @@ export function MatchedOpportunities({ jobs }: MatchedOpportunitiesProps) {
 
   if (jobs.length === 0) {
     return (
-      <div className="bg-white rounded-card border border-primary-100 p-6 text-center">
-        <Briefcase className="w-8 h-8 text-primary-200 mx-auto mb-2" />
+      <PremiumCard className="p-6 text-center">
+        <IconTile tone="accent" className="mx-auto mb-3">
+          <Briefcase className="w-5 h-5" />
+        </IconTile>
         <p className="text-sm text-primary-300">No matched opportunities yet</p>
         <p className="text-xs text-primary-200 mt-1">Complete more skills to get matches</p>
-      </div>
+      </PremiumCard>
     );
   }
 
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <h2 className="text-md font-semibold text-primary">Matched Opportunities</h2>
+        <h2 className="text-md font-semibold tracking-tight text-primary">Matched Opportunities</h2>
         <button
           onClick={() => router.push("/worker/opportunities")}
-          className="text-sm text-accent font-medium hover:underline"
+          className="min-h-11 rounded-xl px-3 text-sm font-semibold text-accent transition-all hover:-translate-y-1 hover:bg-accent-50 hover:shadow-lg active:scale-95"
         >
           View all
         </button>
       </div>
 
-      <div className="grid gap-2">
+      <MotionDiv variants={listContainer} initial="hidden" animate="show" className="grid gap-3">
         {jobs.slice(0, 5).map((job) => (
+          <MotionDiv key={job.id} variants={listItem}>
           <button
-            key={job.id}
             onClick={() => router.push(`/worker/opportunities/${job.id}`)}
-            className="bg-white rounded-card border border-primary-100 p-4 text-left hover:border-accent-200 hover:shadow-sm transition-all"
+            className="w-full rounded-2xl border border-white/70 bg-white/80 p-5 text-left shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-xl hover:shadow-accent/10 active:scale-95"
           >
             <div className="flex items-start justify-between mb-2">
               <div className="flex-1 min-w-0">
@@ -48,9 +53,9 @@ export function MatchedOpportunities({ jobs }: MatchedOpportunitiesProps) {
                 </h3>
                 <p className="text-xs text-primary-300 mt-0.5">{job.employer_name}</p>
               </div>
-              <span className="shrink-0 ml-2 px-2 py-0.5 bg-accent/10 text-accent text-xs font-semibold rounded-pill">
+              <StatusBadge tone="progress" className="shrink-0 ml-2">
                 {job.match_percentage}% match
-              </span>
+              </StatusBadge>
             </div>
 
             <div className="flex items-center gap-3 text-xs text-primary-300 mb-2">
@@ -90,8 +95,9 @@ export function MatchedOpportunities({ jobs }: MatchedOpportunitiesProps) {
               <ChevronRight className="w-4 h-4 text-primary-200" />
             </div>
           </button>
+          </MotionDiv>
         ))}
-      </div>
+      </MotionDiv>
     </div>
   );
 }

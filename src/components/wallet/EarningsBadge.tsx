@@ -3,6 +3,8 @@
 
 import { Award, Download, Lock } from "lucide-react";
 import { toast } from "sonner";
+import { IconTile, PremiumCard } from "@/components/ui/premium-card";
+import { ProgressBar } from "@/components/ui/progress-bar";
 
 interface EarningsBadgeProps {
   totalEarnings: number;
@@ -19,11 +21,11 @@ export function EarningsBadge({ totalEarnings, unlocked, threshold }: EarningsBa
   if (!unlocked) {
     const remaining = threshold - totalEarnings;
     return (
-      <div className="bg-white rounded-card border border-primary-100 p-4">
+      <PremiumCard interactive>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+          <IconTile tone="primary">
             <Lock className="w-5 h-5 text-primary-300" />
-          </div>
+          </IconTile>
           <div className="flex-1">
             <p className="text-sm font-medium text-primary">Income Certificate</p>
             <p className="text-xs text-primary-300 mt-0.5">
@@ -31,27 +33,22 @@ export function EarningsBadge({ totalEarnings, unlocked, threshold }: EarningsBa
             </p>
           </div>
         </div>
-        <div className="mt-3 h-1.5 bg-primary-100 rounded-pill overflow-hidden">
-          <div
-            className="h-full bg-accent rounded-pill transition-all"
-            style={{ width: `${(totalEarnings / threshold) * 100}%` }}
-          />
-        </div>
+        <ProgressBar value={(totalEarnings / threshold) * 100} className="mt-3" />
         <div className="flex justify-between mt-1">
           <span className="text-xs text-primary-300">GHS {totalEarnings.toLocaleString()}</span>
           <span className="text-xs text-primary-300">GHS {threshold.toLocaleString()}</span>
         </div>
-      </div>
+      </PremiumCard>
     );
   }
 
   return (
     <div
       onClick={handleDownload}
-      className="bg-gradient-to-br from-primary to-primary-700 rounded-card p-4 text-white cursor-pointer hover:shadow-lg transition-shadow"
+      className="cursor-pointer rounded-2xl bg-gradient-to-br from-primary to-primary-700 p-5 text-white shadow-lg shadow-primary/15 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-95"
     >
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+        <div className="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center">
           <Award className="w-5 h-5 text-warning" />
         </div>
         <div className="flex-1">
