@@ -1,40 +1,36 @@
-// src/components/opportunities/OpportunitiesSkeleton.tsx
+import { PremiumCard } from "@/components/ui/premium-card";
+import { SkeletonBlock } from "@/components/ui/skeleton";
+
 export function OpportunitiesSkeleton() {
   return (
-    <div className="space-y-4 animate-pulse">
-      {/* Search bar skeleton */}
+    <div className="space-y-6">
       <div className="flex gap-2">
-        <div className="flex-1 h-12 bg-white rounded-input border border-primary-100" />
-        <div className="w-24 h-12 bg-white rounded-input border border-primary-100" />
+        <SkeletonBlock className="h-12 flex-1 rounded-xl bg-white" />
+        <SkeletonBlock className="h-12 w-28 rounded-xl bg-white" />
       </div>
 
-      {/* Result count */}
-      <div className="h-4 bg-primary-100 rounded w-24" />
+      <SkeletonBlock className="h-4 w-24" />
 
-      {/* Job cards */}
       {[1, 2, 3, 4].map((i) => (
-        <div
-          key={i}
-          className="bg-white rounded-card border border-primary-100 p-4"
-        >
-          <div className="flex justify-between mb-3">
-            <div className="space-y-2 flex-1">
-              <div className="h-4 bg-primary-100 rounded w-3/4" />
-              <div className="h-3 bg-primary-100 rounded w-1/3" />
+        <PremiumCard key={i} className="space-y-3">
+          <div className="flex justify-between gap-3">
+            <div className="flex-1 space-y-2">
+              <SkeletonBlock className="h-4 w-3/4" />
+              <SkeletonBlock className="h-3 w-1/3" />
             </div>
-            <div className="h-5 bg-primary-100 rounded w-20" />
+            <SkeletonBlock className="h-9 w-24 rounded-xl" />
           </div>
-          <div className="flex gap-3 mb-3">
-            <div className="h-3 bg-primary-100 rounded w-16" />
-            <div className="h-3 bg-primary-100 rounded w-20" />
-            <div className="h-3 bg-primary-100 rounded w-14" />
+          <div className="flex flex-wrap gap-3">
+            <SkeletonBlock className="h-3 w-16" />
+            <SkeletonBlock className="h-3 w-20" />
+            <SkeletonBlock className="h-3 w-14" />
           </div>
           <div className="flex gap-1.5">
-            <div className="h-5 bg-primary-100 rounded-pill w-20" />
-            <div className="h-5 bg-primary-100 rounded-pill w-16" />
-            <div className="h-5 bg-primary-100 rounded-pill w-18" />
+            <SkeletonBlock className="h-6 w-20 rounded-full" />
+            <SkeletonBlock className="h-6 w-16 rounded-full" />
+            <SkeletonBlock className="h-6 w-18 rounded-full" />
           </div>
-        </div>
+        </PremiumCard>
       ))}
     </div>
   );

@@ -1,9 +1,10 @@
-// src/components/dashboard/TrustScoreRing.tsx
 "use client";
 
 import { useState } from "react";
+import { ShieldCheck, X } from "lucide-react";
 import type { TrustScoreBreakdown } from "@/types/dashboard";
-import { X } from "lucide-react";
+import { IconTile } from "@/components/ui/premium-card";
+import { ProgressBar } from "@/components/ui/progress-bar";
 
 interface TrustScoreRingProps {
   score: number;
@@ -14,9 +15,9 @@ export function TrustScoreRing({ score, breakdown }: TrustScoreRingProps) {
   const [showBreakdown, setShowBreakdown] = useState(false);
 
   const getColor = (s: number): string => {
-    if (s >= 70) return "#22C55E"; // success
-    if (s >= 40) return "#F59E0B"; // warning
-    return "#EF4444"; // danger
+    if (s >= 70) return "#22C55E";
+    if (s >= 40) return "#F59E0B";
+    return "#EF4444";
   };
 
   const getBadge = (s: number): string => {
@@ -34,11 +35,15 @@ export function TrustScoreRing({ score, breakdown }: TrustScoreRingProps) {
 
   return (
     <>
-      {/* Ring */}
       <button
         onClick={() => setShowBreakdown(true)}
-        className="flex flex-col items-center gap-3 p-4 bg-white rounded-card border border-primary-100 shadow-sm hover:shadow-md transition-shadow w-full"
+        className="relative flex w-full flex-col items-center gap-3 overflow-hidden rounded-2xl border border-white/70 bg-white/80 p-5 shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-xl hover:shadow-accent/10 active:scale-95"
       >
+        <div className="pointer-events-none absolute -left-12 -top-12 h-32 w-32 rounded-full bg-success/10 blur-2xl" />
+        <IconTile tone="success">
+          <ShieldCheck className="h-5 w-5" />
+        </IconTile>
+
         <div className="relative" style={{ width: size, height: size }}>
           <svg width={size} height={size} className="-rotate-90">
             <circle
@@ -63,76 +68,72 @@ export function TrustScoreRing({ score, breakdown }: TrustScoreRingProps) {
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span
-              className="text-2xl font-bold"
-              style={{ color: getColor(score) }}
-            >
+            <span className="text-2xl font-bold" style={{ color: getColor(score) }}>
               {score}
             </span>
             <span className="text-xs text-primary-300">/100</span>
           </div>
         </div>
+
         <div className="text-center">
           <p className="text-sm font-semibold text-primary">Trust Score</p>
           <p className="text-xs text-primary-300 mt-0.5">{getBadge(score)}</p>
         </div>
-        <p className="text-xs text-accent font-medium">Tap to see breakdown →</p>
+        <p className="text-xs font-semibold text-accent">Tap to see breakdown</p>
       </button>
 
-      {/* Breakdown Modal */}
       {showBreakdown && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
           <div
-            className="absolute inset-0 bg-black/50"
+            className="absolute inset-0 bg-primary/60 backdrop-blur-sm"
             onClick={() => setShowBreakdown(false)}
           />
-          <div className="relative bg-white rounded-t-modal sm:rounded-modal w-full sm:max-w-md max-h-[80vh] overflow-y-auto p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-primary">Trust Score Breakdown</h3>
+          <div className="relative max-h-[80vh] w-full overflow-y-auto rounded-t-2xl bg-white/95 p-6 shadow-2xl backdrop-blur-xl sm:max-w-md sm:rounded-2xl">
+            <div className="mb-6 flex items-center justify-between">
+              <h3 className="text-lg font-bold tracking-tight text-primary">
+                Trust Score Breakdown
+              </h3>
               <button
                 onClick={() => setShowBreakdown(false)}
-                className="w-8 h-8 flex items-center justify-center rounded-input hover:bg-primary-50"
+                className="flex min-h-11 w-11 items-center justify-center rounded-xl transition-all hover:-translate-y-1 hover:bg-primary-50 hover:shadow-lg active:scale-95"
               >
                 <X className="w-4 h-4 text-primary-300" />
               </button>
             </div>
 
-            {/* Total */}
-            <div className="flex items-center justify-between mb-6 p-4 bg-primary-50 rounded-card">
+            <div className="mb-6 flex items-center justify-between rounded-2xl bg-primary-50 p-4">
               <span className="text-sm font-medium text-primary">Total Score</span>
               <span className="text-xl font-bold" style={{ color: getColor(score) }}>
                 {score}/100
               </span>
             </div>
 
-            {/* Components */}
             <div className="space-y-3">
-              {breakdown.map((item) => (
-                <div
-                  key={item.component}
-                  className="p-3 border border-primary-100 rounded-card"
-                >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-primary">
-                      {item.component}
-                    </span>
-                    <span className="text-sm font-semibold text-primary">
-                      {item.score}/{item.weight}
-                    </span>
-                  </div>
-                  {/* Mini progress bar */}
-                  <div className="h-1 bg-primary-100 rounded-pill overflow-hidden mb-1">
-                    <div
-                      className="h-full rounded-pill transition-all"
-                      style={{
-                        width: `${(item.score / item.weight) * 100}%`,
-                        backgroundColor: getColor((item.score / item.weight) * 100),
-                      }}
+              {breakdown.map((item) => {
+                const progress = (item.score / item.weight) * 100;
+
+                return (
+                  <div
+                    key={item.component}
+                    className="rounded-2xl border border-primary-100 bg-white/70 p-3"
+                  >
+                    <div className="mb-1 flex items-center justify-between">
+                      <span className="text-sm font-medium text-primary">
+                        {item.component}
+                      </span>
+                      <span className="text-sm font-semibold text-primary">
+                        {item.score}/{item.weight}
+                      </span>
+                    </div>
+                    <ProgressBar
+                      value={progress}
+                      tone={progress >= 70 ? "success" : progress >= 40 ? "warning" : "danger"}
+                      className="mb-1 h-1"
                     />
+                    <p className="text-xs text-primary-300">{item.description}</p>
                   </div>
-                  <p className="text-xs text-primary-300">{item.description}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

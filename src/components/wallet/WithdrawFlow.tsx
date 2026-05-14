@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { X, Check, AlertCircle, Loader2 } from "lucide-react";
+import { X, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface WithdrawFlowProps {
@@ -22,7 +22,6 @@ export function WithdrawFlow({
   available_ghs,
   momo_number,
   onWithdraw,
-  isWithdrawing,
 }: WithdrawFlowProps) {
   const [step, setStep] = useState<Step>("amount");
   const [amount, setAmount] = useState("");
@@ -96,11 +95,11 @@ export function WithdrawFlow({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" onClick={handleClose} />
-      <div className="relative bg-white rounded-t-modal sm:rounded-modal w-full sm:max-w-md p-6 min-h-[320px]">
+      <div className="absolute inset-0 bg-primary/60 backdrop-blur-sm" onClick={handleClose} />
+      <div className="relative min-h-[320px] w-full rounded-t-2xl bg-white/95 p-6 shadow-2xl backdrop-blur-xl sm:max-w-md sm:rounded-2xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold text-primary">
+          <h2 className="text-lg font-bold tracking-tight text-primary">
             {step === "amount" && "Withdraw"}
             {step === "confirm" && "Confirm"}
             {step === "pin" && "Enter PIN"}
@@ -110,7 +109,7 @@ export function WithdrawFlow({
           {step !== "processing" && (
             <button
               onClick={handleClose}
-              className="w-8 h-8 flex items-center justify-center rounded-input hover:bg-primary-50"
+              className="flex min-h-11 w-11 items-center justify-center rounded-xl transition-all hover:-translate-y-1 hover:bg-primary-50 hover:shadow-lg active:scale-95"
             >
               <X className="w-4 h-4 text-primary-300" />
             </button>
@@ -129,15 +128,15 @@ export function WithdrawFlow({
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="0.00"
-                className="w-full text-2xl font-bold text-primary bg-primary-50 border border-primary-100 rounded-input px-4 py-4 text-center focus:outline-none focus:ring-2 focus:ring-accent/50"
+                className="w-full rounded-xl border border-primary-100 bg-primary-50 px-4 py-4 text-center text-2xl font-bold text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
                 autoFocus
               />
               <p className="text-xs text-primary-300 mt-2 text-center">
-                Fee: GHS {fee.toFixed(2)} (1.5%) • Net: GHS {netAmount.toFixed(2)}
+                Fee: GHS {fee.toFixed(2)} (1.5%) - Net: GHS {netAmount.toFixed(2)}
               </p>
             </div>
 
-            <div className="bg-primary-50 rounded-card p-3">
+            <div className="rounded-2xl bg-primary-50 p-3">
               <div className="flex justify-between text-xs text-primary-300">
                 <span>Available</span>
                 <span>GHS {available_ghs.toFixed(2)}</span>
@@ -151,7 +150,7 @@ export function WithdrawFlow({
             <button
               onClick={handleAmountSubmit}
               disabled={!amount || parseFloat(amount) < 10}
-              className="w-full bg-accent text-white font-medium py-3 rounded-input hover:bg-accent-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-target"
+              className="min-h-11 w-full rounded-xl bg-accent py-3 font-semibold text-white transition-all hover:-translate-y-1 hover:bg-accent-600 hover:shadow-xl hover:shadow-accent/20 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
             >
               Continue
             </button>
@@ -161,7 +160,7 @@ export function WithdrawFlow({
         {/* Step: Confirm */}
         {step === "confirm" && (
           <div className="space-y-4">
-            <div className="bg-primary-50 rounded-card p-4">
+            <div className="rounded-2xl bg-primary-50 p-4">
               <p className="text-sm text-primary-300 mb-3">Review withdrawal details</p>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
@@ -185,15 +184,15 @@ export function WithdrawFlow({
 
             <button
               onClick={() => setStep("pin")}
-              className="w-full bg-accent text-white font-medium py-3 rounded-input hover:bg-accent-600 transition-colors touch-target"
+              className="min-h-11 w-full rounded-xl bg-accent py-3 font-semibold text-white transition-all hover:-translate-y-1 hover:bg-accent-600 hover:shadow-xl hover:shadow-accent/20 active:scale-95"
             >
               Confirm & Enter PIN
             </button>
             <button
               onClick={() => setStep("amount")}
-              className="w-full text-center text-sm text-accent font-medium hover:underline"
+              className="min-h-11 w-full rounded-xl text-center text-sm font-semibold text-accent transition-all hover:-translate-y-1 hover:bg-accent-50 hover:shadow-lg active:scale-95"
             >
-              ← Change amount
+              Back to amount
             </button>
           </div>
         )}
@@ -216,7 +215,7 @@ export function WithdrawFlow({
                   value={digit}
                   onChange={(e) => handlePinChange(index, e.target.value)}
                   onKeyDown={(e) => handlePinKeyDown(index, e)}
-                  className="w-14 h-16 text-center text-2xl font-bold rounded-input border-2 border-primary-100 bg-primary-50 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+                  className="h-16 w-14 rounded-xl border-2 border-primary-100 bg-primary-50 text-center text-2xl font-bold focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
                   autoFocus={index === 0}
                 />
               ))}
@@ -228,9 +227,9 @@ export function WithdrawFlow({
 
             <button
               onClick={() => setStep("confirm")}
-              className="w-full text-center text-sm text-accent font-medium hover:underline"
+              className="min-h-11 w-full rounded-xl text-center text-sm font-semibold text-accent transition-all hover:-translate-y-1 hover:bg-accent-50 hover:shadow-lg active:scale-95"
             >
-              ← Back
+              Back
             </button>
           </div>
         )}
@@ -247,7 +246,7 @@ export function WithdrawFlow({
         {/* Step: Success */}
         {step === "success" && (
           <div className="flex flex-col items-center justify-center py-8 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-2xl bg-success/10 flex items-center justify-center">
               <Check className="w-8 h-8 text-success" />
             </div>
             <div className="text-center">
@@ -259,7 +258,7 @@ export function WithdrawFlow({
             </div>
             <button
               onClick={handleClose}
-              className="w-full bg-accent text-white font-medium py-3 rounded-input hover:bg-accent-600 transition-colors touch-target mt-4"
+              className="mt-4 min-h-11 w-full rounded-xl bg-accent py-3 font-semibold text-white transition-all hover:-translate-y-1 hover:bg-accent-600 hover:shadow-xl hover:shadow-accent/20 active:scale-95"
             >
               Done
             </button>

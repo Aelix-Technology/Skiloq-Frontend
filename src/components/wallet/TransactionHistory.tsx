@@ -9,6 +9,9 @@ import {
   Minus,
   Filter,
 } from "lucide-react";
+import { IconTile, PremiumCard } from "@/components/ui/premium-card";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { MotionDiv, listContainer, listItem } from "@/components/ui/motion-list";
 
 interface TransactionHistoryProps {
   transactions: Transaction[];
@@ -62,9 +65,9 @@ export function TransactionHistory({ transactions }: TransactionHistoryProps) {
     });
   };
 
-  return (
+            return (
     <div className="space-y-3">
-      <h2 className="text-md font-semibold text-primary">Transactions</h2>
+      <h2 className="text-md font-semibold tracking-tight text-primary">Transactions</h2>
 
       {/* Filter tabs */}
       <div className="flex gap-1 overflow-x-auto pb-1">
@@ -74,10 +77,10 @@ export function TransactionHistory({ transactions }: TransactionHistoryProps) {
             <button
               key={f.value}
               onClick={() => setFilter(f.value)}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-pill text-xs font-medium whitespace-nowrap transition-colors ${
+              className={`flex min-h-11 items-center gap-1 rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition-all hover:-translate-y-1 hover:shadow-lg active:scale-95 ${
                 filter === f.value
                   ? "bg-accent text-white"
-                  : "bg-primary-50 text-primary-300 hover:bg-primary-100"
+                  : "bg-white/80 text-primary-300 ring-1 ring-primary-100 hover:bg-accent-50 hover:text-accent"
               }`}
             >
               <Icon className="w-3 h-3" />
@@ -89,19 +92,22 @@ export function TransactionHistory({ transactions }: TransactionHistoryProps) {
 
       {/* Transaction list */}
       {filtered.length === 0 ? (
-        <div className="text-center py-8">
+        <PremiumCard className="py-8 text-center">
+          <IconTile tone="primary" className="mx-auto mb-3">
+            <Filter className="h-5 w-5" />
+          </IconTile>
           <p className="text-sm text-primary-300">No {filter} transactions</p>
-        </div>
+        </PremiumCard>
       ) : (
-        <div className="bg-white rounded-card border border-primary-100 divide-y divide-primary-50">
+        <MotionDiv variants={listContainer} initial="hidden" animate="show" className="grid gap-3">
           {filtered.map((tx) => {
             const Icon = getIcon(tx.type);
             const colors = getColors(tx.type);
 
-            return (
-              <div key={tx.id} className="flex items-center gap-3 p-4">
+              return (
+              <MotionDiv key={tx.id} variants={listItem} className="flex items-center gap-3 rounded-2xl border border-white/70 bg-white/80 p-4 shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-accent/10">
                 {/* Icon */}
-                <div className={`w-9 h-9 rounded-full ${colors.bg} flex items-center justify-center shrink-0`}>
+                <div className={`w-11 h-11 rounded-xl ${colors.bg} flex items-center justify-center shrink-0`}>
                   <Icon className={`w-4 h-4 ${colors.text}`} />
                 </div>
 
@@ -113,14 +119,14 @@ export function TransactionHistory({ transactions }: TransactionHistoryProps) {
                   <div className="flex items-center gap-2 mt-0.5">
                     <span className="text-xs text-primary-300">{formatDate(tx.date)}</span>
                     {tx.status === "pending" && (
-                      <span className="text-xs text-warning font-medium bg-warning/10 px-1.5 py-0.5 rounded-pill">
+                      <StatusBadge tone="pending" className="px-1.5 py-0.5">
                         Pending
-                      </span>
+                      </StatusBadge>
                     )}
                     {tx.status === "failed" && (
-                      <span className="text-xs text-danger font-medium bg-danger/10 px-1.5 py-0.5 rounded-pill">
+                      <StatusBadge tone="danger" className="px-1.5 py-0.5">
                         Failed
-                      </span>
+                      </StatusBadge>
                     )}
                   </div>
                 </div>
@@ -128,15 +134,15 @@ export function TransactionHistory({ transactions }: TransactionHistoryProps) {
                 {/* Amount */}
                 <div className="text-right shrink-0">
                   <p className={`text-sm font-semibold ${colors.text}`}>
-                    {tx.type === "earning" ? "+" : tx.type === "fee" ? "−" : "−"}
+                    {tx.type === "earning" ? "+" : "-"}
                     GHS {tx.amount.toLocaleString("en-GH", { minimumFractionDigits: 2 })}
                   </p>
                   <p className="text-xs text-primary-300">{tx.reference}</p>
                 </div>
-              </div>
+              </MotionDiv>
             );
           })}
-        </div>
+        </MotionDiv>
       )}
     </div>
   );

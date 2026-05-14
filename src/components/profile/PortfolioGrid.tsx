@@ -16,13 +16,13 @@ export function PortfolioGrid({ portfolio }: PortfolioGridProps) {
 
   return (
     <section>
-      <h2 className="text-md font-semibold text-primary mb-3">Portfolio</h2>
-      <div className="grid grid-cols-2 gap-2">
+      <h2 className="text-md font-semibold tracking-tight text-primary mb-3">Portfolio</h2>
+      <div className="grid grid-cols-2 gap-3">
         {portfolio.map((item) => (
           <button
             key={item.id}
             onClick={() => item.type === "image" && setSelected(item)}
-            className="relative group aspect-[4/3] bg-primary-50 rounded-card border border-primary-100 overflow-hidden hover:shadow-md transition-shadow"
+            className="group relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/70 bg-primary-50 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-accent/10 active:scale-95"
           >
             {item.type === "image" ? (
               <img
@@ -39,7 +39,7 @@ export function PortfolioGrid({ portfolio }: PortfolioGridProps) {
                 </span>
               </div>
             )}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
               <Maximize2 className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
           </button>
@@ -51,14 +51,14 @@ export function PortfolioGrid({ portfolio }: PortfolioGridProps) {
         <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4" onClick={() => setSelected(null)}>
           <button
             onClick={() => setSelected(null)}
-            className="absolute top-4 right-4 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+            className="absolute top-4 right-4 flex min-h-11 w-11 items-center justify-center rounded-xl bg-white/10 transition-all hover:-translate-y-1 hover:bg-white/20 hover:shadow-lg active:scale-95"
           >
             <X className="w-5 h-5 text-white" />
           </button>
           <img
             src={selected.url}
             alt={selected.title}
-            className="max-w-full max-h-[80vh] rounded-card object-contain"
+            className="max-w-full max-h-[80vh] rounded-2xl object-contain"
             onClick={(e) => e.stopPropagation()}
           />
           <p className="absolute bottom-4 text-white text-sm font-medium">{selected.title}</p>

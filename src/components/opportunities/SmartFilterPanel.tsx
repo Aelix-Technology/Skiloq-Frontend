@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { Filter, Search } from "lucide-react";
+import { PremiumCard } from "@/components/ui/premium-card";
 
 interface FilterState {
   price_min: number | null;
@@ -59,15 +60,15 @@ export function SmartFilterPanel({
       value={filters.search}
       onChange={(e) => onFiltersChange({ ...filters, search: e.target.value })}
       placeholder="Search jobs, skills, or keywords..."
-      className="w-full bg-white border border-primary-100 rounded-input pl-10 pr-4 py-3 text-sm text-primary placeholder:text-primary-200 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all"
+      className="min-h-11 w-full rounded-xl border border-white/70 bg-white/80 py-3 pl-10 pr-4 text-sm text-primary shadow-sm backdrop-blur-xl transition-all placeholder:text-primary-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40"
     />
   </div>
   <button
     onClick={() => setIsOpen(!isOpen)}
-    className={`relative flex items-center gap-2 px-4 py-3 rounded-input text-sm font-medium transition-all ${
+    className={`relative flex min-h-11 items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all hover:-translate-y-1 hover:shadow-lg active:scale-95 ${
       isOpen || hasActiveFilters
-        ? "border-accent bg-accent-50 text-accent shadow-sm"
-        : "border border-primary-100 text-primary-300 hover:border-primary-200 hover:text-primary-400"
+        ? "border border-accent bg-accent-50 text-accent shadow-sm"
+        : "border border-white/70 bg-white/80 text-primary-300 backdrop-blur-xl hover:border-accent/30 hover:text-accent"
     }`}
   >
     <Filter className="w-4 h-4" />
@@ -82,7 +83,7 @@ export function SmartFilterPanel({
 
       {/* Expandable filter panel */}
       {isOpen && (
-        <div className="bg-white rounded-card border border-primary-100 p-4 space-y-4 shadow-sm">
+        <PremiumCard className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-semibold text-primary">Filters</h3>
             {hasActiveFilters && (
@@ -111,9 +112,9 @@ export function SmartFilterPanel({
                   })
                 }
                 placeholder="Min"
-                className="w-full bg-primary-50 border border-primary-100 rounded-input px-3 py-2 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
+                className="min-h-11 w-full rounded-xl border border-primary-100 bg-primary-50 px-3 py-2 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
               />
-              <span className="text-primary-300 text-sm">—</span>
+              <span className="text-primary-300 text-sm">-</span>
               <input
                 type="number"
                 value={filters.price_max || ""}
@@ -124,7 +125,7 @@ export function SmartFilterPanel({
                   })
                 }
                 placeholder="Max"
-                className="w-full bg-primary-50 border border-primary-100 rounded-input px-3 py-2 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
+                className="min-h-11 w-full rounded-xl border border-primary-100 bg-primary-50 px-3 py-2 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
               />
             </div>
           </div>
@@ -139,7 +140,7 @@ export function SmartFilterPanel({
               onChange={(e) =>
                 onFiltersChange({ ...filters, location: e.target.value })
               }
-              className="w-full bg-primary-50 border border-primary-100 rounded-input px-3 py-2 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
+              className="min-h-11 w-full rounded-xl border border-primary-100 bg-primary-50 px-3 py-2 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
             >
               <option value="">All Districts</option>
               {ghanaDistricts.map((d) => (
@@ -149,7 +150,7 @@ export function SmartFilterPanel({
               ))}
             </select>
           </div>
-        </div>
+        </PremiumCard>
       )}
 
       {/* Result count */}

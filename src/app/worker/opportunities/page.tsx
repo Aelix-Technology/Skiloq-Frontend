@@ -9,6 +9,9 @@ import { SortDropdown } from "@/components/opportunities/SortDropdown";
 import { OpportunitiesSkeleton } from "@/components/opportunities/OpportunitiesSkeleton";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { useJobs } from "@/hooks/useJobs";
+import { Briefcase } from "lucide-react";
+import { IconTile, PremiumCard } from "@/components/ui/premium-card";
+import { MotionDiv, listContainer, listItem } from "@/components/ui/motion-list";
 
 export default function OpportunitiesPage() {
   const [filters, setFilters] = useState({
@@ -45,10 +48,10 @@ export default function OpportunitiesPage() {
 
   return (
     <WorkerLayout>
-      <div className="space-y-4">
+      <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-xl font-bold text-primary">Opportunities</h1>
+          <h1 className="text-xl font-bold tracking-tight text-primary">Opportunities</h1>
           <p className="text-sm text-primary-300 mt-0.5">
             Browse jobs matched to your skills
           </p>
@@ -68,23 +71,29 @@ export default function OpportunitiesPage() {
 
         {/* Job list */}
         {jobs && jobs.length > 0 ? (
-          <div className="grid gap-3">
+          <MotionDiv variants={listContainer} initial="hidden" animate="show" className="grid gap-3">
             {jobs.map((job) => (
-              <JobCard key={job.id} job={job} />
+              <MotionDiv key={job.id} variants={listItem}>
+                <JobCard job={job} />
+              </MotionDiv>
             ))}
-          </div>
+          </MotionDiv>
         ) : (
-          <div className="text-center py-16">
-            <p className="text-sm text-primary-300">No jobs match your filters</p>
+          <PremiumCard className="py-12 text-center">
+            <IconTile tone="accent" className="mx-auto mb-3">
+              <Briefcase className="h-5 w-5" />
+            </IconTile>
+            <p className="text-sm font-semibold text-primary">No jobs match your filters</p>
+            <p className="mt-1 text-xs text-primary-300">Try widening the budget, location, or keyword search.</p>
             <button
               onClick={() =>
                 setFilters({ search: "", price_min: null, price_max: null, location: "" })
               }
-              className="text-sm text-accent font-medium hover:underline mt-2"
+              className="mt-4 min-h-11 rounded-xl px-4 text-sm font-semibold text-accent transition-all hover:-translate-y-1 hover:bg-accent-50 hover:shadow-lg active:scale-95"
             >
               Clear filters
             </button>
-          </div>
+          </PremiumCard>
         )}
       </div>
     </WorkerLayout>
