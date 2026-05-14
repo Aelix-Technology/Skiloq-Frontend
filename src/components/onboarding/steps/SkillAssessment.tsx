@@ -14,29 +14,37 @@ export function SkillAssessment({ onComplete }: SkillAssessmentProps) {
   const [questions] = useState(mockAssessmentQuestions.digital);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
-  const [timeLeft, setTimeLeft] = useState(questions[0]?.time_limit_seconds || 30);
+  const [timeLeft, setTimeLeft] = useState(30);
   const [isFinished, setIsFinished] = useState(false);
   const [result, setResult] = useState<AssessmentResult | null>(null);
-  const timerRef = useRef<NodeJS.Timeout>();
+
+  // Fix 1: Proper initial value, no Node type
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
   const question = questions[currentQuestion];
   const isLast = currentQuestion === questions.length - 1;
 
-  // Timer
+  // Fix 4: Guard against invalid time_limit_seconds
+  const timeLimit = question?.time_limit_seconds && question.time_limit_seconds > 0
+    ? question.time_limit_seconds
+    : 30;
+
+  // Fix 3: Timer depends on question, not currentQuestion
   const startTimer = useCallback(() => {
+    // Clear any existing timer first
     if (timerRef.current) clearInterval(timerRef.current);
-    setTimeLeft(question.time_limit_seconds);
+    setTimeLeft(timeLimit);
 
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
-          clearInterval(timerRef.current);
-          handleTimeUp();
+          if (timerRef.current) clearInterval(timerRef.current);
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
-  }, [currentQuestion]);
+  }, [timeLimit]); // Depends on timeLimit (derived from question)
 
   useEffect(() => {
     startTimer();
@@ -45,39 +53,50 @@ export function SkillAssessment({ onComplete }: SkillAssessmentProps) {
     };
   }, [startTimer]);
 
-  const handleTimeUp = () => {
-    // Auto-submit on timeout
-    if (currentQuestion < questions.length - 1) {
-      setAnswers([...answers, -1]); // -1 = no answer
-      setCurrentQuestion((prev) => prev + 1);
-    } else {
-      finishAssessment();
+  const handleTimeUp = useCallback(() => {
+    // Fix 2: Functional update to avoid stale state
+    setCurrentQuestion((prev) => {
+      if (prev < questions.length - 1) {
+        setAnswers((prevAnswers) => [...prevAnswers, -1]); // -1 = no answer
+        return prev + 1;
+      }
+      return prev;
+    });
+  }, [questions.length]);
+
+  // Check time up on current question
+  useEffect(() => {
+    if (timeLeft === 0 && !isFinished) {
+      handleTimeUp();
     }
-  };
+  }, [timeLeft, isFinished, handleTimeUp]);
 
   const handleAnswer = (optionIndex: number) => {
     if (timerRef.current) clearInterval(timerRef.current);
 
-    const newAnswers = [...answers, optionIndex];
-    setAnswers(newAnswers);
+    //  Functional update
+    setAnswers((prev) => {
+      const newAnswers = [...prev, optionIndex];
 
-    if (isLast) {
-      finishAssessment(newAnswers);
-    } else {
-      setCurrentQuestion((prev) => prev + 1);
-    }
+      if (isLast) {
+        finishAssessment(newAnswers);
+      } else {
+        setCurrentQuestion((prevQ) => prevQ + 1);
+      }
+
+      return newAnswers;
+    });
   };
 
-  const finishAssessment = (finalAnswers?: number[]) => {
+  const finishAssessment = (finalAnswers: number[]) => {
     setIsFinished(true);
     if (timerRef.current) clearInterval(timerRef.current);
 
-    const answered = finalAnswers || answers;
-    const correct = answered.filter((a, i) => a === questions[i]?.correct_index).length;
+    const correct = finalAnswers.filter((a, i) => a === questions[i]?.correct_index).length;
     const score = Math.round((correct / questions.length) * 100);
     const passed = score >= 70;
 
-    const result: AssessmentResult = {
+    const assessmentResult: AssessmentResult = {
       score,
       passed,
       feedback: passed
@@ -86,8 +105,8 @@ export function SkillAssessment({ onComplete }: SkillAssessmentProps) {
       cooldown_days: passed ? undefined : 7,
     };
 
-    setResult(result);
-    setTimeout(() => onComplete(result), 1500);
+    setResult(assessmentResult);
+    setTimeout(() => onComplete(assessmentResult), 1500);
   };
 
   if (isFinished && result) {
@@ -125,6 +144,8 @@ export function SkillAssessment({ onComplete }: SkillAssessmentProps) {
     );
   }
 
+  if (!question) return null;
+
   return (
     <div className="space-y-6">
       {/* Timer */}
@@ -147,7 +168,7 @@ export function SkillAssessment({ onComplete }: SkillAssessmentProps) {
             timeLeft <= 10 ? "bg-danger" : timeLeft <= 20 ? "bg-warning" : "bg-success"
           }`}
           style={{
-            width: `${(timeLeft / question.time_limit_seconds) * 100}%`,
+            width: `${(timeLeft / timeLimit) * 100}%`,
           }}
         />
       </div>
