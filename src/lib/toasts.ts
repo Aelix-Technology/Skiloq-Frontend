@@ -57,4 +57,5 @@ export const toasts = {
 
   // ── General ───────────────────────────────
   comingSoon: () => toast.info("Coming in Phase 2"),
+  error: (message: string) => toast.error(message),
 };

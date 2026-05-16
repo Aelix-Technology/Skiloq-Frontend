@@ -12,7 +12,7 @@ export default function AuthLayout({
           <div className="w-8 h-8 bg-primary rounded-card flex items-center justify-center">
             <span className="text-white text-sm font-bold">A</span>
           </div>
-          <span className="font-semibold text-primary text-md">Aelix</span>
+          <span className="font-semibold text-primary text-md">Skiloq</span>
         </div>
       </header>
 
@@ -25,7 +25,7 @@ export default function AuthLayout({
 
       {/* Footer */}
       <footer className="py-4 text-center text-xs text-primary-300">
-        Aelix Technology Inc. — Ghana
+        Skiloq Technology Inc. — Ghana
       </footer>
     </div>
   );

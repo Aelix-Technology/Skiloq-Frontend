@@ -14,9 +14,10 @@ export function useVerificationStatus() {
       return mockVerificationStatus;
     },
     staleTime: 2 * 60 * 1000,
-    refetchInterval: (data) => {
-      // Auto-refresh while verification is pending
-      if (data?.steps.some((s) => s.status === "in_review" || s.status === "pending")) {
+    // refetchInterval receives the data directly, not a Query object
+    refetchInterval: (query) => {
+      const data = query.state.data;
+      if (data?.steps?.some((s) => s.status === "in_review" || s.status === "pending")) {
         return 30 * 1000;
       }
       return false;

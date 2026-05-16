@@ -71,9 +71,9 @@ export const useAuthStore = create<AuthState>()(
 // Dev mode: clear corrupted persisted state on load
 if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_API_MODE === "mock") {
 
-  const oldStorage = localStorage.getItem("aelix-auth-storage");
+  const oldStorage = localStorage.getItem("Skiloq-auth-storage");
   if (oldStorage) {
-    localStorage.removeItem("aelix-auth-storage");
+    localStorage.removeItem("Skiloq-auth-storage");
   }
 
   // Validate current storage

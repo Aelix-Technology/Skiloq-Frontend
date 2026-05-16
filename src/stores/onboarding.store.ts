@@ -109,7 +109,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
         }),
     }),
     {
-      name: "aelix-onboarding",
+      name: "Skiloq-onboarding",
       partialize: (state) => ({
         currentStep: state.currentStep,
         category: state.category,

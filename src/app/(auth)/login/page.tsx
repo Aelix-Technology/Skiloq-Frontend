@@ -40,7 +40,7 @@ export default function LoginPage() {
           <span className="text-white text-xl font-bold">A</span>
         </div>
         <h1 className="text-xl font-bold text-primary">Welcome back</h1>
-        <p className="text-sm text-primary-300">Sign in to your Aelix account</p>
+        <p className="text-sm text-primary-300">Sign in to your Skiloq account</p>
       </div>
 
       {/* Step Indicator */}
