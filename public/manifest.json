@@ -1,0 +1,38 @@
+
+{
+  "name": "Skiloq — Verified Talent for Africa",
+  "short_name": "Skiloq",
+  "description": "Africa's #1 verified talent platform. Proof of work, not CV claims. Built for MoMo, 2G, and real skills.",
+  "start_url": "/worker/dashboard",
+  "display": "standalone",
+  "background_color": "#1A1F36",
+  "theme_color": "#1A1F36",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["business", "productivity", "utilities"],
+  "lang": "en",
+  "dir": "ltr"
+}

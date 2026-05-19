@@ -2,81 +2,113 @@
 "use client";
 
 import Link from "next/link";
-import { Mail, MapPin } from "lucide-react";
+import { Mail, MapPin, Phone, ArrowUpRight } from "lucide-react";
 
-const footerLinks = [
-  {
-    title: "Platform",
-    links: [
-      { label: "How it Works", href: "#how-it-works" },
-      { label: "Categories", href: "#categories" },
-      { label: "Find Talent", href: "/employer/find-talent" },
-      { label: "Post a Job", href: "/employer/post-job" },
-      { label: "Trust & Safety", href: "#" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "About", href: "#" },
-      { label: "Blog", href: "#" },
-      { label: "Careers", href: "#" },
-      { label: "Contact", href: "#" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { label: "Privacy Policy", href: "/privacy" },
-      { label: "Terms of Service", href: "/terms" },
-    ],
-  },
+const footerLinks = {
+  Platform: [
+    { label: "How it Works", href: "#how-it-works" },
+    { label: "Categories", href: "#categories" },
+    { label: "Find Talent", href: "/employer/find-talent" },
+    { label: "Post a Job", href: "/employer/post-job" },
+    { label: "Trust & Safety", href: "#" },
+  ],
+  "For Workers": [
+    { label: "Create Account", href: "/register" },
+    { label: "Worker Dashboard", href: "/worker/dashboard" },
+    { label: "How to Get Verified", href: "#" },
+    { label: "Trust Score Guide", href: "#" },
+    { label: "MoMo Payouts", href: "#" },
+  ],
+  "For Employers": [
+    { label: "Employer Dashboard", href: "/employer/dashboard" },
+    { label: "Hiring Guide", href: "#" },
+    { label: "Escrow Protection", href: "#" },
+    { label: "Enterprise", href: "#" },
+  ],
+  Company: [
+    { label: "About Us", href: "#" },
+    { label: "Blog", href: "#" },
+    { label: "Careers", href: "#" },
+    { label: "Press", href: "#" },
+    { label: "Contact", href: "#" },
+  ],
+};
+
+const bottomLinks = [
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Service", href: "/terms" },
+  { label: "Cookie Policy", href: "#" },
+  { label: "Accessibility", href: "#" },
 ];
 
 export function Footer() {
   return (
-    <footer className="bg-primary text-white">
-      <div className="max-w-6xl mx-auto px-4 pt-16 pb-8">
-        {/* Top grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
+    <footer className="bg-primary relative overflow-hidden">
+      {/* Background pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.02] pointer-events-none"
+        style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+          backgroundSize: "40px 40px",
+        }}
+      />
+
+      {/* Top accent line */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-20 pb-10">
+        {/* ── Top: Link Columns ── */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-10 mb-16">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-2.5 mb-5">
-              <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
-                <span className="text-primary font-bold text-base">S</span>
+            {/* Logo */}
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg shadow-black/20">
+                <span className="text-primary font-bold text-lg">S</span>
               </div>
-              <span className="font-bold text-xl text-white">Skiloq</span>
+              <div>
+                <span className="font-bold text-xl text-white tracking-tight block leading-none">
+                  Skiloq
+                </span>
+                <span className="text-[10px] text-primary-300 tracking-[0.2em] uppercase">
+                  Talent Infrastructure
+                </span>
+              </div>
             </div>
 
-            <p className="text-sm text-primary-200 leading-relaxed mb-6 max-w-sm">
-              Verified talent infrastructure for Africa. Proof of work, not CV claims.
-              Built for MoMo, 2G, and real skills.
+            <p className="text-sm text-primary-200 leading-relaxed mb-6 max-w-xs">
+              Africa&apos;s #1 verified talent platform. Proof of work, not CV claims. Built for MoMo, 2G, and real skills.
             </p>
 
-            <div className="space-y-3 text-sm text-primary-200">
-              <div className="flex items-center gap-3">
-                <MapPin className="w-4 h-4 text-primary-400" />
-                Accra, Ghana
+            {/* Contact */}
+            <div className="space-y-3 text-sm">
+              <div className="flex items-center gap-3 text-primary-200">
+                <MapPin className="w-4 h-4 text-primary-400 shrink-0" />
+                <span>Accra, Ghana</span>
               </div>
-              <a href="mailto:hello@skiloq.com" className="flex items-center gap-3 hover:text-white transition-colors">
-                <Mail className="w-4 h-4 text-primary-400" />
-                hello@skiloq.com
+              <a href="mailto:hello@skiloq.com" className="flex items-center gap-3 text-primary-200 hover:text-white transition-colors">
+                <Mail className="w-4 h-4 text-primary-400 shrink-0" />
+                <span>hello@skiloq.com</span>
+              </a>
+              <a href="tel:+233501234567" className="flex items-center gap-3 text-primary-200 hover:text-white transition-colors">
+                <Phone className="w-4 h-4 text-primary-400 shrink-0" />
+                <span>+233 50 123 4567</span>
               </a>
             </div>
           </div>
 
           {/* Link columns */}
-          {footerLinks.map((section) => (
-            <div key={section.title}>
-              <h4 className="text-sm font-semibold text-white mb-5 uppercase tracking-wider">
-                {section.title}
+          {Object.entries(footerLinks).map(([title, links]) => (
+            <div key={title}>
+              <h4 className="text-xs font-bold text-white/50 uppercase tracking-[0.15em] mb-5">
+                {title}
               </h4>
-              <ul className="space-y-3">
-                {section.links.map((link) => (
+              <ul className="space-y-2.5">
+                {links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-primary-200 hover:text-white transition-colors"
+                      className="text-sm text-primary-200 hover:text-white transition-colors inline-block hover:translate-x-0.5 duration-200"
                     >
                       {link.label}
                     </Link>
@@ -87,14 +119,25 @@ export function Footer() {
           ))}
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* ── Bottom Bar ── */}
+        <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-primary-400">
             &copy; {new Date().getFullYear()} Skiloq Technology Inc. All rights reserved.
           </p>
-          <p className="text-xs text-primary-400">
-            Made in Ghana 🇬🇭
-          </p>
+
+          <div className="flex flex-wrap justify-center gap-x-5 gap-y-1">
+            {bottomLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="text-xs text-primary-400 hover:text-white transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+         
         </div>
       </div>
     </footer>

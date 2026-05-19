@@ -13,7 +13,6 @@ import type {
   User,
 } from "@/types/auth";
 
-// Response types
 interface AuthResponse {
   accessToken: string;
   refreshToken?: string;
@@ -25,10 +24,14 @@ interface MessageResponse {
   expires_in?: number;
 }
 
-/**
- * Sends OTP to the provided phone number.
- * Used in Step 1 of registration.
- */
+// Demo credentials for all roles
+const DEMO_CREDENTIALS: Record<string, { pin: string; role: User["role"] }> = {
+  "+233000000000": { pin: "0000", role: "worker" },
+  "+233111111111": { pin: "1111", role: "employer" },
+  "+233222222222": { pin: "2222", role: "admin" },
+  "+233333333333": { pin: "3333", role: "agent" },
+};
+
 export function useRegisterPhone() {
   return useMutation({
     mutationFn: (data: RegisterPhoneRequest) =>
@@ -40,10 +43,6 @@ export function useRegisterPhone() {
   });
 }
 
-/**
- * Verifies the OTP and sets auth state.
- * Does NOT redirect — the register page handles the next step (PIN setup).
- */
 export function useVerifyOTP() {
   const setAuth = useAuthStore((s) => s.setAuth);
 
@@ -60,24 +59,38 @@ export function useVerifyOTP() {
   });
 }
 
-/**
- * Logs in with phone and PIN.
- * Routes to the correct dashboard based on user role.
- */
 export function useLogin() {
   const setAuth = useAuthStore((s) => s.setAuth);
   const router = useRouter();
 
   return useMutation({
-    mutationFn: (data: LoginRequest) =>
-      apiClient.post<AuthResponse>("/auth/login", data),
+    mutationFn: async (data: LoginRequest) => {
+      // Demo login for all roles
+      const demo = DEMO_CREDENTIALS[data.phone];
+      if (demo && data.pin === demo.pin) {
+        await new Promise((resolve) => setTimeout(resolve, 800));
+        return {
+          accessToken: "demo-token",
+          user: {
+            id: `demo-${demo.role}`,
+            phone: data.phone,
+            phone_verified: true,
+            role: demo.role,
+            is_active: true,
+            created_at: new Date().toISOString(),
+          },
+        };
+      }
+
+      return apiClient.post<AuthResponse>("/auth/login", data);
+    },
     onSuccess: (data) => {
       setAuth(data.user, { accessToken: data.accessToken });
       toasts.welcomeBack();
 
       switch (data.user.role) {
         case "worker":
-          router.push("/worker/onboarding");
+          router.push("/worker/dashboard");
           break;
         case "employer":
           router.push("/employer/dashboard");
@@ -91,20 +104,13 @@ export function useLogin() {
       }
     },
     onError: (error: ApiError) => {
-      if (error.code === "LOCKED") {
-        toasts.accountLocked();
-      } else if (error.code === "INVALID_PIN") {
-        toasts.invalidPIN();
-      } else {
-        toast.error(error.detail || "Login failed");
-      }
+      if (error.code === "LOCKED") toasts.accountLocked();
+      else if (error.code === "INVALID_PIN") toasts.invalidPIN();
+      else toast.error(error.detail || "Login failed");
     },
   });
 }
 
-/**
- * Sets the user's 4-digit PIN after OTP verification.
- */
 export function useSetPIN() {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
@@ -114,11 +120,8 @@ export function useSetPIN() {
       apiClient.post<MessageResponse>("/auth/set-pin", data),
     onSuccess: () => {
       toasts.pinSet();
-      if (user?.role === "employer") {
-        router.push("/employer/dashboard");
-      } else {
-        router.push("/worker/onboarding");
-      }
+      if (user?.role === "employer") router.push("/employer/dashboard");
+      else router.push("/worker/onboarding");
     },
     onError: (error: ApiError) => {
       toast.error(error.detail || "Failed to set PIN");
@@ -126,9 +129,6 @@ export function useSetPIN() {
   });
 }
 
-/**
- * Logs out the user. Forces logout even if the API call fails.
- */
 export function useLogout() {
   const logout = useAuthStore((s) => s.logout);
   const router = useRouter();

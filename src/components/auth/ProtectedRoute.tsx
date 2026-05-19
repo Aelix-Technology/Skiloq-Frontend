@@ -5,7 +5,12 @@ import { useAuthStore } from "@/stores/auth.store";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 
-const IS_DEV = process.env.NEXT_PUBLIC_API_MODE === "mock";
+// Always bypass auth in non-production Vercel environments and local dev
+const IS_DEV =
+  process.env.NEXT_PUBLIC_API_MODE === "mock" ||
+  process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ||
+  process.env.NEXT_PUBLIC_VERCEL_ENV === "development" ||
+  process.env.NODE_ENV === "development";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -19,7 +24,6 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
   const pathname = usePathname();
   const [isReady, setIsReady] = useState(false);
 
-  // Dev mode: set role based on the current route
   useEffect(() => {
     if (IS_DEV) {
       const role = pathname.startsWith("/employer")
@@ -39,14 +43,13 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
           is_active: true,
           created_at: new Date().toISOString(),
         },
-        accessToken: "mock-token",
+        accessToken: "preview-token",
         isAuthenticated: true,
       });
     }
     setIsReady(true);
   }, [pathname]);
 
-  // Redirect only in production
   useEffect(() => {
     if (IS_DEV || !isReady) return;
 
@@ -66,7 +69,6 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     }
   }, [IS_DEV, isReady, isAuthenticated, user, allowedRoles, router, pathname]);
 
-  // Loading state
   if (!isReady) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-primary-50">
@@ -75,10 +77,8 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     );
   }
 
-  // Dev mode: always allow, no checks
   if (IS_DEV) return <>{children}</>;
 
-  // Production: not authenticated
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-primary-50">

@@ -18,7 +18,7 @@ export default function LandingPage() {
       <Navbar />
       <Hero />
       <SocialProof />
-     
+      <TalentCategories />
       <HowItWorks />
       <BuiltForAfrica />
       <LanguageDiversity />

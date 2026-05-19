@@ -2,28 +2,44 @@
 "use client";
 
 import { useState } from "react";
-import { PhoneInput } from "@/components/auth/PhoneInput";
-import { OTPInput } from "@/components/auth/OTPInput";
-import { PINInput } from "@/components/auth/PINInput";
-import { useRegisterPhone, useVerifyOTP, useSetPIN } from "@/hooks/useAuth";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, ArrowRight, Smartphone, MessageCircle, Key, Shield, Check } from "lucide-react";
+import { useRegisterPhone, useVerifyOTP, useSetPIN } from "@/hooks/useAuth";
 
 type Step = "phone" | "otp" | "pin" | "confirm-pin";
+
+const stepLabels = [
+  { key: "phone", icon: Smartphone, label: "Phone" },
+  { key: "otp", icon: MessageCircle, label: "Verify" },
+  { key: "pin", icon: Key, label: "PIN" },
+];
 
 export default function RegisterPage() {
   const [step, setStep] = useState<Step>("phone");
   const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState("");
   const [firstPin, setFirstPin] = useState("");
+  const [pin, setPin] = useState("");
+  const [confirmPin, setConfirmPin] = useState("");
   const [error, setError] = useState("");
 
   const registerMutation = useRegisterPhone();
   const verifyMutation = useVerifyOTP();
   const setPinMutation = useSetPIN();
 
-  const handlePhoneSubmit = (submittedPhone: string) => {
-    setPhone(submittedPhone);
+  const currentStepIndex = stepLabels.findIndex(
+    (s) => s.key === step || (s.key === "pin" && (step === "pin" || step === "confirm-pin"))
+  );
+
+  const handlePhoneSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (phone.trim().length < 10) {
+      setError("Enter a valid phone number");
+      return;
+    }
     registerMutation.mutate(
-      { phone: submittedPhone },
+      { phone },
       {
         onSuccess: () => setStep("otp"),
         onError: (err) => setError(err.detail || "Failed to send OTP"),
@@ -31,7 +47,12 @@ export default function RegisterPage() {
     );
   };
 
-  const handleOTPComplete = (otp: string) => {
+  const handleOTPSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (otp.length !== 6) {
+      setError("Enter the 6-digit code");
+      return;
+    }
     verifyMutation.mutate(
       { phone, otp },
       {
@@ -41,119 +62,287 @@ export default function RegisterPage() {
     );
   };
 
-  const handleFirstPIN = (pin: string) => {
+  const handlePinChange = (
+    setter: (value: string) => void,
+    current: string,
+    index: number,
+    value: string
+  ) => {
+    if (!/^\d*$/.test(value)) return;
+    const pinArray = current.padEnd(4, "").split("");
+    pinArray[index] = value;
+    const newPin = pinArray.join("").slice(0, 4);
+    setter(newPin);
+
+    if (value && index < 3) {
+      const nextInput = document.getElementById(`register-pin-${index + 1}`);
+      nextInput?.focus();
+    }
+  };
+
+  const handlePinKeyDown = (current: string, index: number, e: React.KeyboardEvent) => {
+    if (e.key === "Backspace" && !current[index] && index > 0) {
+      const prevInput = document.getElementById(`register-pin-${index - 1}`);
+      prevInput?.focus();
+    }
+  };
+
+  const handleFirstPinSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (pin.length !== 4) {
+      setError("PIN must be 4 digits");
+      return;
+    }
     setFirstPin(pin);
     setStep("confirm-pin");
     setError("");
   };
 
-  const handleConfirmPIN = (pin: string) => {
-    if (pin !== firstPin) {
+  const handleConfirmPinSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (confirmPin !== firstPin) {
       setError("PINs don't match. Try again.");
-      // Reset confirm inputs
+      setConfirmPin("");
       return;
     }
     setPinMutation.mutate(
-      { pin },
+      { pin: confirmPin },
       {
         onError: (err) => setError(err.detail || "Failed to set PIN"),
       }
     );
   };
 
-  const steps = [
-    { key: "phone", label: "Phone" },
-    { key: "otp", label: "Verify" },
-    { key: "pin", label: "PIN" },
-  ];
-
-  const currentStepIndex = steps.findIndex((s) => s.key === step || s.key === "pin" && (step === "pin" || step === "confirm-pin"));
-
   return (
-    <div className="space-y-8">
-      {/* Logo + Header */}
-      <div className="text-center space-y-2">
-        <div className="inline-flex items-center justify-center w-12 h-12 bg-primary rounded-card">
-          <span className="text-white text-xl font-bold">A</span>
-        </div>
-        <h1 className="text-xl font-bold text-primary">Create your account</h1>
-        <p className="text-sm text-primary-300">Join Africa&apos;s verified talent network</p>
-      </div>
+    <div className="min-h-screen bg-white flex">
+      {/* ── Left: Brand Panel ── */}
+      <div className="hidden lg:flex lg:w-1/2 bg-primary relative overflow-hidden flex-col justify-between p-12">
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+            backgroundSize: "40px 40px",
+          }}
+        />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-[120px]" />
 
-      {/* Step Indicator */}
-      <div className="flex items-center justify-center gap-2">
-        {steps.map((s, i) => (
-          <div
-            key={s.key}
-            className={`h-1 w-8 rounded-pill transition-colors ${
-              i < currentStepIndex
-                ? "bg-success"
-                : i === currentStepIndex
-                ? "bg-accent"
-                : "bg-primary-100"
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* Forms */}
-      <div className="bg-white rounded-card border border-primary-50 shadow-sm p-6">
-        {step === "phone" && (
-          <div className="space-y-4">
-            <PhoneInput
-              onSubmit={handlePhoneSubmit}
-              isLoading={registerMutation.isPending}
-            />
-            <p className="text-center text-sm text-primary-300">
-              Already have an account?{" "}
-              <Link href="/login" className="text-accent font-medium hover:underline">
-                Sign in
-              </Link>
-            </p>
+        <Link href="/" className="relative flex items-center gap-3">
+          <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg">
+            <span className="text-primary font-bold text-lg">S</span>
           </div>
-        )}
+          <span className="text-white font-bold text-xl tracking-tight">Skiloq</span>
+        </Link>
 
-        {step === "otp" && (
-          <div className="space-y-4">
-            <p className="text-sm text-primary-300 text-center">
-              We sent a code to <span className="font-medium text-primary">{phone}</span>
-            </p>
-            <OTPInput
-              onComplete={handleOTPComplete}
-              isLoading={verifyMutation.isPending}
-              onResend={() => registerMutation.mutate({ phone })}
-            />
+        <div className="relative">
+          <p className="text-white/60 text-lg leading-relaxed max-w-md">
+            &quot;Join thousands of verified African workers earning on their own terms. No CV required.&quot;
+          </p>
+          <div className="flex items-center gap-3 mt-6">
+            <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+              <Check className="w-5 h-5 text-emerald-400" />
+            </div>
+            <div>
+              <p className="text-white text-sm font-semibold">Free to join</p>
+              <p className="text-white/40 text-xs">Start earning in minutes</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            {error && (
-              <p className="text-center text-sm text-danger">{error}</p>
+      {/* ── Right: Form ── */}
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-8 py-12">
+        <div className="w-full max-w-sm">
+          {/* Mobile logo */}
+          <div className="lg:hidden flex items-center gap-2.5 mb-10">
+            <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center">
+              <span className="text-white font-bold text-sm">S</span>
+            </div>
+            <span className="font-bold text-lg text-primary tracking-tight">Skiloq</span>
+          </div>
+
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold text-gray-900">Create your account</h1>
+            <p className="text-sm text-gray-500 mt-1.5">Join Africa&apos;s verified talent network</p>
+          </div>
+
+          {/* Step indicator */}
+          <div className="flex items-center gap-2 mb-8">
+            {stepLabels.map((s, i) => (
+              <div key={s.key} className="flex items-center gap-2">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+                  i < currentStepIndex
+                    ? "bg-emerald-500 text-white"
+                    : i === currentStepIndex
+                    ? "bg-primary text-white ring-4 ring-primary/10"
+                    : "bg-gray-100 text-gray-400"
+                }`}>
+                  {i < currentStepIndex ? <Check className="w-4 h-4" /> : <s.icon className="w-4 h-4" />}
+                </div>
+                <span className={`text-sm font-medium hidden sm:block ${
+                  i <= currentStepIndex ? "text-gray-900" : "text-gray-400"
+                }`}>
+                  {s.label}
+                </span>
+                {i < 2 && <div className="flex-1 h-px bg-gray-200 hidden sm:block" />}
+              </div>
+            ))}
+          </div>
+
+          {/* Forms */}
+          <AnimatePresence mode="wait">
+            {step === "phone" && (
+              <motion.form
+                key="phone"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.2 }}
+                onSubmit={handlePhoneSubmit}
+                className="space-y-4"
+              >
+                <label className="text-sm font-semibold text-gray-700 mb-1.5 block">Phone Number</label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400 font-medium">+233</span>
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => { setPhone(e.target.value.replace(/\D/g, "")); setError(""); }}
+                    placeholder="24 123 4567"
+                    maxLength={10}
+                    className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-16 pr-4 py-3.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                    autoFocus
+                  />
+                </div>
+                {error && <p className="text-sm text-red-500">{error}</p>}
+                <button
+                  type="submit"
+                  disabled={phone.length < 10 || registerMutation.isPending}
+                  className="w-full bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-primary-600 transition-all disabled:opacity-40 flex items-center justify-center gap-2 active:scale-[0.98]"
+                >
+                  {registerMutation.isPending ? "Sending OTP..." : <>Continue <ArrowRight className="w-4 h-4" /></>}
+                </button>
+                <p className="text-center text-sm text-gray-500">
+                  Already have an account?{" "}
+                  <Link href="/login" className="text-primary font-semibold hover:underline">Sign in</Link>
+                </p>
+              </motion.form>
             )}
 
-            <button
-              onClick={() => setStep("phone")}
-              className="w-full text-center text-sm text-accent font-medium hover:underline"
-            >
-              ← Change phone number
-            </button>
-          </div>
-        )}
+            {step === "otp" && (
+              <motion.form
+                key="otp"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.2 }}
+                onSubmit={handleOTPSubmit}
+                className="space-y-5"
+              >
+                <div className="text-center">
+                  <button type="button" onClick={() => setStep("phone")} className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 mb-3">
+                    <ArrowLeft className="w-4 h-4" /> {phone}
+                  </button>
+                  <p className="text-sm text-gray-500">Enter the 6-digit code sent to your phone</p>
+                </div>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={6}
+                  value={otp}
+                  onChange={(e) => { setOtp(e.target.value.replace(/\D/g, "").slice(0, 6)); setError(""); }}
+                  placeholder="000000"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-4 text-center text-2xl font-bold tracking-[0.3em] text-gray-900 placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  autoFocus
+                />
+                {error && <p className="text-sm text-red-500 text-center">{error}</p>}
+                <button
+                  type="submit"
+                  disabled={otp.length !== 6 || verifyMutation.isPending}
+                  className="w-full bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-primary-600 transition-all disabled:opacity-40 flex items-center justify-center gap-2 active:scale-[0.98]"
+                >
+                  {verifyMutation.isPending ? "Verifying..." : <>Verify <Shield className="w-4 h-4" /></>}
+                </button>
+                <button type="button" onClick={() => registerMutation.mutate({ phone })} className="w-full text-center text-sm text-primary font-medium hover:underline">
+                  Resend code
+                </button>
+              </motion.form>
+            )}
 
-        {(step === "pin" || step === "confirm-pin") && (
-          <PINInput
-            mode={step === "pin" ? "create" : "confirm"}
-            onComplete={step === "pin" ? handleFirstPIN : handleConfirmPIN}
-            onBack={() => {
-              if (step === "confirm-pin") {
-                setStep("pin");
-                setFirstPin("");
-              } else {
-                setStep("otp");
-              }
-              setError("");
-            }}
-            isLoading={setPinMutation.isPending}
-            error={error}
-          />
-        )}
+            {(step === "pin" || step === "confirm-pin") && (
+              <motion.form
+                key={step}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.2 }}
+                onSubmit={step === "pin" ? handleFirstPinSubmit : handleConfirmPinSubmit}
+                className="space-y-5"
+              >
+                <div className="text-center">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (step === "confirm-pin") { setStep("pin"); setConfirmPin(""); }
+                      else { setStep("otp"); setPin(""); }
+                      setError("");
+                    }}
+                    className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 mb-3"
+                  >
+                    <ArrowLeft className="w-4 h-4" /> Back
+                  </button>
+                  <p className="text-sm text-gray-500">
+                    {step === "pin" ? "Create your 4-digit security PIN" : "Confirm your PIN"}
+                  </p>
+                </div>
+
+                <div className="flex gap-3 justify-center">
+                  {[0, 1, 2, 3].map((i) => (
+                    <input
+                      key={i}
+                      id={`register-pin-${i}`}
+                      type="password"
+                      inputMode="numeric"
+                      maxLength={1}
+                      value={step === "pin" ? (pin[i] || "") : (confirmPin[i] || "")}
+                      onChange={(e) => {
+                        if (step === "pin") handlePinChange(setPin, pin, i, e.target.value);
+                        else handlePinChange(setConfirmPin, confirmPin, i, e.target.value);
+                        setError("");
+                      }}
+                      onKeyDown={(e) => {
+                        if (step === "pin") handlePinKeyDown(pin, i, e);
+                        else handlePinKeyDown(confirmPin, i, e);
+                      }}
+                      className={`w-14 h-16 text-center text-xl font-bold rounded-xl border-2 transition-all focus:outline-none focus:ring-2 focus:ring-primary/20 ${
+                        error
+                          ? "border-red-300 bg-red-50"
+                          : (step === "pin" ? pin[i] : confirmPin[i])
+                          ? "border-primary bg-primary/5"
+                          : "border-gray-200 bg-gray-50"
+                      }`}
+                      autoFocus={i === 0}
+                    />
+                  ))}
+                </div>
+
+                {error && <p className="text-sm text-red-500 text-center">{error}</p>}
+
+                <button
+                  type="submit"
+                  disabled={(step === "pin" ? pin.length !== 4 : confirmPin.length !== 4) || setPinMutation.isPending}
+                  className="w-full bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-primary-600 transition-all disabled:opacity-40 flex items-center justify-center gap-2 active:scale-[0.98]"
+                >
+                  {setPinMutation.isPending ? (
+                    <>Creating account...</>
+                  ) : (
+                    <>{step === "pin" ? <>Continue <ArrowRight className="w-4 h-4" /></> : <>Complete <Check className="w-4 h-4" /></>}</>
+                  )}
+                </button>
+              </motion.form>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
