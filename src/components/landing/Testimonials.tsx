@@ -13,7 +13,7 @@ const testimonials = [
     rating: 5,
   },
   {
-    name: "Kwame Boateng",
+    name: "Kwame Boateng Basit",
     role: "Electrician",
     location: "Kumasi",
     quote:
