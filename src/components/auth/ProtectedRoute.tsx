@@ -47,7 +47,12 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
         isAuthenticated: true,
       });
     }
-    setIsReady(true);
+
+    const readyTimer = setTimeout(() => {
+      setIsReady(true);
+    }, 0);
+
+    return () => clearTimeout(readyTimer);
   }, [pathname]);
 
   useEffect(() => {
