@@ -82,16 +82,28 @@ export async function api<T>(
   }
 
   if (!res.ok) {
-    let body: { code?: string; message?: string } = {};
+    let body: any = {};
     try {
       body = await res.json();
+      console.log("API error response body:", body);
     } catch {
       // Response is not JSON
+    }
+    // Try to extract error message from various possible locations
+    let errorMessage = `Request failed with status ${res.status}`;
+    if (body.message) {
+      errorMessage = body.message;
+    } else if (body.data?.message) {
+      errorMessage = body.data.message;
+    } else if (body.detail) {
+      errorMessage = body.detail;
+    } else if (typeof body === "string") {
+      errorMessage = body;
     }
     throw new ApiError(
       res.status,
       body.code || "UNKNOWN_ERROR",
-      body.message || `Request failed with status ${res.status}`
+      errorMessage
     );
   }
 

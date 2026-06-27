@@ -4,10 +4,11 @@ export type UserRole = "worker" | "employer" | "admin" | "agent";
 export interface User {
   id: string;
   phone: string;
-  phone_verified: boolean;
-  role: UserRole;
-  is_active: boolean;
-  created_at: string;
+  phone_verified?: boolean;
+  role?: UserRole;
+  is_active?: boolean;
+  created_at?: string;
+  [key: string]: unknown;
 }
 
 export interface AuthTokens {
@@ -17,7 +18,6 @@ export interface AuthTokens {
 
 export interface LoginRequest {
   phone: string;
-  pin: string;
 }
 
 export interface RegisterPhoneRequest {
@@ -26,7 +26,7 @@ export interface RegisterPhoneRequest {
 
 export interface VerifyOTPRequest {
   phone: string;
-  otp: string;
+  pin: string;
 }
 
 export interface SetPINRequest {

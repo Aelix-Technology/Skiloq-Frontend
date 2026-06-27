@@ -1,220 +1,122 @@
 // src/components/landing/TalentCategories.tsx
 "use client";
 
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
-  ArrowRight,
-  Sparkles,
   Laptop,
-  Wrench,
+  ShoppingCart,
+  Bone,
   GraduationCap,
-  Coins,
+  Mail,
+  Scissors,
+  BriefcaseBusiness,
+  Languages,
+  Video,
+  BrainCircuit,
+  Music,
+  Wallet,
+  Handshake,
+  Wrench,
 } from "lucide-react";
 
-const categories = [
-  {
-    title: "Digital & Remote",
-    desc: "Developers, designers, virtual assistants and remote professionals working with global clients.",
-    image: "/assets/images/laptop.png",
-    href: "/register?category=digital",
-    phase: false,
-    icon: Laptop,
-    gradient: "from-blue-500/40 to-blue-900/60",
-  },
-  {
-    title: "Trade & Skilled",
-    desc: "Tailors, artisans, mechanics and skilled workers getting booked through trusted opportunities.",
-    image: "/assets/images/Tailor.png",
-    href: "/register?category=trade",
-    phase: false,
-    icon: Wrench,
-    gradient: "from-amber-500/40 to-amber-900/60",
-  },
-  {
-    title: "Educators & Tutors",
-    desc: "Academic, language, coding and specialist tutors offering structured learning sessions.",
-    image: "/assets/images/tutor.png",
-    href: "#",
-    phase: true,
-    icon: GraduationCap,
-    gradient: "from-purple-500/40 to-purple-900/60",
-  },
-  {
-    title: "Online Income",
-    desc: "Micro-jobs, verified tasks and flexible online earning opportunities across Africa.",
-    image: "/assets/images/skill.png",
-    href: "#",
-    phase: true,
-    icon: Coins,
-    gradient: "from-emerald-500/40 to-emerald-900/60",
-  },
+const workerTypes = [
+  { title: "Digital Workers", icon: Laptop },
+  { title: "Trade Workers", icon: ShoppingCart },
+  { title: "Skill Workers", icon: Bone },
+  { title: "Educator", icon: GraduationCap },
 ];
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
-};
-
-const cardVariant = {
-  hidden: { opacity: 0, y: 30 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: "easeOut" as const },
-  },
-};
+const categories = [
+  { title: "Programming & IT", icon: Mail },
+  { title: "Design & Creative", icon: Scissors },
+  { title: "Digital Sales & Marketing", icon: BriefcaseBusiness },
+  { title: "Writing & Translation", icon: Languages },
+  { title: "Video & Animation", icon: Video },
+  { title: "AI Services", icon: BrainCircuit },
+  { title: "Music & Audio", icon: Music },
+  { title: "Finance & Accounting", icon: Wallet },
+  { title: "Consulting", icon: Handshake },
+  { title: "Engineering & Architecture", icon: Wrench },
+];
 
 export function TalentCategories() {
-  const router = useRouter();
-
   return (
-    <section id="categories" className="py-20 md:py-28 bg-white relative overflow-hidden">
-      {/* Background pattern */}
-      <div
-        className="absolute inset-0 opacity-[0.015] pointer-events-none"
-        style={{
-          backgroundImage: "radial-gradient(circle at 1px 1px, #1A1F36 1px, transparent 0)",
-          backgroundSize: "40px 40px",
-        }}
-      />
+    <section className="py-20 md:py-28 bg-gradient-to-b from-white to-[#F0F4FF] relative overflow-hidden">
+      <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-[#4F6AF5]/10 rounded-full blur-3xl" />
+      <div className="absolute -top-20 -right-20 w-96 h-96 bg-[#4F6AF5]/5 rounded-full blur-3xl" />
 
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="relative max-w-6xl mx-auto px-4 md:px-6">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-14 md:mb-20"
+          className="text-center mb-12"
         >
-          <span className="inline-flex items-center gap-2 bg-accent/5 text-accent text-xs font-bold px-4 py-2 rounded-full border border-accent/10 mb-5 uppercase tracking-[0.15em]">
-            <Sparkles size={14} />
-            Explore Opportunities
-          </span>
-
-          <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">
-            Four ways to work on Skiloq
+          <h2 className="text-3xl md:text-4xl font-bold text-[#111827] tracking-tight mb-4">
+            Match with the right opportunities.
           </h2>
-
-          <p className="text-gray-500 max-w-2xl mx-auto text-base leading-relaxed">
-            Whether you&apos;re a remote professional, skilled worker, or growing your
-            income online — there&apos;s a place for you here.
+          <p className="text-[#6B7280] text-sm md:text-base max-w-3xl mx-auto">
+            Don't just find a job find your fit. We bypass the clutter to deliver tailored career opportunities straight to you, based on what you do best.
           </p>
         </motion.div>
 
-        {/* ── DESKTOP: 4-column grid ── */}
+        {/* Worker Types */}
         <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5"
+          transition={{ delay: 0.2 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12"
         >
-          {categories.map((cat) => {
-            const Icon = cat.icon;
-
+          {workerTypes.map((worker, i) => {
+            const Icon = worker.icon;
             return (
               <motion.div
-                key={cat.title}
-                variants={cardVariant}
-                whileHover={!cat.phase ? { y: -6 } : {}}
-                onClick={() => !cat.phase && router.push(cat.href)}
-                className={`relative overflow-hidden rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group ${
-                  cat.phase ? "opacity-70 cursor-default" : "cursor-pointer"
-                }`}
+                key={i}
+                whileHover={{ y: -4, scale: 1.02 }}
+                className="bg-[#EEF2FF] border border-[#E0E7FF] rounded-xl p-6 text-center cursor-pointer transition-all"
               >
-                {/* Image */}
-                <div className="aspect-[4/3] overflow-hidden relative">
-                  <img
-                    src={cat.image}
-                    alt={cat.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className={`absolute inset-0 bg-gradient-to-t ${cat.gradient}`} />
-
-                  {/* Icon */}
-                  <div className="absolute top-4 left-4 w-10 h-10 rounded-xl bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm">
-                    <Icon size={18} className="text-primary" />
-                  </div>
-
-                  {/* Phase badge */}
-                  {cat.phase && (
-                    <span className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-amber-600 text-[10px] font-bold px-2.5 py-1 rounded-full border border-amber-200 shadow-sm flex items-center gap-1">
-                      <Sparkles size={12} />
-                      Phase 2
-                    </span>
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="p-5">
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">{cat.title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">{cat.desc}</p>
-                  {!cat.phase && (
-                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent mt-3 group-hover:gap-2 transition-all">
-                      Explore
-                      <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                    </span>
-                  )}
-                </div>
-
-                {/* Hover glow */}
-                {!cat.phase && (
-                  <div className="absolute inset-0 bg-accent/[0.02] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                )}
+                <Icon size={32} className="text-[#4F6AF5] mx-auto mb-3" />
+                <span className="text-[#1A1F36] font-medium">{worker.title}</span>
               </motion.div>
             );
           })}
         </motion.div>
 
-        {/* ── MOBILE: 2-column grid ── */}
-        <div className="sm:hidden grid grid-cols-2 gap-3">
-          {categories.map((cat) => {
-            const Icon = cat.icon;
+        {/* Categories Header */}
+        <motion.h3
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="text-2xl md:text-3xl font-bold text-[#111827] text-center mb-8"
+        >
+          Categories
+        </motion.h3>
 
+        {/* Categories Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
+        >
+          {categories.map((cat, i) => {
+            const Icon = cat.icon;
             return (
               <motion.div
-                key={cat.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                whileHover={!cat.phase ? { y: -4 } : {}}
-                onClick={() => !cat.phase && router.push(cat.href)}
-                className={`relative overflow-hidden rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 ${
-                  cat.phase ? "opacity-70 cursor-default" : "cursor-pointer"
-                }`}
+                key={i}
+                whileHover={{ y: -4, boxShadow: "0 10px 25px -5px rgba(79, 106, 245, 0.2)" }}
+                className="bg-white border border-[#E5E7EB] rounded-xl p-5 cursor-pointer transition-all"
               >
-                <div className="aspect-[3/4] overflow-hidden relative">
-                  <img
-                    src={cat.image}
-                    alt={cat.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className={`absolute inset-0 bg-gradient-to-t ${cat.gradient}`} />
-
-                  <div className="absolute top-3 left-3 w-8 h-8 rounded-lg bg-white/90 backdrop-blur-sm flex items-center justify-center">
-                    <Icon size={14} className="text-primary" />
-                  </div>
-
-                  {cat.phase && (
-                    <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-amber-600 text-[9px] font-bold px-2 py-0.5 rounded-full border border-amber-200 flex items-center gap-0.5">
-                      <Sparkles size={10} />
-                      Phase 2
-                    </span>
-                  )}
-                </div>
-
-                <div className="p-3">
-                  <h3 className="text-sm font-bold text-gray-900 mb-1">{cat.title}</h3>
-                  <p className="text-[11px] text-gray-500 leading-relaxed line-clamp-2">{cat.desc}</p>
-                </div>
+                <Icon size={24} className="text-[#4F6AF5] mb-3" />
+                <h4 className="text-[#1A1F36] font-medium">{cat.title}</h4>
               </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

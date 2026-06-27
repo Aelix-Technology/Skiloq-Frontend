@@ -5,90 +5,135 @@ import { toast } from "sonner";
 import { apiClient, ApiError } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth.store";
 import { toasts } from "@/lib/toasts";
-import type {
-  RegisterPhoneRequest,
-  VerifyOTPRequest,
-  SetPINRequest,
-  LoginRequest,
-  User,
-} from "@/types/auth";
+import type { User } from "@/types/auth";
+import { useState } from "react";
 
-interface AuthResponse {
-  accessToken: string;
-  refreshToken?: string;
-  user: User;
+// Convert backend user to our User type
+function mapUser(backendUser: Record<string, unknown>, phone: string): User {
+  return {
+    id: String(backendUser.id || backendUser._id || ""),
+    phone: phone,
+    phone_verified: true,
+    role: (backendUser.role as "worker" | "employer" | "admin" | "agent") || "worker",
+    is_active: true,
+    created_at: new Date().toISOString(),
+    ...backendUser,
+  };
 }
 
-interface MessageResponse {
-  message: string;
-  expires_in?: number;
+function getAccessTokenFromResponse(data: unknown): string {
+  console.log("getAccessTokenFromResponse called with data:", data);
+  if (typeof data === "object" && data !== null) {
+    const d = data as Record<string, unknown>;
+    // Try root level
+    if (d.token) return String(d.token);
+    if (d.accessToken) return String(d.accessToken);
+    if (d.access_token) return String(d.access_token);
+    // Try data level
+    if (d.data && typeof d.data === "object" && d.data !== null) {
+      const dataObj = d.data as Record<string, unknown>;
+      if (dataObj.token) return String(dataObj.token);
+      if (dataObj.accessToken) return String(dataObj.accessToken);
+      if (dataObj.access_token) return String(dataObj.access_token);
+    }
+  }
+  console.log("No access token found in response");
+  return "";
 }
 
-// Demo credentials for all roles
-const DEMO_CREDENTIALS: Record<string, { pin: string; role: User["role"] }> = {
-  "+233000000000": { pin: "0000", role: "worker" },
-  "+233111111111": { pin: "1111", role: "employer" },
-  "+233222222222": { pin: "2222", role: "admin" },
-  "+233333333333": { pin: "3333", role: "agent" },
-};
+function getUserFromResponse(data: unknown, phone: string): User {
+  console.log("getUserFromResponse called with data:", data);
+  if (typeof data === "object" && data !== null) {
+    const d = data as Record<string, unknown>;
+    // Try root level
+    if (d.user && typeof d.user === "object" && d.user !== null) {
+      return mapUser(d.user as Record<string, unknown>, phone);
+    }
+    if (d.data && typeof d.data === "object" && d.data !== null) {
+      const dataObj = d.data as Record<string, unknown>;
+      // Try data.user
+      if (dataObj.user && typeof dataObj.user === "object" && dataObj.user !== null) {
+        return mapUser(dataObj.user as Record<string, unknown>, phone);
+      }
+      // If data itself is the user object (no user key)
+      return mapUser(dataObj, phone);
+    }
+    // If root object is the user object
+    return mapUser(d, phone);
+  }
+  console.log("No user found in response, returning default user");
+  return mapUser({}, phone);
+}
 
+/**
+ * Register — sends OTP to phone number.
+ */
 export function useRegisterPhone() {
   return useMutation({
-    mutationFn: (data: RegisterPhoneRequest) =>
-      apiClient.post<MessageResponse>("/auth/register/phone", data),
-    onSuccess: () => toasts.otpSent(),
+    mutationFn: (data: { phone: string }) => {
+      console.log("Sending register phone request with data:", data);
+      return apiClient.post("/auth/register", { phone: data.phone });
+    },
+    onSuccess: (responseData) => {
+      console.log("Register phone success, response data:", responseData);
+      toasts.otpSent();
+    },
     onError: (error: ApiError) => {
+      console.error("Register phone error:", error);
       toast.error(error.detail || "Failed to send OTP");
     },
   });
 }
 
-export function useVerifyOTP() {
-  const setAuth = useAuthStore((s) => s.setAuth);
-
+/**
+ * Login — sends OTP to phone number.
+ */
+export function useLogin() {
   return useMutation({
-    mutationFn: (data: VerifyOTPRequest) =>
-      apiClient.post<AuthResponse>("/auth/verify-otp", data),
-    onSuccess: (data) => {
-      setAuth(data.user, { accessToken: data.accessToken });
-      toasts.otpVerified();
+    mutationFn: (data: { phone: string }) => {
+      console.log("Sending login request with data:", data);
+      return apiClient.post("/auth/login", { phone: data.phone });
+    },
+    onSuccess: (responseData) => {
+      console.log("Login success, response data:", responseData);
+      toasts.otpSent();
     },
     onError: (error: ApiError) => {
-      toast.error(error.detail || "Invalid OTP");
+      console.error("Login error:", error);
+      toast.error(error.detail || "Login failed");
     },
   });
 }
 
-export function useLogin() {
+/**
+ * Verify OTP/PIN — used for both register and login.
+ */
+export function useVerifyOTP() {
   const setAuth = useAuthStore((s) => s.setAuth);
   const router = useRouter();
+  // Store the phone number when we start the mutation
+  const [currentPhone, setCurrentPhone] = useState<string>("");
 
   return useMutation({
-    mutationFn: async (data: LoginRequest) => {
-      // Demo login for all roles
-      const demo = DEMO_CREDENTIALS[data.phone];
-      if (demo && data.pin === demo.pin) {
-        await new Promise((resolve) => setTimeout(resolve, 800));
-        return {
-          accessToken: "demo-token",
-          user: {
-            id: `demo-${demo.role}`,
-            phone: data.phone,
-            phone_verified: true,
-            role: demo.role,
-            is_active: true,
-            created_at: new Date().toISOString(),
-          },
-        };
-      }
-
-      return apiClient.post<AuthResponse>("/auth/login", data);
+    mutationFn: (data: { phone: string; pin: string }) => {
+      console.log("Sending verify OTP request with data:", data);
+      setCurrentPhone(data.phone); // Store the phone number
+      return apiClient.post("/auth/verify-otp", {
+        phone: data.phone,
+        pin: data.pin,
+      });
     },
-    onSuccess: (data) => {
-      setAuth(data.user, { accessToken: data.accessToken });
-      toasts.welcomeBack();
+    onSuccess: (responseData) => {
+      console.log("Verify OTP success, response data:", responseData);
+      const accessToken = getAccessTokenFromResponse(responseData);
+      const user = getUserFromResponse(responseData, currentPhone);
+      console.log("Extracted access token:", accessToken);
+      console.log("Extracted user:", user);
+      setAuth(user, { accessToken });
+      toasts.otpVerified();
 
-      switch (data.user.role) {
+      // Route based on role
+      switch (user.role) {
         case "worker":
           router.push("/worker/dashboard");
           break;
@@ -101,23 +146,28 @@ export function useLogin() {
         case "agent":
           router.push("/agent/dashboard");
           break;
+        default:
+          router.push("/worker/dashboard");
+          break;
       }
     },
     onError: (error: ApiError) => {
-      if (error.code === "LOCKED") toasts.accountLocked();
-      else if (error.code === "INVALID_PIN") toasts.invalidPIN();
-      else toast.error(error.detail || "Login failed");
+      console.error("Verify OTP error:", error);
+      toast.error(error.detail || "Invalid verification code");
     },
   });
 }
 
+/**
+ * Sets the user's 4-digit PIN.
+ */
 export function useSetPIN() {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
 
   return useMutation({
-    mutationFn: (data: SetPINRequest) =>
-      apiClient.post<MessageResponse>("/auth/set-pin", data),
+    mutationFn: (data: { pin: string }) =>
+      apiClient.post("/auth/set-pin", { pin: data.pin }),
     onSuccess: () => {
       toasts.pinSet();
       if (user?.role === "employer") router.push("/employer/dashboard");
@@ -129,12 +179,15 @@ export function useSetPIN() {
   });
 }
 
+/**
+ * Logs out the user.
+ */
 export function useLogout() {
   const logout = useAuthStore((s) => s.logout);
   const router = useRouter();
 
   return useMutation({
-    mutationFn: () => apiClient.post<MessageResponse>("/auth/logout"),
+    mutationFn: () => apiClient.post("/auth/logout"),
     onSuccess: () => {
       logout();
       router.push("/login");

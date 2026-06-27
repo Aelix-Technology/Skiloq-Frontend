@@ -3,61 +3,62 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, HelpCircle, MessageCircle } from "lucide-react";
-import Link from "next/link";
+import { Plus, Minus } from "lucide-react";
 
 const faqs = [
   {
-    question: "What is Skiloq and how does it work?",
-    answer: "Skiloq is Africa's verified talent marketplace. Workers prove skills, employers hire with confidence, and payments are held securely in escrow until work is completed.",
+    question: "How does Skiloq work?",
+    answer: "Skiloq connects verified African professionals with businesses and clients looking for trusted talent. Workers create verified profiles, employers post opportunities, and the platform matches them based on skills, location, and trust scores. Payments are secured through escrow to protect both parties.",
   },
   {
-    question: "How is Skiloq different from Fiverr or Upwork?",
-    answer: "Skiloq is built for Africa — supporting Mobile Money payments, low-data usage, multilingual access, and physical verification for trust-based hiring.",
+    question: "How do I create an account?",
+    answer: "Getting started is simple. Sign up using your phone number, verify your account with OTP authentication, complete your profile with your skills and experience, and you're ready to start exploring opportunities or hiring talent.",
   },
   {
-    question: "How do I get verified?",
-    answer: "Verification includes phone OTP, ID upload, skill validation, and optional physical verification for trade workers. Most accounts are approved within 24 hours.",
+    question: "Why do workers need verification?",
+    answer: "Verification helps build trust between workers and employers. It ensures profiles are authentic and allows businesses to hire with confidence knowing they're working with qualified, verified professionals.",
   },
   {
-    question: "How does payment work?",
-    answer: "Employers fund escrow before work begins. After completion and approval, funds are released instantly to your wallet and can be withdrawn via Mobile Money.",
+    question: "How are payments protected?",
+    answer: "All payments are secured through escrow protection. Employers fund payments before work begins, and funds are only released to the worker once the job is completed and approved, ensuring both parties are protected.",
   },
   {
-    question: "Is Skiloq mobile friendly?",
-    answer: "Yes. Skiloq is built as a lightweight PWA optimized for Android devices, low bandwidth, and offline-friendly performance.",
+    question: "What kind of jobs are available on Skiloq?",
+    answer: "Skiloq offers a wide range of opportunities across multiple categories including digital services (web development, design, writing), trade skills (carpentry, plumbing, electrical work), professional services (consulting, accounting), and more.",
   },
   {
-    question: "Is my data safe?",
-    answer: "All personal data is encrypted using AES-256 standards. We comply with data protection laws and never share user data without consent.",
+    question: "Is Skiloq available in my country?",
+    answer: "Skiloq is currently expanding across Africa. We're working hard to make our platform available in more countries. Check our website or contact support to see if we're active in your region.",
   },
 ];
 
 export function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggle = (index: number) => {
     setOpenIndex((prev) => (prev === index ? null : index));
   };
 
   return (
-    <section id="faq" className="relative py-24 md:py-32 bg-[#1A1F36] text-white overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[#4F6AF5]/10 blur-3xl rounded-full" />
-        <div className="absolute bottom-0 right-0 w-[350px] h-[350px] bg-[#4F6AF5]/10 blur-3xl rounded-full" />
-      </div>
-
-      <div className="relative max-w-4xl mx-auto px-4 md:px-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-5">
-            <HelpCircle size={14} className="text-[#4F6AF5]" />
-            <span className="text-[11px] uppercase tracking-[0.15em] text-white/60">Frequently Asked Questions</span>
-          </div>
-          <h2 className="text-[34px] md:text-[52px] font-bold leading-tight mb-4">Everything you need to know</h2>
-          <p className="text-white/60 text-[15px] max-w-xl mx-auto leading-7">Clear answers about how Skiloq works, payments, verification, and trust.</p>
+    <section id="faq" className="py-20 md:py-28 bg-[#F5F7FA]">
+      <div className="max-w-5xl mx-auto px-4 md:px-6">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-[#111827] tracking-tight mb-4">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-[#4B5563] text-sm md:text-base max-w-2xl mx-auto">
+            Find immediate answers to our most frequently asked questions
+          </p>
         </motion.div>
 
-        <div className="space-y-4">
+        {/* FAQs */}
+        <div className="space-y-1">
           {faqs.map((faq, i) => {
             const isOpen = openIndex === i;
             return (
@@ -66,18 +67,41 @@ export function FAQ() {
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className={`border rounded-2xl overflow-hidden transition-all duration-300 ${isOpen ? "bg-white/10 border-white/15" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                transition={{ delay: i * 0.1 }}
+                className="border-b border-[#E5E7EB]"
               >
-                <button onClick={() => toggle(i)} className="w-full flex items-center justify-between px-5 py-5 text-left">
-                  <span className={`text-[14px] md:text-[15px] font-semibold transition-colors ${isOpen ? "text-white" : "text-white/70"}`}>{faq.question}</span>
-                  <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isOpen ? "rotate-180 text-[#4F6AF5]" : "text-white/40"}`} />
+                <button
+                  onClick={() => toggle(i)}
+                  className="w-full flex items-center justify-between py-6 text-left"
+                >
+                  <span className="text-lg md:text-xl font-semibold text-[#111827]">
+                    {faq.question}
+                  </span>
+                  <div className="w-8 h-8 rounded-full border border-[#4F6AF5] flex items-center justify-center flex-shrink-0 ml-4">
+                    {isOpen ? (
+                      <Minus size={16} className="text-[#4F6AF5]" />
+                    ) : (
+                      <Plus size={16} className="text-[#4F6AF5]" />
+                    )}
+                  </div>
                 </button>
+
                 <AnimatePresence>
                   {isOpen && (
-                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
-                      <div className="px-5 pb-5">
-                        <p className="text-white/60 text-[13px] leading-7">{faq.answer}</p>
-                        <div className="mt-4 h-[1px] w-full bg-gradient-to-r from-transparent via-[#4F6AF5]/30 to-transparent" />
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pb-6">
+                        <p className="text-[#4B5563] text-sm md:text-base leading-relaxed">
+                          {faq.answer}
+                        </p>
+                        <a href="#" className="inline-block mt-4 text-[#4F6AF5] text-sm font-medium hover:underline">
+                          Read More
+                        </a>
                       </div>
                     </motion.div>
                   )}
@@ -86,21 +110,6 @@ export function FAQ() {
             );
           })}
         </div>
-
-        <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mt-16 flex flex-col md:flex-row items-center justify-between gap-6 p-6 rounded-2xl bg-white/5 border border-white/10">
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#4F6AF5]/10 flex items-center justify-center">
-              <MessageCircle size={18} className="text-[#4F6AF5]" />
-            </div>
-            <div>
-              <p className="font-semibold text-[14px]">Still have questions?</p>
-              <p className="text-white/50 text-[12px]">Our support team is ready to help you anytime.</p>
-            </div>
-          </div>
-          <Link href="mailto:hello@skiloq.com" className="px-5 py-3 rounded-lg bg-[#4F6AF5] text-white text-[13px] font-semibold hover:bg-[#3f5be0] transition">
-            Contact Support →
-          </Link>
-        </motion.div>
       </div>
     </section>
   );
