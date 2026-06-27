@@ -63,7 +63,7 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
       return;
     }
 
-    if (allowedRoles && user && !allowedRoles.includes(user.role)) {
+    if (allowedRoles && user?.role && !allowedRoles.includes(user.role)) {
       const dashboards: Record<string, string> = {
         worker: "/worker/dashboard",
         employer: "/employer/dashboard",
