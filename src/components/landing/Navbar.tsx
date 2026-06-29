@@ -36,7 +36,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
         {/* Logo */}
         <button onClick={() => router.push("/")} className="flex items-center gap-3">
-          <span className="text-[#1A1F36] font-bold text-2xl">Logo</span>
+          <span className="text-[#1A1F36] font-bold text-2xl">Skiloq</span>
         </button>
 
         {/* Desktop Nav */}
