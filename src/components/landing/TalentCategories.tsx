@@ -41,11 +41,8 @@ const categories = [
 
 export function TalentCategories() {
   return (
-    <section className="py-20 md:py-28 bg-gradient-to-b from-white to-[#F0F4FF] relative overflow-hidden">
-      <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-[#4F6AF5]/10 rounded-full blur-3xl" />
-      <div className="absolute -top-20 -right-20 w-96 h-96 bg-[#4F6AF5]/5 rounded-full blur-3xl" />
-
-      <div className="relative max-w-6xl mx-auto px-4 md:px-6">
+    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+      <div className="max-w-6xl mx-auto px-4 md:px-6">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -75,7 +72,7 @@ export function TalentCategories() {
               <motion.div
                 key={i}
                 whileHover={{ y: -4, scale: 1.02 }}
-                className="bg-[#EEF2FF] border border-[#E0E7FF] rounded-xl p-6 text-center cursor-pointer transition-all"
+                className="bg-white border border-[#1A2B52] rounded-xl p-6 text-center cursor-pointer transition-all shadow-sm hover:shadow-md"
               >
                 <Icon size={32} className="text-[#4F6AF5] mx-auto mb-3" />
                 <span className="text-[#1A1F36] font-medium">{worker.title}</span>
@@ -108,8 +105,8 @@ export function TalentCategories() {
             return (
               <motion.div
                 key={i}
-                whileHover={{ y: -4, boxShadow: "0 10px 25px -5px rgba(79, 106, 245, 0.2)" }}
-                className="bg-white border border-[#E5E7EB] rounded-xl p-5 cursor-pointer transition-all"
+                whileHover={{ y: -4, boxShadow: "0 10px 25px -5px rgba(26, 43, 82, 0.15)" }}
+                className="bg-white border border-[#1A2B52] rounded-xl p-5 cursor-pointer transition-all shadow-sm hover:shadow-md"
               >
                 <Icon size={24} className="text-[#4F6AF5] mb-3" />
                 <h4 className="text-[#1A1F36] font-medium">{cat.title}</h4>

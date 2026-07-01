@@ -116,7 +116,7 @@ export function Footer() {
                   href="#"
                   className="flex flex-col items-center gap-2 text-sm text-white/60 hover:text-white transition-all hover:-translate-y-1"
                 >
-                  <div className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all">
+                  <div className="w-10 h-10 bg-white/5 flex items-center justify-center hover:bg-white/10 transition-all">
                     <Image
                       src={social.icon}
                       alt={social.label}
@@ -125,7 +125,7 @@ export function Footer() {
                       className="object-contain brightness-0 invert"
                     />
                   </div>
-                  <span className="text-xs">@Skiloq.IT</span>
+                 
                 </Link>
               ))}
             </div>

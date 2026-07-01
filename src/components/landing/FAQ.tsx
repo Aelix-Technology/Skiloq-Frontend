@@ -1,4 +1,3 @@
-// src/components/landing/FAQ.tsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -31,7 +30,7 @@ export function FAQ() {
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-10 md:mb-12"
+          className="text-center mb-12"
         >
           <h2 className="text-2xl md:text-4xl font-bold text-[#111827] tracking-tight mb-3 md:mb-4">
             Frequently Asked Questions
@@ -42,7 +41,7 @@ export function FAQ() {
         </motion.div>
 
         {/* FAQs */}
-        <div className="space-y-1">
+        <div className="space-y-0">
           {faqs.map((faq, i) => (
             <motion.div
               key={i}

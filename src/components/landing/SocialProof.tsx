@@ -90,7 +90,7 @@ export function SocialProof() {
 
           <motion.div
             animate={{ x: ["0%", "-50%"] }}
-            transition={{ repeat: Infinity, duration: 28, ease: "linear" }}
+            transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
             className="flex items-center gap-16 whitespace-nowrap"
           >
             {marquee.map((logo, i) => (

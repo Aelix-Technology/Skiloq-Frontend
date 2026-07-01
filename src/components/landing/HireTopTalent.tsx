@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const images = [
@@ -98,6 +99,20 @@ export function HireTopTalent() {
                 backed by identity checks, skill assessments, and escrow-protected payments designed 
                 for secure collaboration.
               </p>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <Link
+                  href="/login"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-[#4F6AF5] hover:bg-[#3d56e0] text-white font-semibold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                >
+                  Join Our Community
+                </Link>
+              </motion.div>
             </motion.div>
           </div>
         </div>

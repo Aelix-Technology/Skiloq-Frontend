@@ -91,7 +91,7 @@ export function HowItWorks() {
                     <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-8 lg:gap-10 flex-1">
                       <div className="flex items-center gap-4 md:gap-8">
                         <span className="text-2xl md:text-4xl font-bold text-[#4F6AF5]/70">0{step.id}</span>
-                        <h3 className="text-xl md:text-2xl lg:text-2xl font-bold text-white flex-shrink-0">{step.title}</h3>
+                        <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white flex-shrink-0">{step.title}</h3>
                       </div>
                       <ul className="flex-1 space-y-2 md:space-y-2">
                         {step.description.map((item, i) => (
