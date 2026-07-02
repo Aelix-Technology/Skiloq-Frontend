@@ -131,7 +131,7 @@ export function FeaturedJobs() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Featured Jobs
@@ -142,7 +142,7 @@ export function FeaturedJobs() {
         </motion.div>
 
         {/* Mobile Stacked Cards */}
-        <div className="md:hidden relative h-[550px]">
+        <div className="md:hidden relative h-[450px]">
           <div className="relative w-full h-full">
             <AnimatePresence>
               {featuredJobs.map((job, idx) => {
@@ -229,7 +229,7 @@ export function FeaturedJobs() {
             </AnimatePresence>
 
             {/* Mobile Navigation Dots */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-2">
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
               {featuredJobs.map((_, idx) => (
                 <div
                   key={idx}

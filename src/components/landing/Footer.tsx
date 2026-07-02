@@ -108,8 +108,9 @@ export function Footer() {
         <div className="pt-8 border-t border-white/10">
           {/* Social Links */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-6">
-            <span className="text-sm text-white/70 font-medium">Follow us</span>
+           
             <div className="flex items-center gap-6 md:gap-10 w-full justify-between md:justify-end">
+              <p className="text-sm text-white justify-start font-medium">Follow us</p>
               {socialLinks.map((social) => (
                 <Link
                   key={social.label}

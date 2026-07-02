@@ -76,7 +76,7 @@ export function Testimonials() {
     <section className="relative py-24 overflow-hidden bg-white">
       <div className="relative max-w-7xl mx-auto px-4 md:px-6">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
             Testimonials
           </h2>
@@ -86,7 +86,7 @@ export function Testimonials() {
         </div>
 
         {/* Mobile View - Overlayed Swipe Cards */}
-        <div className="md:hidden relative h-[500px] w-full flex items-center justify-center">
+        <div className="md:hidden relative h-[380px] w-full flex items-center justify-center">
           <div className="relative w-full max-w-sm h-full flex items-center justify-center">
             <AnimatePresence>
               {testimonials.map((t, index) => {
@@ -152,7 +152,7 @@ export function Testimonials() {
             </AnimatePresence>
 
             {/* Mobile Navigation Dots */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-2">
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
               {testimonials.map((_, idx) => (
                 <div
                   key={idx}
