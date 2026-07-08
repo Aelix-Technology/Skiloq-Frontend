@@ -44,15 +44,15 @@ export function AboutUs() {
             viewport={{ once: true }}
             className="relative z-10"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+            <h2 className="heading-2 text-white mb-6">
               About Us
             </h2>
             
-            <p className="text-white/80 text-base md:text-lg leading-relaxed mb-4">
+            <p className="body-text text-white/80 mb-4">
               Skiloq is a trust-first talent marketplace built to connect skilled African professionals with meaningful opportunities through verification, transparency, and secure collaboration.
             </p>
             
-            <p className="text-white/80 text-base md:text-lg leading-relaxed">
+            <p className="body-text text-white/80">
               We believe talent exists everywhere, but opportunity is often limited by a lack of trust infrastructure. Too many skilled workers struggle to prove credibility, access secure payments, or connect with serious employers... <a href="#" className="text-[#6F8AFF] hover:underline">View More</a>
             </p>
           </motion.div>

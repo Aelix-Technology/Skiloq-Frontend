@@ -77,10 +77,10 @@ export function Testimonials() {
       <div className="relative max-w-7xl mx-auto px-4 md:px-6">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+          <h2 className="heading-2 text-gray-900">
             Testimonials
           </h2>
-          <p className="mt-4 text-gray-500 text-lg">
+          <p className="mt-4 body-text text-gray-500">
             Real stories from real people.
           </p>
         </div>

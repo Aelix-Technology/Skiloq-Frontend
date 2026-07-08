@@ -133,10 +133,10 @@ export function FeaturedJobs() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="heading-2 text-gray-900 mb-4">
             Featured Jobs
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-lg">
+          <p className="body-text text-gray-600 max-w-2xl mx-auto">
             Explore handpicked opportunities from trusted employers looking for verified professionals.
           </p>
         </motion.div>

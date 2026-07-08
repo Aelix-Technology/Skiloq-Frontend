@@ -86,15 +86,15 @@ export function HireTopTalent() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              <h2 className="heading-2 text-white mb-6">
                 Hire top talent on your own terms.
               </h2>
               
-              <h3 className="text-xl md:text-2xl font-semibold text-white mb-4">
+              <h3 className="text-xl md:text-2xl font-semibold text-white mb-4 font-[var(--font-heading)]">
                 Find the Right Talent, Faster and Safer
               </h3>
               
-              <p className="text-white/80 text-base md:text-lg leading-relaxed mb-8">
+              <p className="body-text text-white/80 mb-8">
                 Skip the uncertainty of traditional hiring. Aelix helps you discover pre-verified talent 
                 backed by identity checks, skill assessments, and escrow-protected payments designed 
                 for secure collaboration.
@@ -108,7 +108,7 @@ export function HireTopTalent() {
               >
                 <Link
                   href="/login"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-[#4F6AF5] hover:bg-[#3d56e0] text-white font-semibold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-[#4F6AF5] hover:bg-[#3d56e0] text-white font-bold rounded-lg transition-all duration-300 shadow-xl shadow-[#4F6AF5]/30 hover:scale-105"
                 >
                   Join Our Community
                 </Link>

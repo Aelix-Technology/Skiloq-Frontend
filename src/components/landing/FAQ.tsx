@@ -32,10 +32,10 @@ export function FAQ() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-2xl md:text-4xl font-bold text-[#111827] tracking-tight mb-3 md:mb-4">
+          <h2 className="heading-2 text-[#111827] mb-3 md:mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-[#4B5563] text-sm md:text-base max-w-2xl mx-auto">
+          <p className="body-text text-[#4B5563] max-w-2xl mx-auto">
             Find immediate answers to our most frequently asked questions
           </p>
         </motion.div>
@@ -51,10 +51,10 @@ export function FAQ() {
               transition={{ delay: i * 0.1 }}
               className="border-b border-[#E5E7EB] py-6"
             >
-              <h3 className="text-lg md:text-xl font-semibold text-[#111827] mb-3">
+              <h3 className="text-xl font-semibold text-[#111827] mb-3 font-[var(--font-heading)]">
                 {faq.question}
               </h3>
-              <p className="text-[#4B5563] text-sm md:text-base leading-relaxed mb-3">
+              <p className="body-text text-[#4B5563] mb-3">
                 {faq.answer}
               </p>
               <a href="#" className="inline-block text-[#4F6AF5] text-sm font-medium hover:underline">

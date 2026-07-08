@@ -78,10 +78,10 @@ export function HowItWorks() {
           viewport={{ once: true }}
           className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight mb-3 md:mb-4">
+          <h2 className="heading-2 text-white mb-3 md:mb-4">
             Trust and Verification Process
           </h2>
-          <p className="text-white/70 text-sm sm:text-base max-w-3xl mx-auto">
+          <p className="body-text text-white/70 max-w-3xl mx-auto">
             Before any professional matches with an opportunity, they pass through our 5-layer verification framework
           </p>
         </motion.div>
@@ -126,9 +126,9 @@ export function HowItWorks() {
                         <span className="text-2xl md:text-4xl font-bold text-[#4F6AF5]">0{step.id}</span>
                         <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white">{step.title}</h3>
                       </div>
-                      <ul className="flex-1 space-y-2 md:space-y-3 md:text-left">
+                      <ul className="flex-1 md:ml-44 space-y-2 md:space-y-3 md:text-left">
                         {step.description.map((item, i) => (
-                          <li key={i} className="flex items-center gap-3 md:gap-4 text-white/80 text-sm sm:text-base md:text-lg">
+                          <li key={i} className="flex items-center gap-3 mr-4 md:gap-4 text-white/80 text-sm sm:text-base md:text-lg">
                             <span className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-[#4F6AF5] flex-shrink-0" />
                             <span>{item}</span>
                           </li>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -44,20 +44,25 @@
 
   --color-danger: #EF4444;
   --color-danger-50: #FEF2F2;
-  --color-danger-100: #FEE2E2;
+  --color-danger-100: #FEF2F2;
   --color-danger-500: #EF4444;
   --color-danger-700: #B91C1C;
 
   /* ── Typography ── */
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-mono: 'Courier New', monospace;
-  --text-xs: 11px;
-  --text-sm: 12px;
-  --text-base: 14px;
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 15px;
   --text-md: 16px;
-  --text-lg: 20px;
-  --text-xl: 24px;
-  --text-2xl: 30px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 32px;
+  --text-3xl: 40px;
+  --text-4xl: 52px;
+  --text-5xl: 64px;
+  --text-6xl: 72px;
 
   /* ── Border Radius ── */
   --radius-input: 4px;
@@ -81,8 +86,38 @@ body {
   color: var(--color-primary);
   font-family: var(--font-sans);
   font-size: var(--text-base);
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Heading styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* H1 - 52-64px, 800 weight, -0.04em letter spacing */
+.heading-1 {
+  font-size: clamp(40px, 6vw, 64px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  font-family: var(--font-heading);
+}
+
+/* H2 - 32-40px, 700 weight, -0.03em letter spacing */
+.heading-2 {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  font-family: var(--font-heading);
+}
+
+/* Body text */
+.body-text {
+  font-size: var(--text-base);
+  line-height: 1.65;
 }
 
 /* Budget Android optimizations */

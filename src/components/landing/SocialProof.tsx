@@ -35,7 +35,7 @@ export function SocialProof() {
   const marquee = [...logos, ...logos];
 
   return (
-    <section className="relative overflow-hidden bg-white py-16 md:py-20">
+    <section className="relative overflow-hidden bg-white py-16 md:py-24">
       <div className="relative max-w-7xl mx-auto px-4 md:px-6">
         {/* Heading */}
         <motion.div
@@ -51,7 +51,7 @@ export function SocialProof() {
             </span>
           </span>
 
-          <h2 className="text-[28px] md:text-[38px] font-black text-gray-900 tracking-tight mb-3">
+          <h2 className="heading-2 text-gray-900 mb-3">
             Businesses hiring with confidence
           </h2>
         </motion.div>
