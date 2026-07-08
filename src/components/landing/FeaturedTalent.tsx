@@ -73,18 +73,18 @@ export function FeaturedTalent() {
 
   const scrollLeft = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -360, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: -380, behavior: "smooth" });
     }
   };
 
   const scrollRight = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 360, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: 380, behavior: "smooth" });
     }
   };
 
   return (
-    <section className="relative py-24 md:py-32 bg-white overflow-hidden">
+    <section className="relative py-20 md:py-28 bg-white overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 md:px-6">
         {/* Header */}
         <motion.div
@@ -106,15 +106,15 @@ export function FeaturedTalent() {
           {/* Navigation Buttons */}
           <button
             onClick={scrollLeft}
-            className="absolute left-2 md:left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-all hidden md:flex"
+            className="absolute left-2 md:left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-gray-50 transition-all duration-200 hover:shadow-lg hidden md:flex"
           >
-            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-gray-700" />
+            <ChevronLeft className="w-6 h-6 text-gray-700" />
           </button>
           <button
             onClick={scrollRight}
-            className="absolute right-2 md:right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-[#4F6AF5] rounded-full shadow-lg flex items-center justify-center hover:bg-[#3d56e0] transition-all"
+            className="absolute right-2 md:right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-[#4F6AF5] rounded-full shadow-md flex items-center justify-center hover:bg-[#3d56e0] transition-all duration-200 hover:shadow-lg"
           >
-            <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-white" />
+            <ChevronRight className="w-6 h-6 text-white" />
           </button>
 
           {/* Slider */}
@@ -131,71 +131,69 @@ export function FeaturedTalent() {
                 transition={{ delay: index * 0.1 }}
                 className="flex-shrink-0 w-full sm:w-[340px] md:w-[360px] snap-center group"
               >
-                <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-100 h-full">
-                  {/* Top Section */}
-                  <div className="p-8 pb-6">
-                    <div className="flex items-start gap-6 mb-6">
-                      {/* Profile Image */}
-                      <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-gray-100 flex-shrink-0">
-                        <Image
-                          src={talent.image}
-                          alt={talent.name}
-                          width={64}
-                          height={64}
-                          className="object-cover w-full h-full"
-                          unoptimized
-                        />
+                <div className="bg-white rounded-xl overflow-hidden hover:shadow-lg transition-all duration-200 border border-gray-100 h-full p-6">
+                  {/* Profile Image & Top Info */}
+                  <div className="flex items-start gap-4 mb-5">
+                    {/* Profile Image (64px) */}
+                    <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 border border-gray-100">
+                      <Image
+                        src={talent.image}
+                        alt={talent.name}
+                        width={64}
+                        height={64}
+                        className="object-cover w-full h-full"
+                        unoptimized
+                      />
+                    </div>
+                    
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-gray-900 text-lg mb-1">{talent.name}</h3>
+                      <p className="text-gray-600 text-sm mb-3">{talent.role}</p>
+                      <div className="flex items-center gap-1.5 text-gray-500 text-xs">
+                        <MapPin size={14} />
+                        {talent.location}
                       </div>
-                      {/* Info */}
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-1 flex-wrap">
-                          <h3 className="font-bold text-gray-900 text-lg">{talent.name}</h3>
-                          {talent.verified && (
-                            <div className="flex items-center gap-1 bg-[#4F6AF5]/10 text-[#4F6AF5] text-xs font-medium px-2 py-1 rounded-full">
-                              <CheckCircle size={12} />
-                              Verified
-                            </div>
-                          )}
-                        </div>
-                        <p className="text-gray-600 text-sm mb-2">{talent.role}</p>
-                        <div className="flex items-center gap-1.5 text-gray-500 text-xs">
-                          <MapPin size={12} />
-                          {talent.location}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Trust Score */}
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className="font-bold text-[#4F6AF5] text-lg">{talent.trustScore}</span>
-                      <span className="text-gray-500 text-sm">Trust Score</span>
-                    </div>
-
-                    {/* Skills */}
-                    <div className="flex flex-wrap gap-2 mb-5">
-                      {talent.skills.map((skill, i) => (
-                        <span
-                          key={i}
-                          className="px-3 py-1.5 bg-gray-100 text-gray-700 text-xs font-medium rounded-full"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Bio */}
-                    <p className="text-gray-600 text-sm leading-relaxed mb-5 line-clamp-2">
-                      {talent.bio}
-                    </p>
-
-                    {/* Hourly Rate & Button */}
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-gray-900">{talent.hourlyRate}</span>
-                      <button className="px-5 py-2.5 bg-[#4F6AF5] hover:bg-[#3d56e0] text-white text-sm font-semibold rounded-lg transition-all">
-                        View Profile
-                      </button>
                     </div>
                   </div>
+                  {/* Verified Badge */}
+                  {talent.verified && (
+                    <div className="flex items-center gap-1 bg-[#4F6AF5]/10 text-[#4F6AF5] text-xs font-medium px-2.5 py-1 rounded-full">
+                      <CheckCircle size={14} />
+                      Verified
+                    </div>
+                  )}
+                </div>
+
+                {/* Trust Score */}
+                <div className="flex items-center gap-2 mb-4 px-1">
+                  <span className="text-[#4F6AF5] font-bold text-lg">{talent.trustScore}</span>
+                  <span className="text-gray-500 text-sm">Trust Score</span>
+                </div>
+
+                {/* Skills */}
+                <div className="flex flex-wrap gap-2 mb-4 px-6">
+                  {talent.skills.map((skill, i) => (
+                    <span
+                      key={i}
+                      className="px-3 py-1.5 bg-gray-50 text-gray-700 text-xs font-medium rounded-full border border-gray-100"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Bio */}
+                <p className="text-gray-600 text-sm leading-relaxed mb-5 px-6 line-clamp-2">
+                  {talent.bio}
+                </p>
+
+                {/* Hourly Rate & Button */}
+                <div className="flex items-center justify-between px-6">
+                  <span className="font-bold text-gray-900 text-base">{talent.hourlyRate}</span>
+                  <button className="px-5 py-2.5 bg-[#4F6AF5] hover:bg-[#3d56e0] text-white text-sm font-semibold rounded-lg transition-all duration-200 hover:shadow-md">
+                    View Profile
+                  </button>
                 </div>
               </motion.div>
             ))}
