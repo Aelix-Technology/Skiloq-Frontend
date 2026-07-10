@@ -22,7 +22,6 @@ export function Hero() {
     "Full Stack Developer",
     "Digital Marketer",
     "Mobile App Developer",
-    "Content Strategist"
   ];
 
   return (
@@ -143,21 +142,21 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-center justify-center pt-2"
+            className="flex flex-row gap-3 items-center justify-center pt-2"
           >
             <button
               onClick={() => router.push("/employer/find-talent")}
-              className="px-7 sm:px-9 py-3.5 sm:py-4 bg-white text-[#1A1F36] hover:bg-gray-50 font-bold rounded-2xl transition-all flex items-center justify-center gap-2 shadow-xl text-sm sm:text-base"
+              className="px-5 py-2.5 bg-white text-[#1A1F36] hover:bg-gray-50 font-semibold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-lg text-xs sm:text-sm"
             >
               Hire a Talent
-              <ArrowRight size={18} />
+              <ArrowRight size={14} />
             </button>
             <button
               onClick={() => router.push("/register")}
-              className="px-7 sm:px-9 py-3.5 sm:py-4 bg-[#4F6AF5] hover:bg-[#3d56e0] text-white font-semibold rounded-2xl transition-all flex items-center justify-center gap-2 border border-white/30 text-sm shadow-lg shadow-[#4F6AF5]/25"
+              className="px-5 py-2.5 bg-[#4F6AF5] hover:bg-[#3d56e0] text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-1.5 border border-white/30 text-xs shadow-md shadow-[#4F6AF5]/20"
             >
               Find a Job
-              <ArrowRight size={18} />
+              <ArrowRight size={14} />
             </button>
           </motion.div>
         </motion.div>
