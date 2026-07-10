@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { MapPin, CheckCircle, ChevronRight, ChevronLeft } from "lucide-react";
+import { MapPin, CheckCircle, ChevronRight, ChevronLeft, Users } from "lucide-react";
 import { useRef } from "react";
 
 const talents = [
@@ -85,18 +85,25 @@ export function FeaturedTalent() {
 
   return (
     <section className="relative py-24 md:py-32 bg-white overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-[#4F6AF5]/5 to-transparent pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 md:px-6">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-16 md:mb-20"
         >
-          <h2 className="heading-2 text-gray-900 mb-4">
-            Featured Talents
+          <div className="inline-flex items-center gap-2 bg-[#4F6AF5]/10 px-5 py-2.5 rounded-full mb-6">
+            <Users className="w-4 h-4 text-[#4F6AF5]" />
+            <span className="text-[#4F6AF5] text-xs font-semibold uppercase tracking-widest">
+              Featured Talents
+            </span>
+          </div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-5 leading-tight">
+            Meet verified African professionals
           </h2>
-          <p className="body-text text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-gray-500 max-w-2xl mx-auto leading-relaxed">
             Find the talent your business needs without the uncertainty.
           </p>
         </motion.div>
