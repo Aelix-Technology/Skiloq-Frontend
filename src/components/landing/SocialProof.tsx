@@ -94,14 +94,15 @@ export function SocialProof() {
             className="flex items-center gap-16 whitespace-nowrap"
           >
             {marquee.map((logo, i) => (
-              <div key={i} className="inline-flex items-center shrink-0">
+              <div key={i} className="inline-flex items-center shrink-0 h-12">
                 <Image
                   src={logo.image}
                   alt={logo.name}
-                  width={120}
-                  height={48}
-                  className="object-contain h-12 w-auto"
-                  style={{ width: 'auto', height: '3rem' }}
+                  width={160}
+                  height={64}
+                  className="object-contain h-full w-auto"
+                  style={{ height: '3rem', width: 'auto' }}
+                  unoptimized
                 />
               </div>
             ))}

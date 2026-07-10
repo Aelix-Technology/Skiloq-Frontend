@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
@@ -29,20 +29,20 @@ export function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white shadow-md py-3"
-          : "bg-white py-4"
+          ? "bg-white/95 backdrop-blur-md shadow-lg py-3"
+          : "bg-transparent py-4"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
         {/* Logo */}
         <button onClick={() => router.push("/")} className="flex items-center gap-3">
-          <span className="text-[#1A1F36] font-bold text-2xl">Skiloq</span>
+          <span className={`font-bold text-2xl ${scrolled ? "text-[#1A1F36]" : "text-white"}`}>Skiloq</span>
         </button>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a key={link.label} href={link.href} className="flex items-center gap-1 text-sm text-[#1A1F36] hover:text-[#4F6AF5] transition-colors font-medium">
+            <a key={link.label} href={link.href} className={`flex items-center gap-1 text-sm transition-colors font-medium ${scrolled ? "text-[#1A1F36] hover:text-[#4F6AF5]" : "text-white hover:text-white/80"}`}>
               {link.label}
               {link.hasDropdown && <ChevronDown size={16} />}
             </a>
@@ -51,16 +51,16 @@ export function Navbar() {
 
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center gap-3">
-          <button onClick={() => router.push("/login")} className="text-sm text-[#1A1F36] hover:text-[#4F6AF5] transition-colors font-medium px-4 py-2 border border-[#1A1F36] rounded-lg">
+          <button onClick={() => router.push("/login")} className={`text-sm transition-colors font-medium px-4 py-2 rounded-lg ${scrolled ? "text-[#1A1F36] hover:text-[#4F6AF5] border border-[#1A1F36]" : "text-white hover:text-white/90 border border-white/40"}`}>
             Sign In
           </button>
-          <button onClick={() => router.push("/register")} className="flex items-center gap-2 bg-[#1A1F36] hover:bg-[#2d3553] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all">
+          <button onClick={() => router.push("/register")} className="flex items-center gap-2 bg-[#4F6AF5] hover:bg-[#3d56e0] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all shadow-lg">
             Sign Up
           </button>
         </div>
 
         {/* Mobile Toggle */}
-        <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-[#1A1F36] p-2 rounded-md hover:bg-gray-100 transition-colors">
+        <button onClick={() => setMobileOpen(!mobileOpen)} className={`md:hidden p-2 rounded-md transition-colors ${scrolled ? "text-[#1A1F36] hover:bg-gray-100" : "text-white hover:bg-white/10"}`}>
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
@@ -85,7 +85,7 @@ export function Navbar() {
                 <button onClick={() => { router.push("/login"); setMobileOpen(false); }} className="w-full text-sm py-3 rounded-md border border-[#1A1F36] text-[#1A1F36] hover:bg-gray-50 transition-colors">
                   Sign In
                 </button>
-                <button onClick={() => { router.push("/register"); setMobileOpen(false); }} className="w-full bg-[#1A1F36] hover:bg-[#2d3553] text-white text-sm font-semibold py-3 rounded-md transition-colors">
+                <button onClick={() => { router.push("/register"); setMobileOpen(false); }} className="w-full bg-[#4F6AF5] hover:bg-[#3d56e0] text-white text-sm font-semibold py-3 rounded-md transition-colors">
                   Sign Up
                 </button>
               </div>

@@ -121,9 +121,11 @@ export function Footer() {
                     <Image
                       src={social.icon}
                       alt={social.label}
-                      width={20}
-                      height={20}
-                      className="object-contain brightness-0 invert"
+                      width={24}
+                      height={24}
+                      className="object-contain brightness-0 invert w-auto h-5"
+                      style={{ width: 'auto', height: '1.25rem' }}
+                      unoptimized
                     />
                   </div>
                  
