@@ -6,10 +6,8 @@ import {
   Clock,
   DollarSign,
   Briefcase,
-  ChevronLeft,
-  ChevronRight,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 interface Job {
   id: number;
@@ -24,71 +22,176 @@ interface Job {
 }
 
 const jobs: Job[] = [
+  // Programming & IT
   {
     id: 1,
-    title: "Graphic Designer",
+    title: "Senior Frontend Developer",
     type: "Full-Time",
     location: "Remote",
-    description: "Create visually compelling designs for digital and print media, including social media graphics, marketing materials, brand assets, and promotional content.",
-    duration: "2-4 Weeks",
-    level: "Intermediate Level",
-    price: "$1,100",
-    category: "design",
+    description: "Build and maintain responsive web applications for an African fintech startup.",
+    duration: "6 Months",
+    level: "Senior Level",
+    price: "$3,500/month",
+    category: "programming",
   },
   {
     id: 2,
-    title: "Web Developer",
-    type: "Part-Time",
+    title: "Backend Engineer",
+    type: "Contract",
     location: "Accra, Ghana",
-    description: "Build and maintain responsive websites using React, Node.js, and modern web technologies. Collaborate with designers to implement pixel-perfect interfaces.",
-    duration: "4-6 Weeks",
-    level: "Senior Level",
-    price: "$2,500",
+    description: "Design and implement scalable APIs using Node.js and AWS.",
+    duration: "3 Months",
+    level: "Mid Level",
+    price: "$2,800/month",
     category: "programming",
   },
   {
     id: 3,
-    title: "Content Writer",
+    title: "DevOps Specialist",
+    type: "Part-Time",
+    location: "Lagos, Nigeria",
+    description: "Optimize deployment pipelines and ensure high availability.",
+    duration: "Ongoing",
+    level: "Senior Level",
+    price: "$150/hr",
+    category: "programming",
+  },
+  {
+    id: 4,
+    title: "AI/ML Developer",
     type: "Freelance",
     location: "Nairobi, Kenya",
-    description: "Write SEO-optimized blog posts, articles, and social media content for tech startups across Africa. Help businesses grow their online presence.",
-    duration: "1-2 Weeks",
+    description: "Build predictive models for a Kenyan agritech company.",
+    duration: "4 Months",
+    level: "Senior Level",
+    price: "$3,000",
+    category: "programming",
+  },
+  // Design & Creative
+  {
+    id: 5,
+    title: "UI/UX Designer",
+    type: "Full-Time",
+    location: "Remote",
+    description: "Create user-centered designs for a mobile health platform.",
+    duration: "12 Months",
+    level: "Senior Level",
+    price: "$2,500/month",
+    category: "design",
+  },
+  {
+    id: 6,
+    title: "Graphic Designer",
+    type: "Freelance",
+    location: "Johannesburg, SA",
+    description: "Design brand identity and marketing materials.",
+    duration: "6 Weeks",
+    level: "Mid Level",
+    price: "$1,200",
+    category: "design",
+  },
+  {
+    id: 7,
+    title: "Motion Graphics Artist",
+    type: "Project-Based",
+    location: "Cape Town, SA",
+    description: "Create animated explainer videos for an edtech startup.",
+    duration: "2 Months",
+    level: "Mid Level",
+    price: "$2,000",
+    category: "design",
+  },
+  // Digital Sales & Marketing
+  {
+    id: 8,
+    title: "Digital Marketing Specialist",
+    type: "Full-Time",
+    location: "Kampala, Uganda",
+    description: "Manage SEO, social media, and paid campaigns.",
+    duration: "12 Months",
+    level: "Mid Level",
+    price: "$1,800/month",
+    category: "marketing",
+  },
+  {
+    id: 9,
+    title: "Content Strategist",
+    type: "Part-Time",
+    location: "Remote",
+    description: "Develop content strategy for a pan-African brand.",
+    duration: "Ongoing",
+    level: "Senior Level",
+    price: "$100/hr",
+    category: "marketing",
+  },
+  // Writing & Translation
+  {
+    id: 10,
+    title: "Technical Writer",
+    type: "Contract",
+    location: "Dakar, Senegal",
+    description: "Write documentation for software products.",
+    duration: "3 Months",
+    level: "Mid Level",
+    price: "$1,500",
+    category: "writing",
+  },
+  {
+    id: 11,
+    title: "Translator (English/French)",
+    type: "Freelance",
+    location: "Remote",
+    description: "Translate website content for a regional e-commerce platform.",
+    duration: "4 Weeks",
     level: "Entry Level",
     price: "$600",
     category: "writing",
   },
+  // Video & Animation
   {
-    id: 4,
-    title: "UI/UX Designer",
-    type: "Contract",
+    id: 12,
+    title: "Video Editor",
+    type: "Project-Based",
     location: "Lagos, Nigeria",
-    description: "Design intuitive user interfaces and experiences for mobile and web applications. Conduct user research, create wireframes, prototypes, and high-fidelity mockups.",
-    duration: "3-5 Weeks",
-    level: "Intermediate Level",
+    description: "Edit promotional videos for a Nigerian fashion brand.",
+    duration: "2 Months",
+    level: "Mid Level",
     price: "$1,800",
-    category: "design",
+    category: "video",
   },
   {
-    id: 5,
-    title: "Mobile App Developer",
-    type: "Full-Time",
+    id: 13,
+    title: "2D Animator",
+    type: "Freelance",
     location: "Remote",
-    description: "Develop cross-platform mobile applications using React Native. Work with backend APIs, implement user authentication, and optimize for performance.",
-    duration: "6-8 Weeks",
+    description: "Create animated content for kids' learning platform.",
+    duration: "3 Months",
     level: "Senior Level",
-    price: "$3,200",
-    category: "programming",
+    price: "$2,200",
+    category: "video",
+  },
+  // AI Services
+  {
+    id: 14,
+    title: "Prompt Engineer",
+    type: "Part-Time",
+    location: "Remote",
+    description: "Optimize prompts for AI-powered customer service tool.",
+    duration: "Ongoing",
+    level: "Mid Level",
+    price: "$120/hr",
+    category: "ai",
   },
   {
-    id: 6,
-    title: "Social Media Manager",
-    type: "Part-Time",
-    location: "Johannesburg, SA",
-    description: "Manage social media accounts for small businesses. Create content calendars, schedule posts, engage with audiences, and track performance metrics.",
-    duration: "Ongoing",
-    level: "Entry Level",
-    price: "$400/month",
-    category: "marketing",
+    id: 15,
+    title: "Data Scientist",
+    type: "Full-Time",
+    location: "Nairobi, Kenya",
+    description: "Analyze data to drive business decisions.",
+    duration: "12 Months",
+    level: "Senior Level",
+    price: "$3,200/month",
+    category: "ai",
   },
 ];
 
@@ -97,20 +200,7 @@ interface FeaturedJobsProps {
 }
 
 export function FeaturedJobs({ selectedCategory }: FeaturedJobsProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
   const [showAllJobs, setShowAllJobs] = useState(false);
-
-  const scrollLeft = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -280, behavior: "smooth" });
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 280, behavior: "smooth" });
-    }
-  };
 
   const filteredJobs = jobs.filter((job) => {
     if (!selectedCategory) return true;
