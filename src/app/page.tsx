@@ -26,11 +26,11 @@ export default function LandingPage() {
         selectedCategory={selectedCategory}
         onSelectCategory={setSelectedCategory}
       />
+       <FeaturedTalent selectedCategory={selectedCategory} />
+      <FeaturedJobs selectedCategory={selectedCategory} />
       <SocialProof />
       <HireTopTalent />
       <HowItWorks />
-      <FeaturedTalent selectedCategory={selectedCategory} />
-      <FeaturedJobs selectedCategory={selectedCategory} />
       <AboutUs />
       <Testimonials />
        <FAQ />
