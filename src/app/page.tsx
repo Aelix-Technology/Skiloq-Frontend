@@ -1,4 +1,6 @@
+"use client";
 // src/app/page.tsx
+import { useState } from "react";
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
 import { SocialProof } from "@/components/landing/SocialProof";
@@ -14,16 +16,21 @@ import { Footer } from "@/components/landing/Footer";
 
 
 export default function LandingPage() {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
   return (
     <main className="min-h-screen overflow-x-hidden bg-white">
       <Navbar />
       <Hero />
+      <TalentCategories
+        selectedCategory={selectedCategory}
+        onSelectCategory={setSelectedCategory}
+      />
       <SocialProof />
       <HireTopTalent />
-      <TalentCategories />
       <HowItWorks />
-      <FeaturedTalent />
-      <FeaturedJobs />
+      <FeaturedTalent selectedCategory={selectedCategory} />
+      <FeaturedJobs selectedCategory={selectedCategory} />
       <AboutUs />
       <Testimonials />
        <FAQ />

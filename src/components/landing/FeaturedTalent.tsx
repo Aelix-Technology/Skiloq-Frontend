@@ -2,10 +2,77 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { MapPin, CheckCircle, ChevronRight, ChevronLeft, Users } from "lucide-react";
-import { useRef } from "react";
+import {
+  MapPin,
+  CheckCircle,
+  ChevronRight,
+  ChevronLeft,
+  Users,
+} from "lucide-react";
+import { useRef, useState } from "react";
 
-const talents = [
+interface Subcategory {
+  id: string;
+  title: string;
+}
+
+interface Talent {
+  id: number;
+  name: string;
+  role: string;
+  location: string;
+  trustScore: number;
+  verified: boolean;
+  skills: string[];
+  bio: string;
+  hourlyRate: string;
+  image: string;
+  category: string;
+}
+
+const subcategoriesByCategory: Record<string, Subcategory[]> = {
+  programming: [
+    { id: "all", title: "All" },
+    { id: "frontend", title: "Frontend" },
+    { id: "backend", title: "Backend" },
+    { id: "fullstack", title: "Full Stack" },
+    { id: "dotnet", title: ".NET" },
+    { id: "java", title: "Java" },
+    { id: "python", title: "Python" },
+    { id: "devops", title: "DevOps" },
+    { id: "cybersecurity", title: "Cybersecurity" },
+    { id: "aiml", title: "AI/ML" },
+  ],
+  design: [
+    { id: "all", title: "All" },
+    { id: "ui", title: "UI/UX" },
+    { id: "graphic", title: "Graphic Design" },
+    { id: "product", title: "Product Design" },
+  ],
+  marketing: [
+    { id: "all", title: "All" },
+    { id: "seo", title: "SEO" },
+    { id: "social", title: "Social Media" },
+    { id: "content", title: "Content Strategy" },
+  ],
+  writing: [
+    { id: "all", title: "All" },
+    { id: "copywriting", title: "Copywriting" },
+    { id: "translation", title: "Translation" },
+  ],
+  video: [
+    { id: "all", title: "All" },
+    { id: "videoediting", title: "Video Editing" },
+    { id: "animation", title: "Animation" },
+  ],
+  ai: [
+    { id: "all", title: "All" },
+    { id: "prompts", title: "Prompt Engineering" },
+    { id: "modeling", title: "AI Modeling" },
+  ],
+};
+
+const talents: Talent[] = [
   {
     id: 1,
     name: "Muqadas Olasunkanmi",
@@ -17,6 +84,7 @@ const talents = [
     bio: "Passionate about creating intuitive user experiences that solve real problems. 5+ years of experience designing digital products for African startups.",
     hourlyRate: "$35/hr",
     image: "/assets/images/landing/Frame 279.png",
+    category: "design",
   },
   {
     id: 2,
@@ -29,6 +97,7 @@ const talents = [
     bio: "Building scalable web applications that deliver exceptional performance. 4+ years of experience with modern JS frameworks.",
     hourlyRate: "$40/hr",
     image: "/assets/images/landing/Frame 280 (1).png",
+    category: "programming",
   },
   {
     id: 3,
@@ -41,6 +110,7 @@ const talents = [
     bio: "Crafting seamless mobile experiences for both iOS and Android platforms. 3+ years of experience.",
     hourlyRate: "$38/hr",
     image: "/assets/images/landing/Frame 280.png",
+    category: "programming",
   },
   {
     id: 4,
@@ -53,6 +123,7 @@ const talents = [
     bio: "Helping businesses grow their online presence through data-driven marketing strategies. 5+ years experience.",
     hourlyRate: "$30/hr",
     image: "/assets/images/landing/Frame 288.png",
+    category: "marketing",
   },
   {
     id: 5,
@@ -65,26 +136,46 @@ const talents = [
     bio: "Telling compelling stories that resonate with audiences. 6+ years of experience in content creation.",
     hourlyRate: "$32/hr",
     image: "/assets/images/landing/Frame 279.png",
+    category: "writing",
   },
 ];
 
-export function FeaturedTalent() {
+interface FeaturedTalentProps {
+  selectedCategory: string | null;
+}
+
+export function FeaturedTalent({ selectedCategory }: FeaturedTalentProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState("all");
+  const [showAllTalents, setShowAllTalents] = useState(false);
 
   const scrollLeft = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -360, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: -280, behavior: "smooth" });
     }
   };
 
   const scrollRight = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 360, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: 280, behavior: "smooth" });
     }
   };
 
+  const activeSubcategories = selectedCategory && subcategoriesByCategory[selectedCategory]
+    ? subcategoriesByCategory[selectedCategory]
+    : [{ id: "all", title: "All" }];
+
+  const filteredTalents = talents.filter((talent) => {
+    if (!selectedCategory) return true;
+    return talent.category === selectedCategory;
+  });
+
+  const visibleTalents = showAllTalents
+    ? filteredTalents
+    : filteredTalents.slice(0, 4);
+
   return (
-    <section className="relative py-24 md:py-32 bg-white overflow-hidden">
+    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-[#4F6AF5]/5 to-transparent pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 md:px-6">
         {/* Header */}
@@ -92,155 +183,161 @@ export function FeaturedTalent() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16 md:mb-20"
+          className="text-center mb-12 md:mb-16"
         >
-          <div className="inline-flex items-center gap-2 bg-[#4F6AF5]/10 px-5 py-2.5 rounded-full mb-6">
+          <div className="inline-flex items-center gap-2 bg-[#4F6AF5]/10 px-5 py-2.5 rounded-full mb-6 mx-auto">
             <Users className="w-4 h-4 text-[#4F6AF5]" />
             <span className="text-[#4F6AF5] text-xs font-semibold uppercase tracking-widest">
               Featured Talents
             </span>
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-5 leading-tight">
-            Meet verified African professionals
+            {selectedCategory ? `Find ${selectedCategory} Experts` : "Meet Verified African Professionals"}
           </h2>
           <p className="text-sm md:text-base text-gray-500 max-w-2xl mx-auto leading-relaxed">
-            Find the talent your business needs without the uncertainty.
+            {selectedCategory
+              ? `Browse verified professionals in ${selectedCategory} category.`
+              : "Find the talent your business needs without the uncertainty."}
           </p>
         </motion.div>
 
-        {/* Talents Slider Container */}
-        <div className="relative mb-20">
-          {/* Navigation Buttons */}
-          <button
-            onClick={scrollLeft}
-            className="absolute left-2 md:left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-all hidden md:flex"
-          >
-            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-gray-700" />
-          </button>
-          <button
-            onClick={scrollRight}
-            className="absolute right-2 md:right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-[#4F6AF5] rounded-full shadow-lg flex items-center justify-center hover:bg-[#3d56e0] transition-all"
-          >
-            <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-white" />
-          </button>
+        {/* Subcategories */}
+        <div className="relative mb-12">
+          <div className="flex items-center gap-2">
+            {/* Left Arrow */}
+            <button
+              onClick={scrollLeft}
+              className="hidden md:flex flex-shrink-0 w-10 h-10 bg-white rounded-full border border-gray-200 items-center justify-center text-gray-700 hover:border-[#4F6AF5] hover:text-[#4F6AF5] transition-all shadow-sm"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
 
-          {/* Slider */}
-          <div
-            ref={scrollRef}
-            className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory px-0 md:px-2"
-          >
-            {talents.map((talent, index) => (
-              <motion.div
-                key={talent.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="flex-shrink-0 w-full sm:w-[340px] md:w-[360px] snap-center group"
-              >
-                <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-100 h-full">
-                  {/* Top Section */}
-                  <div className="p-8 pb-6">
-                    <div className="flex items-start gap-6 mb-6">
-                      {/* Profile Image */}
-                      <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-gray-100 flex-shrink-0">
-                        <Image
-                          src={talent.image}
-                          alt={talent.name}
-                          width={64}
-                          height={64}
-                          className="object-cover w-full h-full"
-                          unoptimized
-                        />
-                      </div>
-                      {/* Info */}
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-1 flex-wrap">
-                          <h3 className="font-bold text-gray-900 text-lg">{talent.name}</h3>
-                          {talent.verified && (
-                            <div className="flex items-center gap-1 bg-[#4F6AF5]/10 text-[#4F6AF5] text-xs font-medium px-2 py-1 rounded-full">
-                              <CheckCircle size={12} />
-                              Verified
-                            </div>
-                          )}
-                        </div>
-                        <p className="text-gray-600 text-sm mb-2">{talent.role}</p>
-                        <div className="flex items-center gap-1.5 text-gray-500 text-xs">
-                          <MapPin size={12} />
-                          {talent.location}
-                        </div>
-                      </div>
-                    </div>
+            {/* Scrollable Subcategories */}
+            <div
+              ref={scrollRef}
+              className="flex gap-3 overflow-x-auto scrollbar-hide px-1 flex-1"
+            >
+              {activeSubcategories.map((subcat) => (
+                <button
+                  key={subcat.id}
+                  onClick={() => setSelectedSubcategory(subcat.id)}
+                  className={`flex-shrink-0 px-4 py-2.5 rounded-full font-medium text-sm transition-all ${
+                    selectedSubcategory === subcat.id
+                      ? "bg-[#4F6AF5] text-white shadow-md"
+                      : "bg-white border border-gray-200 text-gray-700 hover:border-[#4F6AF5]/50"
+                  }`}
+                >
+                  {subcat.title}
+                </button>
+              ))}
+            </div>
 
-                    {/* Trust Score */}
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className="font-bold text-[#4F6AF5] text-lg">{talent.trustScore}</span>
-                      <span className="text-gray-500 text-sm">Trust Score</span>
-                    </div>
-
-                    {/* Skills */}
-                    <div className="flex flex-wrap gap-2 mb-5">
-                      {talent.skills.map((skill, i) => (
-                        <span
-                          key={i}
-                          className="px-3 py-1.5 bg-gray-100 text-gray-700 text-xs font-medium rounded-full"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Bio */}
-                    <p className="text-gray-600 text-sm leading-relaxed mb-5 line-clamp-2">
-                      {talent.bio}
-                    </p>
-
-                    {/* Hourly Rate & Button */}
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-gray-900">{talent.hourlyRate}</span>
-                      <button className="px-5 py-2.5 bg-[#4F6AF5] hover:bg-[#3d56e0] text-white text-sm font-semibold rounded-lg transition-all">
-                        View Profile
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+            {/* Right Arrow */}
+            <button
+              onClick={scrollRight}
+              className="hidden md:flex flex-shrink-0 w-10 h-10 bg-white rounded-full border border-gray-200 items-center justify-center text-gray-700 hover:border-[#4F6AF5] hover:text-[#4F6AF5] transition-all shadow-sm"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
 
-        {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="relative bg-[#1A1F36] overflow-visible"
-        >
-          <div className="relative max-w-7xl mx-auto px-0">
-            <div className="relative flex flex-col md:flex-row items-center">
-              {/* Image */}
-              <div className="relative w-full md:w-2/5 h-[340px] md:h-[440px] lg:h-[500px] -mt-20 md:-mt-24">
-                <Image
-                  src="/assets/images/landing/Img 1.png"
-                  alt="Join Skiloq"
-                  fill
-                  className="object-contain object-center md:object-left-bottom"
-                  unoptimized
-                />
+        {/* Talent Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {visibleTalents.map((talent, index) => (
+            <motion.div
+              key={talent.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ y: -4 }}
+              className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
+            >
+              {/* Top Section */}
+              <div className="p-7">
+                <div className="flex items-start gap-5 mb-6">
+                  {/* Profile Image */}
+                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden border-3 border-gray-100 flex-shrink-0">
+                    <Image
+                      src={talent.image}
+                      alt={talent.name}
+                      width={96}
+                      height={96}
+                      className="object-cover w-full h-full"
+                      unoptimized
+                    />
+                  </div>
+                  {/* Info */}
+                  <div className="flex-1 pt-1">
+                    <div className="flex items-center gap-3 mb-2 flex-wrap">
+                      <h3 className="font-bold text-gray-900 text-lg">{talent.name}</h3>
+                      {talent.verified && (
+                        <div className="flex items-center gap-1.5 bg-[#4F6AF5]/10 text-[#4F6AF5] text-xs font-semibold px-3 py-1.5 rounded-full">
+                          <CheckCircle size={14} />
+                          Verified
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-gray-600 text-sm mb-2">{talent.role}</p>
+                    <div className="flex items-center gap-1.5 text-gray-500 text-xs">
+                      <MapPin size={14} />
+                      {talent.location}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Trust Score */}
+                <div className="flex items-center gap-2 mb-5">
+                  <span className="font-bold text-[#4F6AF5] text-xl">{talent.trustScore}</span>
+                  <span className="text-gray-500 text-sm">Trust Score</span>
+                </div>
+
+                {/* Skills */}
+                <div className="flex flex-wrap gap-2 mb-5">
+                  {talent.skills.map((skill, i) => (
+                    <span
+                      key={i}
+                      className="px-3 py-1.5 bg-gray-100 text-gray-700 text-xs font-medium rounded-full"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Bio */}
+                <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                  {talent.bio}
+                </p>
+
+                {/* Hourly Rate & Button */}
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-gray-900 text-base">{talent.hourlyRate}</span>
+                  <button className="px-5 py-3 bg-[#4F6AF5] hover:bg-[#3d56e0] text-white text-sm font-semibold rounded-xl transition-all shadow-sm">
+                    View Profile
+                  </button>
+                </div>
               </div>
-              
-              {/* Content */}
-              <div className="w-full md:w-3/5 py-12 px-6 sm:py-16 sm:px-8 lg:py-20 lg:px-20 text-center md:text-left">
-                <h3 className="heading-2 text-white mb-6">
-                  Join a community of thousands of happy members.
-                </h3>
-                <button className="px-7 py-3.5 bg-white text-[#1A1F36] rounded-lg font-bold text-base hover:bg-gray-100 transition-all">
-                  Join Skiloq
-                </button>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* View All Button */}
+        {filteredTalents.length > 4 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <button
+              onClick={() => setShowAllTalents(!showAllTalents)}
+              className="px-8 py-3.5 bg-white border-2 border-gray-200 text-[#1A1F36] font-semibold rounded-xl hover:border-[#4F6AF5] hover:text-[#4F6AF5] transition-all shadow-sm"
+            >
+              {showAllTalents ? "Show Less" : "View All Talents"}
+            </button>
+          </motion.div>
+        )}
       </div>
     </section>
   );

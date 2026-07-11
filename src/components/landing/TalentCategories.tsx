@@ -17,6 +17,7 @@ import {
   Handshake,
   Wrench,
 } from "lucide-react";
+import { useState } from "react";
 
 const workerTypes = [
   { title: "Digital Workers", icon: Laptop },
@@ -26,93 +27,88 @@ const workerTypes = [
 ];
 
 const categories = [
-  { title: "Programming & IT", icon: Mail },
-  { title: "Design & Creative", icon: Scissors },
-  { title: "Digital Sales & Marketing", icon: BriefcaseBusiness },
-  { title: "Writing & Translation", icon: Languages },
-  { title: "Video & Animation", icon: Video },
-  { title: "AI Services", icon: BrainCircuit },
-  { title: "Music & Audio", icon: Music },
-  { title: "Finance & Accounting", icon: Wallet },
-  { title: "Consulting", icon: Handshake },
-  { title: "Engineering & Architecture", icon: Wrench },
+  { id: "programming", title: "Programming & IT", icon: Mail },
+  { id: "design", title: "Design & Creative", icon: Scissors },
+  { id: "marketing", title: "Digital Sales & Marketing", icon: BriefcaseBusiness },
+  { id: "writing", title: "Writing & Translation", icon: Languages },
+  { id: "video", title: "Video & Animation", icon: Video },
+  { id: "ai", title: "AI Services", icon: BrainCircuit },
+  { id: "music", title: "Music & Audio", icon: Music },
+  { id: "finance", title: "Finance & Accounting", icon: Wallet },
+  { id: "consulting", title: "Consulting", icon: Handshake },
+  { id: "engineering", title: "Engineering & Architecture", icon: Wrench },
 ];
 
-export function TalentCategories() {
+interface TalentCategoriesProps {
+  selectedCategory: string | null;
+  onSelectCategory: (categoryId: string) => void;
+}
+
+export function TalentCategories({ selectedCategory, onSelectCategory }: TalentCategoriesProps) {
+  const [showAll, setShowAll] = useState(false);
+  const visibleCategories = showAll ? categories : categories.slice(0, 6);
+
   return (
-    <section className="py-28 bg-white relative overflow-hidden">
+    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 md:px-6">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12 md:mb-16"
         >
-          <h2 className="heading-2 text-[#111827] mb-4">
-            Match with the right opportunities.
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#111827] mb-4">
+            Browse by Category
           </h2>
-          <p className="body-text text-[#6B7280] max-w-3xl mx-auto">
-            Don't just find a job find your fit. We bypass the clutter to deliver tailored career opportunities straight to you, based on what you do best.
+          <p className="text-sm md:text-base text-[#6B7280] max-w-2xl mx-auto leading-relaxed">
+            Find the perfect talent from our verified categories of skilled professionals.
           </p>
         </motion.div>
-
-        {/* Worker Types */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16"
-        >
-          {workerTypes.map((worker, i) => {
-            const Icon = worker.icon;
-            return (
-              <motion.div
-                key={i}
-                whileHover={{ y: -4, scale: 1.02 }}
-                className="bg-white border border-gray-200 rounded-2xl p-8 text-center cursor-pointer transition-all shadow-sm hover:shadow-md"
-              >
-                <Icon size={36} className="text-gray-400 mx-auto mb-4" />
-                <span className="text-[#1A1F36] font-semibold">{worker.title}</span>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-
-        {/* Categories Header */}
-        <motion.h3
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="text-2xl md:text-3xl font-bold text-[#111827] text-center mb-10 font-[var(--font-heading)]"
-        >
-          Categories
-        </motion.h3>
 
         {/* Categories Grid */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-5"
+          className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-8"
         >
-          {categories.map((cat, i) => {
+          {visibleCategories.map((cat, i) => {
             const Icon = cat.icon;
+            const isSelected = selectedCategory === cat.id;
             return (
-              <motion.div
-                key={i}
+              <motion.button
+                key={cat.id}
+                onClick={() => onSelectCategory(cat.id)}
                 whileHover={{ y: -4, boxShadow: "0 10px 25px -5px rgba(26, 31, 54, 0.12)" }}
-                className="bg-white border border-gray-200 rounded-2xl p-6 cursor-pointer transition-all shadow-sm hover:shadow-md"
+                whileTap={{ scale: 0.98 }}
+                className={`bg-white rounded-2xl p-6 text-center cursor-pointer transition-all shadow-sm hover:shadow-md border-2 ${
+                  isSelected ? "border-[#4F6AF5] bg-[#4F6AF5]/5" : "border-gray-200"
+                }`}
               >
-                <Icon size={28} className="text-gray-400 mb-4" />
-                <h4 className="text-[#1A1F36] font-semibold text-sm md:text-base">{cat.title}</h4>
-              </motion.div>
+                <Icon size={32} className={`mx-auto mb-4 ${isSelected ? "text-[#4F6AF5]" : "text-gray-400"}`} />
+                <h4 className={`font-semibold text-sm md:text-base ${isSelected ? "text-[#4F6AF5]" : "text-[#1A1F36]"}`}>{cat.title}</h4>
+              </motion.button>
             );
           })}
         </motion.div>
+
+        {/* View More Button */}
+        {categories.length > 6 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="px-6 py-3 bg-white border-2 border-gray-200 text-[#1A1F36] font-semibold rounded-xl hover:border-[#4F6AF5] hover:text-[#4F6AF5] transition-all shadow-sm"
+            >
+              {showAll ? "Show Less" : "View More Categories"}
+            </button>
+          </motion.div>
+        )}
       </div>
     </section>
   );
