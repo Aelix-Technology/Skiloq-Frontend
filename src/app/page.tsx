@@ -29,9 +29,19 @@ export default function LandingPage() {
        <FeaturedTalent selectedCategory={selectedCategory} />
       <FeaturedJobs selectedCategory={selectedCategory} />
       <SocialProof />
-      <HireTopTalent />
-      <HowItWorks />
-      <AboutUs />
+      
+      {/* Continuous gradient section with HireTopTalent, HowItWorks, AboutUs */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#1A1F36] via-[#2A3156] to-[#1A1F36]">
+        {/* Floating blur effects for visual appeal */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-[#4F6AF5]/20 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-[#6F8AFF]/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 left-1/4 w-[400px] h-[400px] bg-[#4F6AF5]/15 rounded-full blur-3xl" />
+        
+        <HireTopTalent />
+        <HowItWorks />
+        <AboutUs />
+      </section>
+      
       <Testimonials />
        <FAQ />
       <Footer />

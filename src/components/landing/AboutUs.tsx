@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export function AboutUs() {
   return (
-    <section className="relative py-16 md:py-28 bg-gradient-to-br from-[#1E243B] via-[#242F56] to-[#1E243B] overflow-hidden">
+    <section className="relative py-16 md:py-28 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Images */}

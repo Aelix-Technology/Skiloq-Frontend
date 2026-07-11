@@ -38,19 +38,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="relative overflow-hidden bg-[#1A1F36] py-16 md:py-28">
-      {/* Animated gradient background */}
-      <motion.div
-        animate={{
-          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-        }}
-        transition={{
-          duration: 15,
-          ease: "linear",
-          repeat: Infinity,
-        }}
-        className="absolute inset-0 bg-gradient-to-br from-[#1A1F36] via-[#2A3156] to-[#1A1F36] bg-[length:200%_200%]"
-      />
+    <section className="relative overflow-hidden py-16 md:py-28">
 
       {/* Floating blur effects */}
       <motion.div

@@ -31,7 +31,7 @@ export function HireTopTalent() {
   }, []);
 
   return (
-    <section className="relative py-20 md:py-28 bg-gradient-to-br from-[#1A1F36] via-[#2A3156] to-[#1A1F36] overflow-hidden">
+    <section className="relative py-20 md:py-28 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Overlapping Images with Circular Motion */}
