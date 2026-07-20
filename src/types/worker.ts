@@ -5,6 +5,24 @@ export type VerificationLevel = "none" | "partial" | "verified" | "expert";
 export type WorkerBadge = "Rising Talent" | "Top Rated" | "Verified Expert" | null;
 export type VerificationStepStatus = "completed" | "in_review" | "pending" | "rejected";
 
+export interface EducatorDetails {
+  subjects: string[];
+  levels: string[];
+  session_price_ghs: number;
+  session_duration_minutes: number;
+  teaching_experience_years?: number;
+  certifications?: string[];
+  is_group_tutoring_available: boolean;
+  max_group_size?: number;
+}
+
+export interface OnlineIncomeDetails {
+  preferred_task_types: string[];
+  available_hours_per_week: number;
+  verified_data_entry: boolean;
+  verified_transcription: boolean;
+}
+
 export interface Worker {
   id: string;
   user_id: string;
@@ -22,6 +40,8 @@ export interface Worker {
   skills: WorkerSkill[];
   portfolio: PortfolioItem[];
   reviews: Review[];
+  educator_details?: EducatorDetails;
+  online_income_details?: OnlineIncomeDetails;
 }
 
 export interface WorkerSkill {
