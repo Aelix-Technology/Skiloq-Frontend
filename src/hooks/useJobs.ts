@@ -38,10 +38,10 @@ export function useJobs(filters: JobFilters = {}) {
       }
 
       if (filters.price_min) {
-        filtered = filtered.filter((j) => j.budget_ghs >= filters.price_min!);
+        filtered = filtered.filter((j) => j.budget_amount >= filters.price_min!);
       }
       if (filters.price_max) {
-        filtered = filtered.filter((j) => j.budget_ghs <= filters.price_max!);
+        filtered = filtered.filter((j) => j.budget_amount <= filters.price_max!);
       }
 
       if (filters.location) {
@@ -53,7 +53,7 @@ export function useJobs(filters: JobFilters = {}) {
       // Sort
       switch (filters.sort_by) {
         case "rate":
-          filtered.sort((a, b) => a.budget_ghs - b.budget_ghs);
+          filtered.sort((a, b) => a.budget_amount - b.budget_amount);
           break;
         case "jobs_completed":
           // Mock — in real API this sorts by employer's completed jobs

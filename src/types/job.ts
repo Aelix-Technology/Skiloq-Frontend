@@ -11,7 +11,9 @@ export interface Job {
   employer_rating: number;
   title: string;
   description: string;
-  budget_ghs: number;
+  budget_amount: number;
+  currency: string;
+  country_code: string;
   status: JobStatus;
   skills_required: string[];
   posted_at: string;
@@ -28,7 +30,7 @@ export interface Job {
 export interface TutoringDetails {
   subject: string;
   level: string;
-  session_price_ghs: number;
+  session_price_amount: number;
   session_duration_minutes: number;
   available_schedules: string[];
   is_group_tutoring: boolean;
@@ -37,7 +39,7 @@ export interface TutoringDetails {
 
 export interface OnlineIncomeDetails {
   task_type: string;
-  per_task_payment_ghs: number;
+  per_task_payment_amount: number;
   estimated_time_minutes: number;
   requirements: string[];
   available_tasks_count: number;
@@ -48,7 +50,7 @@ export interface Milestone {
   job_id: string;
   title: string;
   description: string;
-  amount_ghs: number;
+  amount: number;
   status: MilestoneStatus;
   due_date?: string;
   completed_at?: string;

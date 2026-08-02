@@ -17,13 +17,13 @@ export default function EmployerDashboardPage() {
   if (isLoading) {
     return (
       <EmployerLayout>
-        <div className="space-y-6 animate-pulse">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="mx-auto px-4 lg:px-6 max-w-full md:max-w-7xl space-y-6 animate-pulse">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-24 bg-white rounded-card border border-primary-100" />
+              <div key={i} className="h-28 bg-white/75 rounded-2xl border border-white/60" />
             ))}
           </div>
-          <div className="h-64 bg-white rounded-card border border-primary-100" />
+          <div className="h-64 bg-white/75 rounded-2xl border border-white/60" />
         </div>
       </EmployerLayout>
     );
@@ -37,14 +37,16 @@ export default function EmployerDashboardPage() {
     );
   }
 
+  const statBlobs = ["bg-accent/15", "bg-success/15", "bg-warning/15", "bg-primary/15"];
+
   return (
     <EmployerLayout>
-      <div className="space-y-6">
+      <div className="mx-auto px-4 lg:px-6 max-w-full md:max-w-7xl space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-primary">Dashboard</h1>
-            <p className="text-sm text-primary-300 mt-0.5">Manage your jobs and hires</p>
+            <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">Dashboard</h1>
+            <p className="text-sm text-primary-300 mt-1">Manage your jobs and hires</p>
           </div>
           <button
             onClick={() => router.push("/employer/post-job")}
@@ -56,42 +58,57 @@ export default function EmployerDashboardPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
           {[
             { icon: Briefcase, label: "Jobs Posted", value: data.stats.total_jobs_posted, color: "text-accent bg-accent/10" },
             { icon: Users, label: "Hired", value: data.stats.total_hired, color: "text-success bg-success/10" },
             { icon: DollarSign, label: "Total Spent", value: `GHS ${data.stats.total_spent_ghs.toLocaleString()}`, color: "text-warning bg-warning/10" },
             { icon: Star, label: "Rating", value: `${data.stats.average_rating}`, color: "text-accent bg-accent/10" },
-          ].map((stat) => (
-            <div key={stat.label} className="bg-white rounded-card border border-primary-100 p-4">
-              <div className={`w-9 h-9 rounded-lg ${stat.color} flex items-center justify-center mb-2`}>
-                <stat.icon className="w-4 h-4" />
+          ].map((stat, i) => (
+            <div
+              key={stat.label}
+              className="relative overflow-hidden rounded-2xl border border-white/70 bg-white/75 backdrop-blur-xl p-5 shadow-[0_8px_30px_-12px_rgba(26,31,54,0.10)] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white before:to-transparent hover:-translate-y-1 hover:shadow-[0_16px_40px_-14px_rgba(26,31,54,0.18)] transition-all duration-300"
+            >
+              <div className={`absolute -bottom-6 -right-6 h-24 w-24 rounded-full blur-2xl opacity-60 ${statBlobs[i]}`} />
+              <div className="relative">
+                <div className={`w-9 h-9 rounded-lg ${stat.color} flex items-center justify-center mb-3`}>
+                  <stat.icon className="w-4 h-4" />
+                </div>
+                <p className="text-2xl font-bold tracking-tight text-primary">{stat.value}</p>
+                <p className="text-xs text-primary-300 font-medium uppercase tracking-wider mt-0.5">{stat.label}</p>
               </div>
-              <p className="text-lg font-bold text-primary">{stat.value}</p>
-              <p className="text-xs text-primary-300">{stat.label}</p>
             </div>
           ))}
         </div>
 
         {/* Active Jobs */}
         <div>
-          <h2 className="text-md font-semibold text-primary mb-3">Active Jobs</h2>
-          <ActivePostsList jobs={data.active_jobs} />
+          <h2 className="text-md font-semibold tracking-tight text-primary mb-4">Active Jobs</h2>
+          <div className="relative overflow-hidden rounded-2xl border border-white/70 bg-white/75 backdrop-blur-xl shadow-[0_8px_30px_-12px_rgba(26,31,54,0.10)] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white before:to-transparent hover:-translate-y-1 hover:shadow-[0_16px_40px_-14px_rgba(26,31,54,0.18)] transition-all duration-300">
+            <div className="absolute -bottom-6 -right-6 h-24 w-24 rounded-full blur-2xl opacity-60 bg-accent/15" />
+            <ActivePostsList jobs={data.active_jobs} />
+          </div>
         </div>
 
         {/* Pending Applications */}
         <div>
-          <h2 className="text-md font-semibold text-primary mb-3">
+          <h2 className="text-md font-semibold tracking-tight text-primary mb-4">
             Pending Applications ({data.pending_applications.length})
           </h2>
-          <PendingApplications applications={data.pending_applications} />
+          <div className="relative overflow-hidden rounded-2xl border border-white/70 bg-white/75 backdrop-blur-xl shadow-[0_8px_30px_-12px_rgba(26,31,54,0.10)] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white before:to-transparent hover:-translate-y-1 hover:shadow-[0_16px_40px_-14px_rgba(26,31,54,0.18)] transition-all duration-300">
+            <div className="absolute -bottom-6 -right-6 h-24 w-24 rounded-full blur-2xl opacity-60 bg-warning/15" />
+            <PendingApplications applications={data.pending_applications} />
+          </div>
         </div>
 
         {/* Quick Re-hire */}
         {data.quick_rehire.length > 0 && (
           <div>
-            <h2 className="text-md font-semibold text-primary mb-3">Quick Re-hire</h2>
-            <QuickRehire workers={data.quick_rehire} />
+            <h2 className="text-md font-semibold tracking-tight text-primary mb-4">Quick Re-hire</h2>
+            <div className="relative overflow-hidden rounded-2xl border border-white/70 bg-white/75 backdrop-blur-xl shadow-[0_8px_30px_-12px_rgba(26,31,54,0.10)] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white before:to-transparent hover:-translate-y-1 hover:shadow-[0_16px_40px_-14px_rgba(26,31,54,0.18)] transition-all duration-300">
+              <div className="absolute -bottom-6 -right-6 h-24 w-24 rounded-full blur-2xl opacity-60 bg-success/15" />
+              <QuickRehire workers={data.quick_rehire} />
+            </div>
           </div>
         )}
       </div>

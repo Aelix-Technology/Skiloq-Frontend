@@ -2,7 +2,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Bell, LogOut, MapPin } from "lucide-react";
+import { Bell, LogOut } from "lucide-react";
 import { useAuthStore } from "@/stores/auth.store";
 import { toasts } from "@/lib/toasts";
 
@@ -17,9 +17,9 @@ export function AgentLayout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-primary-50/60">
       {/* Top bar */}
-      <header className="sticky top-0 z-30 bg-primary text-white">
+      <header className="sticky top-0 z-30 bg-primary/82 backdrop-blur-xl text-white">
         <div className="flex items-center justify-between h-14 px-4 max-w-4xl mx-auto">
           <button onClick={() => router.push("/agent/dashboard")} className="flex items-center gap-2.5">
             <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">

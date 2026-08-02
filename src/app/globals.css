@@ -58,6 +58,8 @@
   --text-md: 16px;
   --text-lg: 18px;
   --text-xl: 20px;
+  --text-xl2: 24px;
+  --text-xl3: 28px;
   --text-2xl: 32px;
   --text-3xl: 40px;
   --text-4xl: 52px;
@@ -66,7 +68,8 @@
 
   /* ── Border Radius ── */
   --radius-input: 4px;
-  --radius-card: 8px;
+  --radius-card-sm: 8px;
+  --radius-card: 16px;
   --radius-modal: 12px;
   --radius-pill: 9999px;
 
@@ -74,11 +77,28 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-glass: 0 10px 40px -10px rgba(26,31,54,0.12);
+  --shadow-glow-accent: 0 8px 30px rgba(79,106,245,0.18);
+  --shadow-soft-lg: 0 20px 60px -15px rgba(26,31,54,0.18);
 }
 
 /* ── Base Styles ── */
 * {
   border-color: var(--color-primary-50);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: var(--color-accent-50);
+  color: var(--color-accent-700);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent-300);
+  outline-offset: 2px;
 }
 
 body {
@@ -89,6 +109,26 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Custom thin scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary-100);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-200);
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary-100) transparent;
 }
 
 /* Heading styles */
@@ -120,10 +160,10 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.65;
 }
 
-/* Budget Android optimizations */
-@media (max-width: 480px) {
-  * {
-    animation-duration: 0s !important;
+/* Budget Android optimizations — only kill @keyframes on ≤380px, preserve transitions */
+@media (max-width: 380px) {
+  *:where(:not([class*="transition-"])) {
+    animation: none !important;
   }
 }
 
@@ -131,6 +171,56 @@ h1, h2, h3, h4, h5, h6 {
 .trust-low { color: var(--color-danger); }
 .trust-mid { color: var(--color-warning); }
 .trust-high { color: var(--color-success); }
+
+@layer utilities {
+  .glass-card {
+    background: rgba(255,255,255,0.78);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-glass);
+  }
+  .glass-nav {
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    border-bottom: 1px solid rgba(26,31,54,0.06);
+  }
+  .glass-bottom-tab {
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 1px solid rgba(26,31,54,0.06);
+  }
+  .gradient-text-accent {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .surface-hover {
+    transition: transform .25s cubic-bezier(.4,0,.2,1), box-shadow .25s, border-color .2s;
+  }
+  .surface-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft-lg);
+  }
+  .blob-accent {
+    position: absolute;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(79,106,245,0.22), transparent 60%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+  .blob-primary {
+    position: absolute;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(26,31,54,0.14), transparent 60%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+}
 
 
 

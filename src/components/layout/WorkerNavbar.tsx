@@ -18,7 +18,7 @@ export function WorkerNavbar() {
   const menuRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
 
-  const [hasNotification] = useState(true);
+  const [hasNotification] = useState(false);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -29,7 +29,10 @@ export function WorkerNavbar() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  useEffect(() => { setMobileMenuOpen(false); }, [pathname]);
+  useEffect(() => {
+    const id = setTimeout(() => setMobileMenuOpen(false), 0);
+    return () => clearTimeout(id);
+  }, [pathname]);
 
   const handleLogout = () => {
     logout();
@@ -38,14 +41,14 @@ export function WorkerNavbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
+    <header className="sticky top-0 z-50 glass-nav shadow-[0_1px_0_rgba(26,31,54,0.04)]">
       <div className="flex items-center justify-between h-16 px-4 max-w-2xl mx-auto">
         {/* ── Left: Logo ── */}
         <button
           onClick={() => router.push("/worker/dashboard")}
           className="flex items-center gap-2.5"
         >
-          <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center">
+          <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center ring-1 ring-white/60 shadow-sm">
             <span className="text-white font-bold text-sm tracking-tight">S</span>
           </div>
           <span className="font-bold text-lg text-primary tracking-tight">Skiloq</span>
@@ -67,14 +70,14 @@ export function WorkerNavbar() {
               onClick={() => setProfileOpen(!profileOpen)}
               className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-50 transition-colors"
             >
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-accent-700 flex items-center justify-center text-white text-xs font-bold ring-2 ring-gray-100">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-accent-700 flex items-center justify-center text-white text-xs font-bold ring-2 ring-white shadow-sm">
                 {user?.phone?.slice(-2) || "W"}
               </div>
             </button>
 
             {profileOpen && (
-              <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-xl border border-gray-100 shadow-xl shadow-gray-200/50 overflow-hidden z-50">
-                <div className="px-4 py-3.5 border-b border-gray-50">
+              <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-xl border border-primary-50/60 shadow-xl shadow-gray-200/50 overflow-hidden z-50">
+                <div className="px-4 py-3.5 border-b border-primary-50/60">
                   <p className="text-sm font-semibold text-gray-900">Worker Account</p>
                   <p className="text-xs text-gray-400 mt-0.5">{user?.phone || "+233 XX XXX XXXX"}</p>
                 </div>
@@ -96,10 +99,10 @@ export function WorkerNavbar() {
                   </button>
                 </div>
 
-                <div className="border-t border-gray-50 py-1">
+                <div className="border-t border-primary-50/60 py-1">
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors"
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-danger hover:bg-danger/5 transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
                     Sign Out
@@ -121,10 +124,11 @@ export function WorkerNavbar() {
 
       {/* ── Mobile Menu ── */}
       {mobileMenuOpen && (
-        <div ref={menuRef} className="md:hidden border-t border-gray-100 bg-white px-4 py-3 space-y-1 animate-in slide-in-from-top-2 duration-200">
+        <div ref={menuRef} className="md:hidden border-t border-primary-50/60 glass-card px-4 py-3 space-y-1 animate-in slide-in-from-top-2 duration-200">
           {[
             { label: "Dashboard", href: "/worker/dashboard" },
             { label: "Find Jobs", href: "/worker/opportunities" },
+            { label: "Academy", href: "/academy" },
             { label: "Bookings", href: "/worker/bookings" },
             { label: "Messages", href: "/worker/messages" },
             { label: "Wallet", href: "/worker/wallet" },
@@ -132,9 +136,9 @@ export function WorkerNavbar() {
             <button
               key={link.href}
               onClick={() => router.push(link.href)}
-              className={`w-full text-left px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
+              className={`w-full text-left px-4 py-3 text-sm font-medium rounded-xl transition-colors ${
                 pathname.startsWith(link.href)
-                  ? "text-accent bg-accent/5"
+                  ? "text-accent bg-accent/8 rounded-xl shadow-sm ring-1 ring-accent-100/50"
                   : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
               }`}
             >
@@ -142,7 +146,7 @@ export function WorkerNavbar() {
             </button>
           ))}
 
-          <div className="border-t border-gray-100 pt-2 mt-2">
+          <div className="border-t border-primary-50/60 pt-2 mt-2">
             <button
               onClick={() => { router.push("/worker/profile"); setMobileMenuOpen(false); }}
               className="w-full text-left px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
@@ -151,7 +155,7 @@ export function WorkerNavbar() {
             </button>
             <button
               onClick={handleLogout}
-              className="w-full text-left px-4 py-3 text-sm font-medium text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+              className="w-full text-left px-4 py-3 text-sm font-medium text-danger hover:bg-danger/5 rounded-lg transition-colors"
             >
               Sign Out
             </button>

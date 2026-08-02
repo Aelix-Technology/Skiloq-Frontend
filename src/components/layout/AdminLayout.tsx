@@ -34,18 +34,18 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-primary-50/60">
       {/* ── Mobile overlay ── */}
       {mobileOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          className="lg:hidden fixed inset-0 bg-primary/40 backdrop-blur-sm z-40"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
       {/* ── Sidebar ── */}
       <aside
-        className={`fixed top-0 left-0 h-full z-50 bg-primary text-white transition-all duration-300 flex flex-col
+        className={`fixed top-0 left-0 h-full z-50 bg-gradient-to-b from-primary via-primary to-primary-900 shadow-[4px_0_24px_-10px_rgba(26,31,54,0.25)] text-white transition-all duration-300 flex flex-col
           ${collapsed ? "w-[72px]" : "w-64"}
           ${mobileOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
       >
@@ -79,9 +79,9 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             <button
               key={link.href}
               onClick={() => { router.push(link.href); setMobileOpen(false); }}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
                 isActive(link.href)
-                  ? "bg-white/10 text-white"
+                  ? "bg-white/10 text-white ring-1 ring-white/15 shadow-sm backdrop-blur-sm"
                   : "text-white/60 hover:text-white hover:bg-white/5"
               }`}
             >
@@ -121,17 +121,17 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         style={{ paddingLeft: collapsed ? "72px" : undefined }}
       >
         {/* Top bar */}
-        <header className="sticky top-0 z-20 bg-white border-b border-gray-100 h-16 flex items-center px-4 gap-4">
+        <header className="sticky top-0 z-20 bg-white/82 backdrop-blur-xl border-b border-primary-50/60 h-16 flex items-center px-4 gap-4">
           <button
             onClick={() => setMobileOpen(true)}
-            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-50"
+            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-primary-50/60"
           >
-            <Menu className="w-5 h-5 text-gray-700" />
+            <Menu className="w-5 h-5 text-primary-500" />
           </button>
           <div className="flex-1" />
-          <button className="relative w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-50">
-            <Bell className="w-5 h-5 text-gray-400" />
-            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white" />
+          <button className="relative w-10 h-10 flex items-center justify-center rounded-lg hover:bg-primary-50/60">
+            <Bell className="w-5 h-5 text-primary-300" />
+            <span className="absolute top-2 right-2 w-2 h-2 bg-danger rounded-full ring-2 ring-white" />
           </button>
         </header>
 

@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const navLinks = [
   { label: "Find Talent", href: "/employer/find-talent", hasDropdown: true },
   { label: "Find Work", href: "#" },
+  { label: "Academy", href: "/academy" },
   { label: "About Us", href: "#" },
   { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "#" },

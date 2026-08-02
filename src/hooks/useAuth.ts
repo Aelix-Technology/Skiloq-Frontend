@@ -1,12 +1,12 @@
 // src/hooks/useAuth.ts
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { apiClient, ApiError } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth.store";
 import { toasts } from "@/lib/toasts";
 import type { User } from "@/types/auth";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 // Convert backend user to our User type
 function mapUser(backendUser: Record<string, unknown>, phone: string): User {
@@ -107,17 +107,17 @@ export function useLogin() {
 
 /**
  * Verify OTP/PIN — used for both register and login.
+ * Supports an optional post-login redirect URL (from ?redirect= query param).
  */
-export function useVerifyOTP() {
+export function useVerifyOTP(redirectUrl?: string | null) {
   const setAuth = useAuthStore((s) => s.setAuth);
   const router = useRouter();
-  // Store the phone number when we start the mutation
   const [currentPhone, setCurrentPhone] = useState<string>("");
 
   return useMutation({
     mutationFn: (data: { phone: string; pin: string }) => {
       console.log("Sending verify OTP request with data:", data);
-      setCurrentPhone(data.phone); // Store the phone number
+      setCurrentPhone(data.phone);
       return apiClient.post("/auth/verify-otp", {
         phone: data.phone,
         pin: data.pin,
@@ -132,24 +132,26 @@ export function useVerifyOTP() {
       setAuth(user, { accessToken });
       toasts.otpVerified();
 
-      // Route based on role
-      switch (user.role) {
-        case "worker":
-          router.push("/worker/dashboard");
-          break;
-        case "employer":
-          router.push("/employer/dashboard");
-          break;
-        case "admin":
-          router.push("/admin/dashboard");
-          break;
-        case "agent":
-          router.push("/agent/dashboard");
-          break;
-        default:
-          router.push("/worker/dashboard");
-          break;
+      if (redirectUrl) {
+        try {
+          const decoded = decodeURIComponent(redirectUrl);
+          if (decoded.startsWith("/") && !decoded.startsWith("//")) {
+            router.replace(decoded);
+            return;
+          }
+        } catch {
+          // fall through to role-based dashboard
+        }
       }
+
+      const dashboards: Record<string, string> = {
+        worker: "/worker/dashboard",
+        employer: "/employer/dashboard",
+        admin: "/admin/dashboard",
+        agent: "/agent/dashboard",
+      };
+      const role = (user.role as keyof typeof dashboards) ?? "worker";
+      router.replace(dashboards[role] ?? "/worker/dashboard");
     },
     onError: (error: ApiError) => {
       console.error("Verify OTP error:", error);
@@ -196,6 +198,163 @@ export function useLogout() {
     onError: () => {
       logout();
       router.push("/login");
+    },
+  });
+}
+
+/**
+ * Verifies the current session by validating the token with the backend.
+ * Calls /auth/me to get the current user profile. If the token is invalid
+ * or expired (and refresh fails), it clears the local auth state.
+ */
+export function useVerifySession() {
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const setUser = useAuthStore((s) => s.setUser);
+  const logout = useAuthStore((s) => s.logout);
+  const setVerifying = useAuthStore((s) => s.setVerifying);
+  const isVerifying = useAuthStore((s) => s.isVerifying);
+
+  const verifySession = useCallback(async (): Promise<boolean> => {
+    if (!accessToken || !isAuthenticated) {
+      return false;
+    }
+
+    setVerifying(true);
+    try {
+      const data = await apiClient.get<unknown>("/auth/me");
+      const backendData = data as Record<string, unknown>;
+
+      let updatedUser: User | null = null;
+      const currentPhone = useAuthStore.getState().user?.phone || "";
+
+      if (backendData.user && typeof backendData.user === "object") {
+        updatedUser = mapUser(backendData.user as Record<string, unknown>, currentPhone);
+      } else if (backendData.data && typeof backendData.data === "object") {
+        const dataObj = backendData.data as Record<string, unknown>;
+        if (dataObj.user && typeof dataObj.user === "object") {
+          updatedUser = mapUser(dataObj.user as Record<string, unknown>, currentPhone);
+        } else {
+          updatedUser = mapUser(dataObj, currentPhone);
+        }
+      } else if (backendData.id || backendData._id) {
+        updatedUser = mapUser(backendData, currentPhone);
+      }
+
+      if (updatedUser) {
+        setUser(updatedUser);
+      }
+
+      setVerifying(false);
+      return true;
+    } catch (error) {
+      if (error instanceof ApiError) {
+        if (error.status === 401) {
+          console.error("Session verification 401 — logging out.");
+          logout();
+          setVerifying(false);
+          return false;
+        }
+        if (error.status === 404 || error.status === 405) {
+          console.warn(
+            `Session verification skipped: /auth/me returned ${error.status} (endpoint not deployed yet).`
+          );
+          setVerifying(false);
+          return true;
+        }
+      }
+      console.warn("Session verification failed (non-fatal); keeping session:", error);
+      setVerifying(false);
+      return true;
+    }
+  }, [accessToken, isAuthenticated, setUser, logout, setVerifying]);
+
+  return { verifySession, isVerifying };
+}
+
+/**
+ * React Query wrapper for session verification — used in ProtectedRoute
+ * to validate authentication state before rendering protected content.
+ *
+ * Graceful degradation:
+ * - In NEXT_PUBLIC_API_MODE=mock → query is disabled entirely (no network call).
+ * - Endpoint not yet deployed (404/405) → treated as "still valid, skip validation".
+ * - Only 401 (after refresh-flow in api.ts also fails) invalidates the session.
+ */
+export function useAuthSession() {
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const setUser = useAuthStore((s) => s.setUser);
+  const logout = useAuthStore((s) => s.logout);
+  const currentPhone = useAuthStore((s) => s.user?.phone || "");
+
+  const isMockMode = process.env.NEXT_PUBLIC_API_MODE === "mock";
+  const canRun = !!accessToken && !!isAuthenticated && !isMockMode;
+
+  return useQuery({
+    queryKey: ["auth-session", accessToken],
+    queryFn: async (): Promise<{ valid: boolean; user: User | null }> => {
+      if (!accessToken || !isAuthenticated) {
+        return { valid: false, user: null };
+      }
+
+      try {
+        const data = await apiClient.get<unknown>("/auth/me");
+        const backendData = data as Record<string, unknown>;
+
+        let updatedUser: User | null = null;
+
+        if (backendData.user && typeof backendData.user === "object") {
+          updatedUser = mapUser(backendData.user as Record<string, unknown>, currentPhone);
+        } else if (backendData.data && typeof backendData.data === "object") {
+          const dataObj = backendData.data as Record<string, unknown>;
+          if (dataObj.user && typeof dataObj.user === "object") {
+            updatedUser = mapUser(dataObj.user as Record<string, unknown>, currentPhone);
+          } else {
+            updatedUser = mapUser(dataObj, currentPhone);
+          }
+        } else if (backendData.id || backendData._id) {
+          updatedUser = mapUser(backendData, currentPhone);
+        }
+
+        if (updatedUser) {
+          setUser(updatedUser);
+        }
+
+        return { valid: true, user: updatedUser };
+      } catch (error) {
+        if (error instanceof ApiError) {
+          if (error.status === 401) {
+            console.error("Session expired (401), logging out.");
+            logout();
+            return { valid: false, user: null };
+          }
+          if (error.status === 404 || error.status === 405) {
+            // Endpoint not deployed yet — treat session as valid (rely on
+            // 401 auto-refresh inside api.ts for actual token validation).
+            console.warn(
+              `/auth/me returned ${error.status} — endpoint not deployed yet; skipping session verification.`
+            );
+            return { valid: true, user: null };
+          }
+          console.warn(
+            `Session check failed with status ${error.status}; keeping session (backend may be unavailable).`
+          );
+        } else {
+          console.warn("Session check failed with non-ApiError; keeping session:", error);
+        }
+        return { valid: true, user: null };
+      }
+    },
+    enabled: canRun,
+    staleTime: 5 * 60 * 1000,
+    retry: (failureCount, error) => {
+      if (error instanceof ApiError) {
+        if (error.status === 401 || error.status === 404 || error.status === 405) {
+          return false;
+        }
+      }
+      return failureCount < 2;
     },
   });
 }

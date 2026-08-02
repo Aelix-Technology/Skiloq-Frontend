@@ -6,7 +6,8 @@ import { useState } from "react";
 import { WorkerLayout } from "@/components/layout/WorkerLayout";
 import { ApplyModal } from "@/components/opportunities/ApplyModal";
 import { useJob } from "@/hooks/useJobs";
-import { Star, MapPin, Briefcase, Clock, ArrowLeft, Send, Building } from "lucide-react";
+import { Star, MapPin, Briefcase, Clock, ArrowLeft, Send, Building, CheckCircle, AlertTriangle } from "lucide-react";
+import { FileDisputeModal } from "@/components/disputes/FileDisputeModal";
 
 export default function JobDetailPage() {
   const params = useParams();
@@ -14,6 +15,7 @@ export default function JobDetailPage() {
   const jobId = params.id as string;
   const { data: job, isLoading, error } = useJob(jobId);
   const [showApplyModal, setShowApplyModal] = useState(false);
+  const [showDisputeModal, setShowDisputeModal] = useState(false);
 
   if (isLoading) {
     return (
@@ -44,9 +46,16 @@ export default function JobDetailPage() {
     );
   }
 
+  const getJobTypeLabel = () => {
+    if (job.type === "tutoring") return "Tutoring";
+    if (job.type === "online_income") return "Online Income";
+    if (job.milestones) return "Milestone Project";
+    return null;
+  };
+
   return (
     <WorkerLayout>
-      <div className="space-y-6">
+      <div className="space-y-6 pb-24">
         {/* Back button */}
         <button
           onClick={() => router.back()}
@@ -56,11 +65,26 @@ export default function JobDetailPage() {
           Back to opportunities
         </button>
 
+        {/* Type Badge */}
+        {getJobTypeLabel() && (
+          <div className="flex flex-wrap gap-2">
+            <span className="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-accent-50 text-accent-600">
+              {getJobTypeLabel()}
+            </span>
+            {job.is_curated && (
+              <span className="inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded-full bg-success-50 text-success-600">
+                <CheckCircle className="w-3 h-3" />
+                Curated
+              </span>
+            )}
+          </div>
+        )}
+
         {/* Title + Budget */}
         <div>
           <h1 className="text-lg font-bold text-primary leading-snug">{job.title}</h1>
           <p className="text-2xl font-bold text-accent mt-2">
-            GHS {job.budget_ghs.toLocaleString()}
+            {job.currency} {job.budget_amount.toLocaleString()}
           </p>
         </div>
 
@@ -91,6 +115,101 @@ export default function JobDetailPage() {
             </span>
           </div>
         </div>
+
+        {/* Tutoring Details */}
+        {job.type === "tutoring" && job.tutoring_details && (
+          <div className="bg-accent-50 rounded-card p-4">
+            <h3 className="text-sm font-semibold text-accent-700 mb-3">Tutoring Details</h3>
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div>
+                <span className="text-primary-500">Subject:</span>
+                <p className="font-medium text-primary">{job.tutoring_details.subject}</p>
+              </div>
+              <div>
+                <span className="text-primary-500">Level:</span>
+                <p className="font-medium text-primary">{job.tutoring_details.level}</p>
+              </div>
+              <div>
+                <span className="text-primary-500">Duration:</span>
+                <p className="font-medium text-primary">{job.tutoring_details.session_duration_minutes} min</p>
+              </div>
+              <div>
+                <span className="text-primary-500">Price:</span>
+                <p className="font-medium text-primary">{job.currency} {job.tutoring_details.session_price_amount}/session</p>
+              </div>
+              <div className="col-span-2">
+                <span className="text-primary-500">Available Schedules:</span>
+                <ul className="mt-1 space-y-1">
+                  {job.tutoring_details.available_schedules.map((schedule, idx) => (
+                    <li key={idx} className="font-medium text-primary">• {schedule}</li>
+                  ))}
+                </ul>
+              </div>
+              {job.tutoring_details.is_group_tutoring && job.tutoring_details.max_students && (
+                <div className="col-span-2">
+                  <span className="text-primary-500">Group Tutoring:</span>
+                  <p className="font-medium text-primary">Up to {job.tutoring_details.max_students} students</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Online Income Details */}
+        {job.type === "online_income" && job.online_income_details && (
+          <div className="bg-success-50 rounded-card p-4">
+            <h3 className="text-sm font-semibold text-success-700 mb-3">Task Details</h3>
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div>
+                <span className="text-primary-500">Task Type:</span>
+                <p className="font-medium text-primary">{job.online_income_details.task_type}</p>
+              </div>
+              <div>
+                <span className="text-primary-500">Per Task Payment:</span>
+                <p className="font-medium text-primary">{job.currency} {job.online_income_details.per_task_payment_amount}</p>
+              </div>
+              <div>
+                <span className="text-primary-500">Available Tasks:</span>
+                <p className="font-medium text-primary">{job.online_income_details.available_tasks_count}</p>
+              </div>
+              <div>
+                <span className="text-primary-500">Estimated Time:</span>
+                <p className="font-medium text-primary">{job.online_income_details.estimated_time_minutes} min</p>
+              </div>
+              <div className="col-span-2">
+                <span className="text-primary-500">Requirements:</span>
+                <ul className="mt-1 space-y-1">
+                  {job.online_income_details.requirements.map((req, idx) => (
+                    <li key={idx} className="font-medium text-primary">• {req}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Milestones */}
+        {job.milestones && job.milestones.length > 0 && (
+          <div className="bg-primary-50 rounded-card p-4">
+            <h3 className="text-sm font-semibold text-primary mb-3">Payment Milestones ({job.milestones.length})</h3>
+            <div className="space-y-3">
+              {job.milestones.map((milestone, idx) => (
+                <div key={milestone.id} className="border border-primary-100 rounded-lg p-3 bg-white">
+                  <div className="flex justify-between items-start mb-1">
+                    <h4 className="font-medium text-primary">{milestone.title}</h4>
+                    <span className="text-sm font-bold text-accent">{job.currency} {milestone.amount.toLocaleString()}</span>
+                  </div>
+                  <p className="text-xs text-primary-500 mb-2">{milestone.description}</p>
+                  {milestone.due_date && (
+                    <p className="text-xs text-primary-400">
+                      Due: {new Date(milestone.due_date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Skills */}
         <div>
@@ -127,18 +246,25 @@ export default function JobDetailPage() {
 
         {/* Apply button — fixed bottom */}
         <div className="fixed bottom-16 left-0 right-0 bg-white border-t border-primary-100 p-4 safe-area-bottom z-30">
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-2xl mx-auto flex gap-3">
+            <button
+              onClick={() => setShowDisputeModal(true)}
+              className="px-4 bg-gray-100 text-gray-700 font-medium py-3.5 rounded-input hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 touch-target"
+            >
+              <AlertTriangle className="w-4 h-4" />
+              Dispute
+            </button>
             <button
               onClick={() => setShowApplyModal(true)}
-              className="w-full bg-accent text-white font-semibold py-3.5 rounded-input hover:bg-accent-600 transition-colors flex items-center justify-center gap-2 touch-target"
+              className="flex-1 bg-accent text-white font-semibold py-3.5 rounded-input hover:bg-accent-600 transition-colors flex items-center justify-center gap-2 touch-target"
             >
               <Send className="w-4 h-4" />
               Apply Now
             </button>
-            <p className="text-xs text-center text-primary-300 mt-2">
-              {job.applications_count} application{job.applications_count !== 1 ? "s" : ""} so far
-            </p>
           </div>
+          <p className="text-xs text-center text-primary-300 mt-2">
+            {job.applications_count} application{job.applications_count !== 1 ? "s" : ""} so far
+          </p>
         </div>
 
         {/* Apply Modal */}
@@ -147,6 +273,15 @@ export default function JobDetailPage() {
           jobTitle={job.title}
           isOpen={showApplyModal}
           onClose={() => setShowApplyModal(false)}
+        />
+
+        {/* File Dispute Modal */}
+        <FileDisputeModal
+          isOpen={showDisputeModal}
+          onClose={() => setShowDisputeModal(false)}
+          jobId={job.id}
+          jobTitle={job.title}
+          currentUserRole="worker"
         />
       </div>
     </WorkerLayout>
