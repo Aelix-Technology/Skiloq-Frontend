@@ -26,7 +26,7 @@ export default function JobDetailPage() {
   const error = null;
 
   const [selectedApp, setSelectedApp] = useState<string | null>(null);
-  const [offerAmount, setOfferAmount] = useState(job.budget_ghs.toString());
+  const [offerAmount, setOfferAmount] = useState(job.budget_amount.toString());
 
   const handleSendOffer = (workerId: string, workerName: string) => {
     // TODO: Replace with apiClient.post(`/jobs/${params.id}/offer/${workerId}`, { amount: parseInt(offerAmount) })
@@ -76,7 +76,9 @@ export default function JobDetailPage() {
               <span className="text-sm text-primary-300">{job.applications_count} applications</span>
             </div>
           </div>
-          <p className="text-2xl font-bold text-accent">GHS {job.budget_ghs.toLocaleString()}</p>
+          <p className="text-2xl font-bold text-accent">
+            {job.currency} {job.budget_amount.toLocaleString()}
+          </p>
         </div>
 
         <div className="flex flex-wrap gap-3">

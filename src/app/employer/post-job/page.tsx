@@ -562,7 +562,7 @@ export default function PostJobPage() {
 
               {milestones.length > 0 && (
                 <div className="text-sm text-primary-600">
-                  Total: GHS {milestones.reduce((sum, m) => sum + (m.amount_ghs || 0), 0).toLocaleString()}
+                  Total: GHS {milestones.reduce((sum, m) => sum + (m.amount || 0), 0).toLocaleString()}
                 </div>
               )}
             </div>
