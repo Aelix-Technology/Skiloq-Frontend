@@ -1,4 +1,6 @@
 // src/types/auth.ts
+import type { Country, Locale } from "./phase2";
+
 export type UserRole = "worker" | "employer" | "admin" | "agent";
 
 export interface User {
@@ -8,6 +10,9 @@ export interface User {
   role?: UserRole;
   is_active?: boolean;
   created_at?: string;
+  country?: Country;
+  preferred_locale?: Locale;
+  preferred_currency?: "GHS" | "NGN" | "KES" | "USD";
   [key: string]: unknown;
 }
 

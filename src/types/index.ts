@@ -49,3 +49,6 @@ export * from "./admin";
 
 // Agent
 export * from "./agent";
+
+// Phase 2 Expansion Features
+export * from "./phase2";
