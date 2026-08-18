@@ -1,9 +1,11 @@
 // src/components/dashboard/EarningsSummary.tsx
 "use client";
 
-import { TrendingUp, TrendingDown, DollarSign } from "lucide-react";
+import { TrendingUp, TrendingDown, DollarSign, Wallet, ArrowUpRight } from "lucide-react";
 import type { EarningsData } from "@/types/dashboard";
 import { IconTile, PremiumCard } from "@/components/ui/premium-card";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { Button } from "@/components/ui/button";
 
 interface EarningsSummaryProps {
   earnings: EarningsData;
@@ -17,85 +19,151 @@ export function EarningsSummary({ earnings }: EarningsSummaryProps) {
   );
 
   const barHeight = (value: number) => {
-    return maxValue > 0 ? `${(value / maxValue) * 100}%` : "0%";
+    return maxValue > 0 ? `${Math.max(10, (value / maxValue) * 100)}%` : "10%";
   };
 
   const platformDiff = earnings.this_month - earnings.platform_average;
   const isAboveAverage = platformDiff >= 0;
 
   return (
-    <div className="space-y-3">
-      <h2 className="text-md font-semibold tracking-tight text-primary">Earnings</h2>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="heading-3 text-lg m-0">Earnings</h2>
+        <Button variant="ghost" size="sm" className="h-8 px-3 text-xs">
+          View wallet <ArrowUpRight className="w-3.5 h-3.5 ml-1" />
+        </Button>
+      </div>
 
-      <PremiumCard interactive className="space-y-4">
-        <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-accent/10 blur-2xl" />
-        <div className="flex items-center gap-3">
-          <IconTile tone="accent">
-            <DollarSign className="h-5 w-5" />
-          </IconTile>
-          <div>
-            <p className="text-sm font-semibold text-primary">Earnings velocity</p>
-            <p className="text-xs text-primary-300">Weekly, monthly, and lifetime view</p>
+      <PremiumCard interactive className="relative overflow-hidden">
+        <div className="pointer-events-none absolute -right-24 -top-24 h-56 w-56 rounded-full blob-accent opacity-80" />
+        <div className="pointer-events-none absolute -left-20 bottom-0 h-48 w-48 rounded-full blob-success opacity-30" />
+
+        <div className="flex items-start justify-between mb-8">
+          <div className="flex items-start gap-4">
+            <IconTile tone="accent" size="lg">
+              <Wallet className="h-7 w-7" strokeWidth={2} />
+            </IconTile>
+            <div>
+              <h3 className="heading-3 text-base m-0 mb-1">Earnings velocity</h3>
+              <p className="body-text-sm m-0">Weekly, monthly, and lifetime view</p>
+            </div>
+          </div>
+          <div className="text-right">
+            <p className="font-heading text-xs text-primary-500 mb-1 font-semibold tracking-wide">THIS MONTH</p>
+            <p className="font-heading text-3xl font-bold tracking-tighter m-0 gradient-text-accent">
+              GHS {earnings.this_month.toLocaleString()}
+            </p>
           </div>
         </div>
-        {/* Bar chart */}
-        <div className="flex items-end justify-between gap-3 h-24">
-          <div className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
-            <span className="text-xs font-semibold text-primary">
-              GHS {earnings.this_week}
+
+        {/* Modern Bar chart */}
+        <div className="flex items-end justify-between gap-6 h-40 mb-8 px-2">
+          <div className="flex-1 flex flex-col items-center gap-3 h-full justify-end">
+            <span className="font-heading text-sm font-bold text-primary-900 tracking-tight">
+              GHS {earnings.this_week.toLocaleString()}
             </span>
-            <div
-              className="w-full max-w-[48px] bg-gradient-to-t from-accent to-accent-300 rounded-t-xl transition-all duration-700"
-              style={{ height: barHeight(earnings.this_week) }}
-            />
-            <span className="text-xs text-primary-300">This Week</span>
+            <div className="w-full flex items-end justify-center h-full">
+              <div
+                className="w-full max-w-16 rounded-t-2xl transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] relative overflow-hidden"
+                style={{
+                  height: barHeight(earnings.this_week),
+                  background:
+                    "linear-gradient(180deg, var(--color-accent-400) 0%, var(--color-accent-600) 100%)",
+                  boxShadow: "0 8px 24px -10px rgba(99, 102, 241, 0.45)",
+                }}
+              >
+                <div className="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-white/30 to-transparent" />
+              </div>
+            </div>
+            <span className="text-xs font-semibold text-primary-500 tracking-wide">This Week</span>
           </div>
 
-          <div className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
-            <span className="text-xs font-semibold text-primary">
-              GHS {earnings.this_month}
+          <div className="flex-1 flex flex-col items-center gap-3 h-full justify-end">
+            <span className="font-heading text-sm font-bold text-primary-900 tracking-tight">
+              GHS {earnings.this_month.toLocaleString()}
             </span>
-            <div
-              className="w-full max-w-[48px] bg-gradient-to-t from-accent-300 to-accent-100 rounded-t-xl transition-all duration-700"
-              style={{ height: barHeight(earnings.this_month) }}
-            />
-            <span className="text-xs text-primary-300">This Month</span>
+            <div className="w-full flex items-end justify-center h-full">
+              <div
+                className="w-full max-w-16 rounded-t-2xl transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] relative overflow-hidden"
+                style={{
+                  height: barHeight(earnings.this_month),
+                  background:
+                    "linear-gradient(180deg, var(--color-accent-secondary) 0%, var(--color-success) 100%)",
+                  boxShadow: "0 8px 24px -10px rgba(16, 185, 129, 0.4)",
+                }}
+              >
+                <div className="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-white/30 to-transparent" />
+              </div>
+            </div>
+            <span className="text-xs font-semibold text-primary-500 tracking-wide">This Month</span>
           </div>
 
-          <div className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
-            <span className="text-xs font-semibold text-primary">
+          <div className="flex-1 flex flex-col items-center gap-3 h-full justify-end">
+            <span className="font-heading text-sm font-bold text-primary-900 tracking-tight">
               GHS {(earnings.all_time / 1000).toFixed(1)}K
             </span>
-            <div
-              className="w-full max-w-[48px] bg-gradient-to-t from-primary to-primary-300 rounded-t-xl transition-all duration-700"
-              style={{ height: barHeight(earnings.all_time / 10) }}
-            />
-            <span className="text-xs text-primary-300">All Time</span>
+            <div className="w-full flex items-end justify-center h-full">
+              <div
+                className="w-full max-w-16 rounded-t-2xl transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] relative overflow-hidden"
+                style={{
+                  height: barHeight(earnings.all_time / 10),
+                  background:
+                    "linear-gradient(180deg, var(--color-primary-600) 0%, var(--color-primary-900) 100%)",
+                  boxShadow: "0 8px 24px -10px rgba(15, 23, 42, 0.4)",
+                }}
+              >
+                <div className="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-white/25 to-transparent" />
+              </div>
+            </div>
+            <span className="text-xs font-semibold text-primary-500 tracking-wide">All Time</span>
           </div>
         </div>
 
-        {/* Platform comparison */}
-        <div
-          className={`flex items-center gap-3 rounded-xl p-3 ${
-            isAboveAverage ? "bg-success/5 border border-success/20" : "bg-warning/5 border border-warning/20"
-          }`}
+        {/* Platform comparison — Modern */}
+        <PremiumCard
+          paddingSize="md"
+          className={`relative overflow-hidden`}
+          style={{
+            background: isAboveAverage
+              ? "linear-gradient(135deg, var(--color-success-50) 0%, #F0FDF4 100%)"
+              : "linear-gradient(135deg, var(--color-warning-50) 0%, #FFFBEB 100%)",
+            border: isAboveAverage
+              ? "1px solid var(--color-success-100)"
+              : "1px solid var(--color-warning-100)",
+          }}
         >
-          {isAboveAverage ? (
-            <TrendingUp className={`w-5 h-5 text-success shrink-0`} />
-          ) : (
-            <TrendingDown className="w-5 h-5 text-warning shrink-0" />
-          )}
-          <div>
-            <p className={`text-sm font-medium ${isAboveAverage ? "text-success" : "text-warning"}`}>
-              {isAboveAverage
-                ? `${Math.abs(platformDiff)}% above platform average`
-                : `${Math.abs(platformDiff)}% below platform average`}
-            </p>
-            <p className="text-xs text-primary-300">
-              Platform avg: GHS {earnings.platform_average.toLocaleString()}/mo
-            </p>
+          <div className="flex items-center gap-4">
+            <IconTile
+              tone={isAboveAverage ? "success" : "warning"}
+              size="md"
+              className="shrink-0"
+            >
+              {isAboveAverage ? (
+                <TrendingUp className="h-5 w-5" strokeWidth={2.25} />
+              ) : (
+                <TrendingDown className="h-5 w-5" strokeWidth={2.25} />
+              )}
+            </IconTile>
+            <div className="flex-1 min-w-0">
+              <p
+                className={`font-heading text-base font-bold tracking-tight m-0 mb-1 ${
+                  isAboveAverage ? "text-success-700" : "text-warning-700"
+                }`}
+              >
+                {Math.abs(platformDiff)}% {isAboveAverage ? "above" : "below"} platform average
+              </p>
+              <p className="text-sm m-0 text-primary-600">
+                Platform avg:{" "}
+                <span className="font-semibold text-primary-800">
+                  GHS {earnings.platform_average.toLocaleString()}/mo
+                </span>
+              </p>
+            </div>
+            <StatusBadge tone={isAboveAverage ? "success" : "pending"} className="shrink-0">
+              {isAboveAverage ? "Outperforming" : "Room to grow"}
+            </StatusBadge>
           </div>
-        </div>
+        </PremiumCard>
       </PremiumCard>
     </div>
   );

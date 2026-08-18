@@ -5,33 +5,37 @@ import { Slot } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "group/button inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl border border-transparent bg-clip-padding text-sm font-semibold whitespace-nowrap transition-all outline-none select-none hover:-translate-y-1 hover:shadow-lg active:scale-95 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button relative inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl border border-transparent font-sans text-sm font-semibold whitespace-nowrap transition-all duration-300 outline-none select-none cursor-pointer hover:-translate-y-0.5 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed aria-invalid:border-danger aria-invalid:ring-4 aria-invalid:ring-danger-50 dark:aria-invalid:border-danger/50 dark:aria-invalid:ring-danger/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 tracking-tight",
   {
     variants: {
       variant: {
-        default: "bg-primary text-white shadow-primary/15 [a]:hover:bg-primary/80",
+        default:
+          "bg-gradient-to-b from-primary-800 to-primary-900 text-white shadow-md shadow-primary-900/10 hover:shadow-lg hover:shadow-primary-900/20 hover:from-primary-700 hover:to-primary-800",
+        accent:
+          "bg-gradient-to-b from-accent-500 to-accent-600 text-white shadow-md shadow-accent-500/15 hover:shadow-lg hover:shadow-accent-500/25 hover:from-accent-400 hover:to-accent-500",
         outline:
-          "border-primary-100 bg-white/80 text-primary backdrop-blur-xl hover:border-accent/30 hover:bg-accent-50 hover:text-accent aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
+          "border-2 border-primary-200 bg-surface text-primary-800 hover:border-accent-400 hover:bg-accent-50 hover:text-accent-700 hover:border-accent-300 shadow-xs",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+          "bg-primary-50 text-primary-800 hover:bg-primary-100 shadow-xs",
         ghost:
-          "hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
+          "text-primary-600 hover:bg-primary-50 hover:text-primary-900",
+        success:
+          "bg-gradient-to-b from-success-500 to-success-700 text-white shadow-md shadow-success-500/15 hover:shadow-lg hover:shadow-success-500/25 hover:from-success-400 hover:to-success-600",
         destructive:
-          "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
-        link: "text-primary underline-offset-4 hover:underline",
+          "bg-danger-50 text-danger-600 hover:bg-danger-100 border-danger-100 shadow-xs",
+        link: "text-accent-600 underline-offset-4 hover:underline p-0 h-auto rounded-none",
       },
       size: {
         default:
-          "h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        xs: "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        icon: "size-8",
-        "icon-xs":
-          "size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
-        "icon-sm":
-          "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
-        "icon-lg": "size-9",
+          "h-12 px-6 py-3 text-sm",
+        xs: "h-8 px-3 py-1.5 rounded-xl text-xs",
+        sm: "h-10 px-4 py-2 rounded-xl text-xs",
+        lg: "h-14 px-8 py-4 text-base rounded-[20px]",
+        xl: "h-16 px-10 py-5 text-base rounded-[22px]",
+        icon: "h-12 w-12",
+        "icon-xs": "h-8 w-8 rounded-xl [&_svg:not([class*='size-'])]:size-4",
+        "icon-sm": "h-10 w-10 rounded-xl [&_svg:not([class*='size-'])]:size-4",
+        "icon-lg": "h-14 w-14 rounded-[18px] [&_svg:not([class*='size-'])]:size-5",
       },
     },
     defaultVariants: {
@@ -46,6 +50,7 @@ function Button({
   variant = "default",
   size = "default",
   asChild = false,
+  children,
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
@@ -60,7 +65,9 @@ function Button({
       data-size={size}
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
-    />
+    >
+      {children}
+    </Comp>
   )
 }
 

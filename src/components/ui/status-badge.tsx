@@ -4,11 +4,16 @@ import { cn } from "@/lib/utils";
 type StatusTone = "success" | "pending" | "progress" | "danger" | "neutral";
 
 const toneClasses: Record<StatusTone, string> = {
-  success: "border-success/20 bg-success/10 text-success",
-  pending: "border-warning/20 bg-warning/10 text-warning",
-  progress: "border-accent/20 bg-accent/10 text-accent",
-  danger: "border-danger/20 bg-danger/10 text-danger",
-  neutral: "border-primary-100 bg-primary-50 text-primary-300",
+  success:
+    "border-success-100 bg-success-50 text-success-700",
+  pending:
+    "border-warning-100 bg-warning-50 text-warning-700",
+  progress:
+    "border-accent-100 bg-accent-50 text-accent-700",
+  danger:
+    "border-danger-100 bg-danger-50 text-danger-700",
+  neutral:
+    "border-primary-100 bg-primary-50 text-primary-600",
 };
 
 export function StatusBadge({
@@ -23,11 +28,29 @@ export function StatusBadge({
   return (
     <span
       className={cn(
-        "inline-flex min-h-6 items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-semibold",
+        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold shadow-xs tracking-wide",
         toneClasses[tone],
         className
       )}
     >
+      <span className="relative flex size-1.5">
+        <span className={cn(
+          "animate-ping absolute inline-flex h-full w-full rounded-full opacity-40",
+          tone === "success" && "bg-success-400",
+          tone === "pending" && "bg-warning-400",
+          tone === "progress" && "bg-accent-400",
+          tone === "danger" && "bg-danger-400",
+          tone === "neutral" && "bg-primary-400",
+        )}></span>
+        <span className={cn(
+          "relative inline-flex rounded-full size-1.5",
+          tone === "success" && "bg-success-500",
+          tone === "pending" && "bg-warning-500",
+          tone === "progress" && "bg-accent-500",
+          tone === "danger" && "bg-danger-500",
+          tone === "neutral" && "bg-primary-500",
+        )}></span>
+      </span>
       {children}
     </span>
   );
