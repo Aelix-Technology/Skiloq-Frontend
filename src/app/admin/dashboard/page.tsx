@@ -30,7 +30,7 @@ export default function AdminDashboardPage() {
       <AdminLayout>
         <div className="mx-auto px-4 lg:px-6 max-w-7xl space-y-6 animate-pulse">
           <div className="h-8 w-48 bg-white/75 rounded-lg" />
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="h-28 bg-white/75 rounded-2xl border border-white/60" />
             ))}
@@ -51,7 +51,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5">
           {statCards.map((card, i) => (
             <motion.div
               key={card.key}

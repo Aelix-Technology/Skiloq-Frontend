@@ -126,8 +126,9 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
       <div
-        className="lg:pl-64 transition-all duration-300"
-        style={{ paddingLeft: collapsed ? "72px" : undefined }}
+        className={`transition-all duration-300 w-full min-h-screen flex flex-col ${
+          collapsed ? "lg:pl-[72px]" : "lg:pl-64"
+        }`}
       >
         <header className="sticky top-0 z-20 bg-white border-b border-gray-100 h-16 flex items-center px-4 md:px-6 gap-4">
           <button

@@ -58,45 +58,47 @@ export default function WorkerDashboardPage() {
               </div>
 
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-4 rounded-xl bg-[#F0F5FF] border border-[#E0E7FF]">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-white border border-[#E0E7FF] flex items-center justify-center text-[#2563EB]">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-[#F0F5FF] border border-[#E0E7FF]">
+                  <div className="flex items-start sm:items-center gap-4 flex-1">
+                    <div className="w-10 h-10 rounded-lg bg-white border border-[#E0E7FF] flex items-center justify-center text-[#2563EB] shrink-0">
                       <UserCircle className="w-5 h-5" />
                     </div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 text-sm">Biometric Identity Update</h4>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="font-bold text-gray-900 text-sm truncate">Biometric Identity Update</h4>
                       <p className="text-xs text-gray-500 mt-0.5">Update your face-match verification for the new quarter.</p>
                     </div>
                   </div>
-                  <button className="px-5 py-2.5 bg-[#2563EB] text-white text-xs font-bold rounded-lg hover:bg-[#1D4ED8] transition-colors">
+                  <button className="w-full sm:w-auto px-5 py-2.5 bg-[#2563EB] text-white text-xs font-bold rounded-lg hover:bg-[#1D4ED8] transition-colors text-center shrink-0">
                     Start
                   </button>
                 </div>
 
-                <div className="flex items-center justify-between p-4 rounded-xl border border-gray-100 bg-gray-50/50">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-white border border-green-100 flex items-center justify-center text-green-600">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl border border-gray-100 bg-gray-50/50">
+                  <div className="flex items-start sm:items-center gap-4 flex-1">
+                    <div className="w-10 h-10 rounded-lg bg-white border border-green-100 flex items-center justify-center text-green-600 shrink-0">
                       <CheckCircle2 className="w-5 h-5" />
                     </div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 text-sm">Phone Number Verified</h4>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="font-bold text-gray-900 text-sm truncate">Phone Number Verified</h4>
                       <p className="text-xs text-gray-500 mt-0.5">Successfully linked to +234 ••• ••• 44</p>
                     </div>
                   </div>
-                  <CheckCircle2 className="w-6 h-6 text-green-500" />
+                  <div className="flex justify-end sm:block shrink-0">
+                    <CheckCircle2 className="w-6 h-6 text-green-500" />
+                  </div>
                 </div>
 
-                <div className="flex items-center justify-between p-4 rounded-xl border border-gray-100 bg-gray-50/50">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-white border border-[#E0E7FF] flex items-center justify-center text-[#2563EB]">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl border border-gray-100 bg-gray-50/50">
+                  <div className="flex items-start sm:items-center gap-4 flex-1">
+                    <div className="w-10 h-10 rounded-lg bg-white border border-[#E0E7FF] flex items-center justify-center text-[#2563EB] shrink-0">
                       <FileCheck className="w-5 h-5" />
                     </div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 text-sm">Bank Account Link</h4>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="font-bold text-gray-900 text-sm truncate">Bank Account Link</h4>
                       <p className="text-xs text-gray-500 mt-0.5">Required for withdrawal to USD accounts.</p>
                     </div>
                   </div>
-                  <button className="px-5 py-2.5 bg-white text-[#2563EB] text-xs font-bold rounded-lg border-2 border-[#2563EB] hover:bg-[#F0F5FF] transition-colors">
+                  <button className="w-full sm:w-auto px-5 py-2.5 bg-white text-[#2563EB] text-xs font-bold rounded-lg border-2 border-[#2563EB] hover:bg-[#F0F5FF] transition-colors text-center shrink-0">
                     Connect
                   </button>
                 </div>
@@ -308,33 +310,37 @@ export default function WorkerDashboardPage() {
                 match: null,
               },
             ].map((job, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-gray-200 p-5 flex items-center gap-5 hover:shadow-lg hover:border-[#DBEAFE] transition-all">
-                <div className="w-14 h-14 rounded-xl bg-[#F0F5FF] flex items-center justify-center text-[#2563EB] shrink-0">
-                  <job.icon className="w-7 h-7" />
-                </div>
+              <div key={i} className="bg-white rounded-2xl border border-gray-200 p-5 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 hover:shadow-lg hover:border-[#DBEAFE] transition-all">
+                <div className="flex items-start gap-4 flex-1 min-w-0">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-[#F0F5FF] flex items-center justify-center text-[#2563EB] shrink-0">
+                    <job.icon className="w-6 h-6 sm:w-7 sm:h-7" />
+                  </div>
 
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-bold text-gray-900 mb-2 truncate">{job.title}</h4>
-                  <div className="flex items-center gap-4 text-xs text-gray-500 flex-wrap">
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5" />
-                      {job.type}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <DollarSign className="w-3.5 h-3.5" />
-                      {job.budget}
-                    </span>
-                    <div className="flex items-center gap-1.5">
-                      {job.tags.map((tag) => (
-                        <span key={tag} className="px-2.5 py-1 rounded-lg bg-gray-100 text-gray-600 font-semibold text-[10px]">
-                          {tag}
-                        </span>
-                      ))}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-bold text-gray-900 mb-1.5 text-sm sm:text-base truncate">{job.title}</h4>
+                    <div className="flex items-center gap-3 sm:gap-4 text-xs text-gray-500 flex-wrap">
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3.5 h-3.5" />
+                        {job.type}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <DollarSign className="w-3.5 h-3.5" />
+                        {job.budget}
+                      </span>
+                      {job.tags.length > 0 && (
+                        <div className="flex items-center gap-1.5">
+                          {job.tags.map((tag) => (
+                            <span key={tag} className="px-2 py-0.5 rounded-lg bg-gray-100 text-gray-600 font-semibold text-[10px]">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 shrink-0">
+                <div className="flex items-center justify-between sm:justify-end gap-3 pt-3 sm:pt-0 border-t border-gray-50 sm:border-0 shrink-0">
                   {job.match && (
                     <span className="px-3 py-1 rounded-full bg-green-50 text-green-600 text-xs font-bold">
                       {job.match}
@@ -342,7 +348,7 @@ export default function WorkerDashboardPage() {
                   )}
                   <button
                     onClick={() => router.push("/worker/opportunities")}
-                    className="px-5 py-2.5 bg-[#2563EB] text-white text-xs font-bold rounded-lg hover:bg-[#1D4ED8] transition-colors shadow-[0_4px_12px_-2px_rgba(37,99,235,0.4)]"
+                    className="w-full sm:w-auto px-5 py-2.5 bg-[#2563EB] text-white text-xs font-bold rounded-lg hover:bg-[#1D4ED8] transition-colors shadow-[0_4px_12px_-2px_rgba(37,99,235,0.4)] text-center"
                   >
                     Apply
                   </button>

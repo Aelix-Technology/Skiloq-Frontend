@@ -64,13 +64,13 @@ export default function EmployerDashboardPage() {
               </div>
 
               <div>
-                <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 hover:bg-gray-50/50 transition-colors cursor-pointer">
-                  <div className="flex items-start gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between px-6 py-5 border-b border-gray-100 hover:bg-gray-50/50 transition-colors cursor-pointer gap-4">
+                  <div className="flex items-start gap-4 flex-1">
                     <div className="w-12 h-12 rounded-xl bg-[#F0F5FF] flex items-center justify-center text-[#2563EB] shrink-0">
                       <Briefcase className="w-6 h-6" />
                     </div>
-                    <div>
-                      <h4 className="font-bold text-lg text-gray-900">Senior React Developer</h4>
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-lg text-gray-900 truncate">Senior React Developer</h4>
                       <div className="flex items-center gap-3 mt-2 text-sm text-gray-500">
                         <span className="flex items-center gap-1">
                           <Clock className="w-4 h-4" />
@@ -83,8 +83,8 @@ export default function EmployerDashboardPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4">
-                    <div className="text-right">
+                  <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto pt-3 sm:pt-0 border-t border-gray-50 sm:border-0 shrink-0">
+                    <div className="text-left sm:text-right">
                       <p className="text-base font-bold text-gray-900">12 Applications</p>
                       <p className="text-sm text-[#2563EB] font-semibold">4 New</p>
                     </div>
@@ -92,13 +92,13 @@ export default function EmployerDashboardPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between px-6 py-5 hover:bg-gray-50/50 transition-colors cursor-pointer">
-                  <div className="flex items-start gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between px-6 py-5 hover:bg-gray-50/50 transition-colors cursor-pointer gap-4">
+                  <div className="flex items-start gap-4 flex-1">
                     <div className="w-12 h-12 rounded-xl bg-[#F0F5FF] flex items-center justify-center text-[#2563EB] shrink-0">
                       <Briefcase className="w-6 h-6" />
                     </div>
-                    <div>
-                      <h4 className="font-bold text-lg text-gray-900">UI/UX Product Designer</h4>
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-lg text-gray-900 truncate">UI/UX Product Designer</h4>
                       <div className="flex items-center gap-3 mt-2 text-sm text-gray-500">
                         <span className="flex items-center gap-1">
                           <Clock className="w-4 h-4" />
@@ -111,8 +111,8 @@ export default function EmployerDashboardPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4">
-                    <div className="text-right">
+                  <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto pt-3 sm:pt-0 border-t border-gray-50 sm:border-0 shrink-0">
+                    <div className="text-left sm:text-right flex-1 sm:flex-initial">
                       <p className="text-base font-bold text-gray-900">Project milestones</p>
                       <div className="flex items-center gap-2 mt-1">
                         <div className="w-32 h-2 rounded-full bg-gray-100 overflow-hidden">
@@ -151,26 +151,28 @@ export default function EmployerDashboardPage() {
                     img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&h=160&fit=crop&crop=faces",
                   },
                 ].map((app, i) => (
-                  <div key={i} className="flex items-center gap-5 p-4 rounded-xl border border-gray-200 hover:bg-gray-50/50 transition-colors">
-                    <img
-                      src={app.img}
-                      alt={app.name}
-                      className="w-14 h-14 rounded-xl object-cover shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-bold text-lg text-gray-900">{app.name}</h4>
-                        {app.verified && (
-                          <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0" />
-                        )}
+                  <div key={i} className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 rounded-xl border border-gray-200 hover:bg-gray-50/50 transition-colors">
+                    <div className="flex items-start sm:items-center gap-4 flex-1 min-w-0">
+                      <img
+                        src={app.img}
+                        alt={app.name}
+                        className="w-14 h-14 rounded-xl object-cover shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h4 className="font-bold text-lg text-gray-900 truncate">{app.name}</h4>
+                          {app.verified && (
+                            <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0" />
+                          )}
+                        </div>
+                        <p className="text-sm text-gray-500 mt-1">
+                          {app.role} • {app.rate}
+                        </p>
                       </div>
-                      <p className="text-sm text-gray-500 mt-1">
-                        {app.role} • {app.rate}
-                      </p>
                     </div>
 
-                    <div className="flex items-center gap-4 shrink-0">
-                      <div className="min-w-[180px]">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full lg:w-auto pt-3 lg:pt-0 border-t lg:border-0 border-gray-100 shrink-0">
+                      <div className="w-full sm:w-44 lg:w-48 shrink-0">
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Trust Score</span>
                           <span className="text-sm font-extrabold text-gray-900">{app.trustScore}</span>
@@ -183,12 +185,14 @@ export default function EmployerDashboardPage() {
                         </div>
                       </div>
 
-                      <button className="w-11 h-11 rounded-xl bg-[#F0F5FF] text-[#2563EB] flex items-center justify-center hover:bg-[#DBEAFE] transition-colors">
-                        <MessageSquare className="w-5 h-5" />
-                      </button>
-                      <button className="px-6 py-3 bg-[#1A1F36] text-white text-sm font-bold rounded-xl hover:bg-gray-900 transition-colors shadow-[0_4px_12px_-2px_rgba(26,31,54,0.3)]">
-                        Review
-                      </button>
+                      <div className="flex items-center gap-2 w-full sm:w-auto justify-end sm:justify-start">
+                        <button className="w-11 h-11 rounded-xl bg-[#F0F5FF] text-[#2563EB] flex items-center justify-center hover:bg-[#DBEAFE] transition-colors shrink-0">
+                          <MessageSquare className="w-5 h-5" />
+                        </button>
+                        <button className="flex-1 sm:flex-initial px-6 py-3 bg-[#1A1F36] text-white text-sm font-bold rounded-xl hover:bg-gray-900 transition-colors shadow-[0_4px_12px_-2px_rgba(26,31,54,0.3)] text-center shrink-0">
+                          Review
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
