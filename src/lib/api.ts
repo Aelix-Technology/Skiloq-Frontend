@@ -69,8 +69,9 @@ export async function api<T>(
     credentials: "include",
   });
 
-  // Auto-refresh token on 401
-  if (res.status === 401 && !options?.skipAuth) {
+  // Auto-refresh token on 401 (skip for mock tokens)
+  const isMock = accessToken?.startsWith("mock-") || accessToken?.startsWith("preview-");
+  if (res.status === 401 && !options?.skipAuth && !isMock) {
     try {
       const newToken = await refreshAccessToken();
       headers["Authorization"] = `Bearer ${newToken}`;

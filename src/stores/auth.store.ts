@@ -54,7 +54,12 @@ export const useAuthStore = create<AuthState>()(
       logout: () => {
         setAccessToken(null);
         if (typeof window !== "undefined") {
-          localStorage.removeItem(STORAGE_KEY);
+          try {
+            localStorage.removeItem(STORAGE_KEY);
+            sessionStorage.clear();
+          } catch {
+            // ignore
+          }
         }
         set({
           user: null,
@@ -88,29 +93,3 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 );
-
-// Mock mode: clear corrupted persisted state on load
-if (
-  typeof window !== "undefined" &&
-  process.env.NEXT_PUBLIC_API_MODE === "mock"
-) {
-  // Clear old mis-keyed storage entries
-  const oldStorage = localStorage.getItem("Skiloq-auth-storage");
-  if (oldStorage) {
-    localStorage.removeItem("Skiloq-auth-storage");
-  }
-
-  // Validate current storage — drop unauthenticated entries so
-  // ProtectedRoute IS_DEV path can inject a fresh mock user
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored) {
-    try {
-      const parsed = JSON.parse(stored);
-      if (!parsed?.state?.isAuthenticated) {
-        localStorage.removeItem(STORAGE_KEY);
-      }
-    } catch {
-      localStorage.removeItem(STORAGE_KEY);
-    }
-  }
-}

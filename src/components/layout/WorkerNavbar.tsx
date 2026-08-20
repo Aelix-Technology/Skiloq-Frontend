@@ -36,8 +36,10 @@ export function WorkerNavbar() {
 
   const handleLogout = () => {
     logout();
-    router.push("/login");
     toasts.loggedOut();
+    if (typeof window !== "undefined") {
+      window.location.href = "/login";
+    }
   };
 
   return (
@@ -111,6 +113,16 @@ export function WorkerNavbar() {
               </div>
             )}
           </div>
+
+          {/* Logout direct button */}
+          <button
+            onClick={handleLogout}
+            title="Sign Out"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50/80 hover:bg-red-100 rounded-xl border border-red-200/60 transition-all active:scale-95 ml-1"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Logout</span>
+          </button>
 
           {/* Mobile menu toggle */}
           <button

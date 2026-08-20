@@ -43,8 +43,10 @@ export function EmployerNavbar() {
 
   const handleLogout = () => {
     logout();
-    router.push("/login");
     toasts.loggedOut();
+    if (typeof window !== "undefined") {
+      window.location.href = "/login";
+    }
   };
 
   const isActive = (href: string) => {
@@ -155,6 +157,16 @@ export function EmployerNavbar() {
               </div>
             )}
           </div>
+
+          {/* Direct Logout Button */}
+          <button
+            onClick={handleLogout}
+            title="Sign Out"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-danger bg-danger/5 hover:bg-danger/10 rounded-xl border border-danger/15 transition-all active:scale-95 ml-1"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Logout</span>
+          </button>
 
           {/* Mobile menu toggle */}
           <button

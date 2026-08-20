@@ -29,8 +29,10 @@ export function WorkerLayout({ children }: { children: React.ReactNode }) {
 
   const handleLogout = () => {
     logout();
-    router.push("/login");
     toasts.loggedOut();
+    if (typeof window !== "undefined") {
+      window.location.href = "/login";
+    }
   };
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
@@ -114,7 +116,7 @@ export function WorkerLayout({ children }: { children: React.ReactNode }) {
           ))}
         </nav>
 
-        <div className="px-3 py-4 border-t border-gray-100 shrink-0">
+        <div className="px-3 py-3 border-t border-gray-100 shrink-0 space-y-2">
           <button
             onClick={() => router.push("/worker/opportunities")}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
@@ -123,6 +125,16 @@ export function WorkerLayout({ children }: { children: React.ReactNode }) {
           >
             <Search className="w-4 h-4 shrink-0" />
             {!collapsed && <span>Find Jobs</span>}
+          </button>
+
+          <button
+            onClick={handleLogout}
+            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-red-500 hover:bg-red-50 transition-colors ${
+              collapsed ? "justify-center px-2 py-2" : ""
+            }`}
+          >
+            <LogOut className="w-4 h-4 shrink-0" />
+            {!collapsed && <span>Sign Out</span>}
           </button>
         </div>
 
@@ -200,6 +212,15 @@ export function WorkerLayout({ children }: { children: React.ReactNode }) {
             alt="User"
             className="w-10 h-10 rounded-full object-cover border-2 border-gray-100 cursor-pointer hover:border-[#2563EB] transition-colors"
           />
+
+          <button
+            onClick={handleLogout}
+            title="Sign Out"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded-xl border border-red-100 transition-all active:scale-95 shadow-sm"
+          >
+            <LogOut className="w-4 h-4" />
+            <span className="hidden sm:inline">Sign Out</span>
+          </button>
         </header>
 
         <main className="p-4 md:p-6 max-w-[1400px] mx-auto">{children}</main>

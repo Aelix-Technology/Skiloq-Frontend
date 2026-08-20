@@ -26,8 +26,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   const handleLogout = () => {
     logout();
-    router.push("/login");
     toasts.loggedOut();
+    if (typeof window !== "undefined") {
+      window.location.href = "/login";
+    }
   };
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
@@ -86,8 +88,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           ))}
         </nav>
 
-        <div className="px-3 py-4 border-t border-white/10 shrink-0">
-          <div className="flex items-center gap-3 px-3 py-3">
+        <div className="px-3 py-3 border-t border-white/10 shrink-0">
+          <div className="flex items-center gap-3 px-3 py-2">
             <img
               src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=160&h=160&fit=crop&crop=faces"
               alt="Admin"
@@ -100,6 +102,15 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               </div>
             )}
           </div>
+          <button
+            onClick={handleLogout}
+            className={`mt-1 w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors ${
+              collapsed ? "justify-center" : ""
+            }`}
+          >
+            <LogOut className="w-4 h-4 shrink-0" />
+            {!collapsed && <span>Sign Out</span>}
+          </button>
         </div>
 
         {collapsed && (
@@ -144,11 +155,13 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             <span className="absolute top-2.5 right-2.5 w-3 h-3 bg-red-500 rounded-full ring-2 ring-white" />
           </button>
 
-          <div className="h-8 w-px bg-gray-200 mx-1 hidden md:block" />
-
-          <button className="hidden md:flex items-center gap-2 bg-white border-2 border-gray-200 rounded-2xl px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors">
-            <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
-            Queue Live
+          <button
+            onClick={handleLogout}
+            title="Sign Out"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded-xl border border-red-100 transition-all active:scale-95 shadow-sm ml-1"
+          >
+            <LogOut className="w-4 h-4" />
+            <span className="hidden sm:inline">Sign Out</span>
           </button>
         </header>
 

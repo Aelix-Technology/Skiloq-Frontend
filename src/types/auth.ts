@@ -13,6 +13,7 @@ export interface User {
   country?: Country;
   preferred_locale?: Locale;
   preferred_currency?: "GHS" | "NGN" | "KES" | "USD";
+  is_mock?: boolean;
   [key: string]: unknown;
 }
 

@@ -12,8 +12,10 @@ export function AgentLayout({ children }: { children: React.ReactNode }) {
 
   const handleLogout = () => {
     logout();
-    router.push("/login");
     toasts.loggedOut();
+    if (typeof window !== "undefined") {
+      window.location.href = "/login";
+    }
   };
 
   return (
@@ -34,9 +36,11 @@ export function AgentLayout({ children }: { children: React.ReactNode }) {
             </button>
             <button
               onClick={handleLogout}
-              className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors"
+              title="Sign Out"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-white/15 hover:bg-white/25 text-white transition-colors"
             >
-              <LogOut className="w-5 h-5" />
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Sign Out</span>
             </button>
           </div>
         </div>
