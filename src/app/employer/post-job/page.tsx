@@ -9,6 +9,7 @@ import { toasts } from "@/lib/toasts";
 import { ArrowLeft, Plus, X, Info, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import type { JobType, TutoringDetails, OnlineIncomeDetails, Milestone } from "@/types/job";
+import { SmartScopeGenerator, type ScopeDocument } from "@/components/employer/SmartScopeGenerator";
 
 const skillOptions = [
   "React Developer", "TypeScript", "UI Designer", "Figma", "Node.js",
@@ -80,6 +81,9 @@ export default function PostJobPage() {
 
   // Milestone State
   const [milestones, setMilestones] = useState<Milestone[]>([]);
+
+  // Phase 2 AI Smart Scope State
+  const [scopeDocument, setScopeDocument] = useState<ScopeDocument | null>(null);
 
   const toggleSkill = (skill: string) => {
     setSkills((prev) =>
@@ -583,6 +587,15 @@ export default function PostJobPage() {
             />
             <p className="text-xs text-primary-300 mt-1">{description.length}/2000</p>
           </div>
+
+          {/* Phase 2: Smart Scope Generator (AI Escrow Shield) */}
+          <SmartScopeGenerator
+            jobTitle={title}
+            jobDescription={description}
+            skills={skills}
+            scope={scopeDocument}
+            onScopeChange={setScopeDocument}
+          />
 
           {/* Budget */}
           <div>

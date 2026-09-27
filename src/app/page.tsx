@@ -11,9 +11,9 @@ import { HireTopTalent } from "@/components/landing/HireTopTalent";
 import { FeaturedJobs } from "@/components/landing/FeaturedJobs";
 import { FeaturedTalent } from "@/components/landing/FeaturedTalent";
 import { Testimonials } from "@/components/landing/Testimonials";
+import { StrategicPillars } from "@/components/landing/StrategicPillars";
 import { FAQ } from "@/components/landing/FAQ";
 import { Footer } from "@/components/landing/Footer";
-
 
 export default function LandingPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -26,7 +26,8 @@ export default function LandingPage() {
         selectedCategory={selectedCategory}
         onSelectCategory={setSelectedCategory}
       />
-       <FeaturedTalent selectedCategory={selectedCategory} />
+      <StrategicPillars />
+      <FeaturedTalent selectedCategory={selectedCategory} />
       <FeaturedJobs selectedCategory={selectedCategory} />
       <SocialProof />
       

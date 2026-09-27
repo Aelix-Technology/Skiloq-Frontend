@@ -5,14 +5,18 @@ import { useRouter, usePathname } from "next/navigation";
 import {
   LayoutDashboard, Briefcase, Wallet, MessageSquare, CalendarDays,
   Shield, Search, Bell, HelpCircle, ChevronLeft, Menu, LogOut,
+  Trophy, Users, GraduationCap,
 } from "lucide-react";
 import { useAuthStore } from "@/stores/auth.store";
 import { toasts } from "@/lib/toasts";
 
 const sidebarLinks = [
   { label: "Dashboard", href: "/worker/dashboard", icon: LayoutDashboard },
-  { label: "Jobs", href: "/worker/opportunities", icon: Briefcase },
-  { label: "Wallet", href: "/worker/wallet", icon: Wallet },
+  { label: "Find Jobs", href: "/worker/opportunities", icon: Briefcase },
+  { label: "Financial Hub", href: "/worker/wallet", icon: Wallet },
+  { label: "Leaderboards", href: "/worker/leaderboards", icon: Trophy },
+  { label: "Community", href: "/worker/community", icon: Users },
+  { label: "Academy", href: "/academy", icon: GraduationCap },
   { label: "Messages", href: "/worker/messages", icon: MessageSquare },
   { label: "Bookings", href: "/worker/bookings", icon: CalendarDays },
   { label: "Verification", href: "/worker/verification", icon: Shield },

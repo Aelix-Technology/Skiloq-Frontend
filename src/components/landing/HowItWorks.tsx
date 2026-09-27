@@ -1,62 +1,77 @@
+// src/components/landing/HowItWorks.tsx
 "use client";
 
 import { motion } from "framer-motion";
-import { ShieldCheck, Target, Video, Clipboard, Settings } from "lucide-react";
+import {
+  Smartphone,
+  CreditCard,
+  Target,
+  FileCode2,
+  CheckCircle,
+  MapPin,
+  Star,
+  ShieldCheck,
+  TrendingUp,
+} from "lucide-react";
 
-const steps = [
+const verificationLayers = [
   {
-    id: 1,
-    title: "Identity Verification",
-    description: ["Government-issued ID verification", "Personal information validation", "Profile authenticity checks"],
-    icon: ShieldCheck,
+    layer: 1,
+    title: "Phone & SIM Verification",
+    description: "Africa's Talking OTP authentication at registration. One worker per SIM number with strict unique hardware enforcement to prevent fake multi-accounting.",
+    icon: Smartphone,
+    scope: "Gate (All Workers)",
   },
   {
-    id: 2,
-    title: "Skill Assessment",
-    description: ["Practical skill tests", "Role-specific assessments", "Knowledge validation"],
+    layer: 2,
+    title: "Government Identity Document (Ghana Card / Passport)",
+    description: "Dual-side document upload with automated OCR data extraction followed by human compliance review within 24 hours. Stored encrypted under Ghana Data Protection Act standards.",
+    icon: CreditCard,
+    scope: "Gate (All Workers)",
+  },
+  {
+    layer: 3,
+    title: "Timed Skill Assessment (Server Graded)",
+    description: "Randomized multiple-choice and short-answer challenge drawn from our 500+ question bank. Timed countdown with 7-day cooldown on failure. Weight: 30%.",
     icon: Target,
+    scope: "Digital & Educators",
   },
   {
-    id: 3,
-    title: "Interview Verification",
-    description: ["Live interview with the Skiloq team", "Communication skills", "Professionalism assessment"],
-    icon: Video,
+    layer: 4,
+    title: "Practical Deliverable Submission",
+    description: "Workers submit a tangible deliverable (code repo, design prototype, or lesson plan). Evaluated by independent senior moderators using a standardized rubric. Weight: 20%.",
+    icon: FileCode2,
+    scope: "Digital & Educators",
   },
   {
-    id: 4,
-    title: "Work History Verification",
-    description: ["Previous employment verification", "Portfolio review", "Professional references"],
-    icon: Clipboard,
+    layer: 5,
+    title: "Portfolio Quality Moderation",
+    description: "Authenticity verification of past client deliverables before any profile goes live. Image and code matching checks prevent stock asset reuse.",
+    icon: CheckCircle,
+    scope: "Foundation (All Workers)",
   },
   {
-    id: 5,
-    title: "Trust Score Generation",
-    description: ["Verification results", "Assessment performance", "Interview outcomes", "Project completion history", "Platform activity"],
-    icon: Settings,
+    layer: 6,
+    title: "Field Agent Physical Verification",
+    description: "Physical inspection by a certified local agent. Field tablet app with mandatory GPS geo-fencing checks physical workshops, artisan tooling, and live craftsmanship. Weight: 20%.",
+    icon: MapPin,
+    scope: "Trade & Skilled Artisans",
+  },
+  {
+    layer: 7,
+    title: "Completed Escrow Job Ratings",
+    description: "Post-milestone client ratings (1–5 stars + written feedback) velocity-checked for fake bot reviews. Recomputes Trust Score continuously via BullMQ. Weight: 35%.",
+    icon: Star,
+    scope: "All Workers",
   },
 ];
 
 export function HowItWorks() {
   return (
-    <section className="relative overflow-hidden py-16 md:py-28">
-
-      {/* Floating blur effects */}
-      <motion.div
-        animate={{
-          y: [0, -20, 0],
-          x: [0, 10, 0],
-        }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-0 left-0 w-96 h-96 bg-[#4F6AF5]/20 rounded-full blur-3xl"
-      />
-      <motion.div
-        animate={{
-          y: [0, 20, 0],
-          x: [0, -10, 0],
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-0 right-0 w-96 h-96 bg-[#4F6AF5]/10 rounded-full blur-3xl"
-      />
+    <section className="relative overflow-hidden py-20 md:py-28 text-white">
+      {/* Floating subtle glow */}
+      <div className="pointer-events-none absolute bottom-0 left-0 w-96 h-96 bg-[#4F6AF5]/15 rounded-full blur-3xl" />
+      <div className="pointer-events-none absolute top-0 right-0 w-96 h-96 bg-[#22C55E]/10 rounded-full blur-3xl" />
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header */}
@@ -64,71 +79,98 @@ export function HowItWorks() {
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12 md:mb-16"
+          className="text-center mb-16"
         >
-          <h2 className="heading-2 text-white mb-3 md:mb-4">
-            Trust and Verification Process
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-1.5 rounded-full text-xs font-semibold text-[#8BA4FF] mb-3">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+            Pillar 1: Identity is Earned, Not Claimed
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4">
+            Seven-Layer Verification Framework
           </h2>
-          <p className="body-text text-white/70 max-w-3xl mx-auto">
-            Before any professional matches with an opportunity, they pass through our 5-layer verification framework
+          <p className="text-sm sm:text-base md:text-lg text-white/70 max-w-3xl mx-auto leading-relaxed">
+            Unlike traditional platforms that rely on self-reported CV claims, no unverified worker ever appears in Skiloq search results. Every badge is earned through proof-of-work.
           </p>
         </motion.div>
 
-        {/* Steps */}
-        <div className="space-y-4 md:space-y-6">
-          {steps.map((step, idx) => {
-            const Icon = step.icon;
+        {/* 7 Verification Steps */}
+        <div className="space-y-4">
+          {verificationLayers.map((layer, idx) => {
+            const Icon = layer.icon;
+
             return (
               <motion.div
-                key={step.id}
-                initial={{ opacity: 0, x: idx % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                key={layer.layer}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1, ease: "easeOut" }}
-                whileHover={{ scale: 1.02 }}
-                className="relative"
+                transition={{ duration: 0.4, delay: idx * 0.08 }}
+                className="bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-white/10 transition-all hover:border-[#4F6AF5]/40"
               >
-                {/* Timeline line - hidden except between items */}
-                {idx < steps.length - 1 && (
-                  <div className="absolute left-6 top-20 bottom-0 w-0.5 bg-gradient-to-b from-[#4F6AF5] to-white/20 md:left-9 md:top-28" />
-                )}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-start sm:items-center gap-4 flex-1">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#4F6AF5] to-[#6F8AFF] text-white flex items-center justify-center shrink-0 shadow-lg shadow-[#4F6AF5]/25">
+                      <Icon className="w-6 h-6" />
+                    </div>
 
-                <div className="flex items-start gap-4 md:gap-6">
-                  {/* Timeline dot with icon */}
-                  <div className="flex-shrink-0">
-                    <motion.div
-                      whileHover={{ rotate: 10, scale: 1.1 }}
-                      className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-[#4F6AF5] to-[#6F8AFF] flex items-center justify-center shadow-lg shadow-[#4F6AF5]/30 border-4 border-[#1A1F36]"
-                    >
-                      <Icon size={20} className="text-white md:w-7 md:h-7" />
-                    </motion.div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 flex-wrap mb-1">
+                        <span className="text-xs font-mono font-bold text-[#8BA4FF] uppercase tracking-wider">
+                          Layer 0{layer.layer}
+                        </span>
+                        <span className="text-gray-400">•</span>
+                        <h3 className="font-bold text-base sm:text-lg text-white">
+                          {layer.title}
+                        </h3>
+                      </div>
+                      <p className="text-xs sm:text-sm text-white/70 leading-relaxed max-w-3xl">
+                        {layer.description}
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Card content */}
-                  <motion.div
-                    whileHover={{ boxShadow: "0 0 30px rgba(79, 106, 245, 0.3)" }}
-                    className="flex-1 bg-gradient-to-br from-[#1A3B7C] to-[#1A1F36] rounded-2xl md:rounded-3xl p-4 md:p-6 lg:p-8 border border-[#4F6AF5]/50 shadow-xl transition-all duration-300"
-                  >
-                    <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8 flex-1">
-                      <div className="flex items-center gap-4 md:gap-8 md:flex-shrink-0 md:w-1/3">
-                        <span className="text-2xl md:text-4xl font-bold text-[#4F6AF5]">0{step.id}</span>
-                        <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white">{step.title}</h3>
-                      </div>
-                      <ul className="flex-1 md:ml-44 space-y-2 md:space-y-3 md:text-left">
-                        {step.description.map((item, i) => (
-                          <li key={i} className="flex items-center gap-3 mr-4 md:gap-4 text-white/80 text-sm sm:text-base md:text-lg">
-                            <span className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-[#4F6AF5] flex-shrink-0" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </motion.div>
+                  <span className="self-start sm:self-center px-3 py-1 rounded-full bg-white/10 text-white/90 text-xs font-semibold border border-white/15 shrink-0">
+                    {layer.scope}
+                  </span>
                 </div>
               </motion.div>
             );
           })}
         </div>
+
+        {/* Trust Score Breakdown Callout */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-12 bg-gradient-to-br from-[#1E2545] to-[#15192E] rounded-3xl p-6 sm:p-8 border border-white/15 shadow-2xl"
+        >
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
+              <TrendingUp className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="text-xl font-bold text-white">Composite Trust Score System (0–100)</h4>
+              <p className="text-xs text-white/60">Six tamper-resistant algorithmic weights computed by BullMQ queues</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-center">
+            {[
+              { label: "Assessment Scores", weight: "25%", color: "text-[#6885FA]" },
+              { label: "Completion Rate", weight: "20%", color: "text-emerald-400" },
+              { label: "On-Time Rate", weight: "15%", color: "text-amber-400" },
+              { label: "Dispute Rate (Inverse)", weight: "15%", color: "text-rose-400" },
+              { label: "Repeat-Hire Rate", weight: "15%", color: "text-purple-400" },
+              { label: "Peer Vouches", weight: "10%", color: "text-blue-400" },
+            ].map((stat) => (
+              <div key={stat.label} className="bg-white/5 rounded-2xl p-3 border border-white/10">
+                <span className={`text-2xl font-black ${stat.color}`}>{stat.weight}</span>
+                <p className="text-[11px] text-white/70 font-medium mt-1">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

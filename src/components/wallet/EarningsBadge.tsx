@@ -10,12 +10,16 @@ interface EarningsBadgeProps {
   totalEarnings: number;
   unlocked: boolean;
   threshold: number;
+  onOpenCertificate?: () => void;
 }
 
-export function EarningsBadge({ totalEarnings, unlocked, threshold }: EarningsBadgeProps) {
+export function EarningsBadge({ totalEarnings, unlocked, threshold, onOpenCertificate }: EarningsBadgeProps) {
   const handleDownload = () => {
-    // TODO: Replace with apiClient.get("/workers/income-certificate")
-    toast.success("Income Certificate PDF downloaded");
+    if (onOpenCertificate) {
+      onOpenCertificate();
+    } else {
+      toast.success("Income Certificate opened");
+    }
   };
 
   if (!unlocked) {
