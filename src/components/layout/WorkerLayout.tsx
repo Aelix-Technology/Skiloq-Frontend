@@ -5,15 +5,18 @@ import { useRouter, usePathname } from "next/navigation";
 import {
   LayoutDashboard, Briefcase, Wallet, MessageSquare, CalendarDays,
   Shield, Search, Bell, HelpCircle, ChevronLeft, Menu, LogOut,
-  Trophy, Users, GraduationCap,
+  Trophy, Users, GraduationCap, Sparkles, HeartPulse, Smartphone,
 } from "lucide-react";
 import { useAuthStore } from "@/stores/auth.store";
 import { toasts } from "@/lib/toasts";
+import { USSDPhoneSimulatorModal } from "@/components/ussd/USSDPhoneSimulatorModal";
 
 const sidebarLinks = [
   { label: "Dashboard", href: "/worker/dashboard", icon: LayoutDashboard },
   { label: "Find Jobs", href: "/worker/opportunities", icon: Briefcase },
+  { label: "AI Career Copilot", href: "/worker/career", icon: Sparkles },
   { label: "Financial Hub", href: "/worker/wallet", icon: Wallet },
+  { label: "Micro-Insurance", href: "/worker/insurance", icon: HeartPulse },
   { label: "Leaderboards", href: "/worker/leaderboards", icon: Trophy },
   { label: "Community", href: "/worker/community", icon: Users },
   { label: "Academy", href: "/academy", icon: GraduationCap },
@@ -30,6 +33,7 @@ export function WorkerLayout({ children }: { children: React.ReactNode }) {
 
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [ussdOpen, setUssdOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -203,6 +207,17 @@ export function WorkerLayout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
 
+          {/* USSD Feature Phone Simulator Quick Trigger */}
+          <button
+            type="button"
+            onClick={() => setUssdOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all cursor-pointer border border-gray-200"
+            title="Open Offline USSD Feature Phone (*920*88#)"
+          >
+            <Smartphone className="w-3.5 h-3.5 text-[#2563EB]" />
+            <span className="hidden sm:inline">USSD (*920*88#)</span>
+          </button>
+
           <button className="relative w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-50 transition-colors">
             <Bell className="w-5 h-5 text-gray-500" />
             <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white" />
@@ -228,7 +243,15 @@ export function WorkerLayout({ children }: { children: React.ReactNode }) {
           </button>
         </header>
 
-        <main className="p-4 md:p-6 max-w-[1400px] mx-auto">{children}</main>
+        <main className="w-full flex-1 p-4 sm:p-6 lg:p-8 max-w-[1440px] mx-auto">{children}</main>
+
+        {/* USSD Simulator Modal */}
+        <USSDPhoneSimulatorModal
+          isOpen={ussdOpen}
+          onClose={() => setUssdOpen(false)}
+          workerPhone="+233 54 272 7188"
+          workerBalanceGhs={2450.0}
+        />
       </div>
     </div>
   );

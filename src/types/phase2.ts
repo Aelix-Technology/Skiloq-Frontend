@@ -3,8 +3,8 @@
 
 // ── Country & Currency ──────────────────────
 
-export type Country = "ghana" | "nigeria" | "kenya";
-export type Currency = "GHS" | "NGN" | "KES" | "USD";
+export type Country = "ghana" | "nigeria" | "kenya" | "cote_divoire" | "senegal" | "cameroon";
+export type Currency = "GHS" | "NGN" | "KES" | "USD" | "XOF" | "XAF";
 
 export interface CountryConfig {
   code: Country;
@@ -23,6 +23,8 @@ export type PaymentProvider =
   | "vodafone_cash"
   | "opay"
   | "mpesa"
+  | "orange_money"
+  | "wave"
   | "wise"
   | "stripe";
 

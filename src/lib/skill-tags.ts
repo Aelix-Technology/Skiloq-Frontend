@@ -88,4 +88,36 @@ export const mockAssessmentQuestions = {
       time_limit_seconds: 25,
     },
   ],
+  educator: [
+    {
+      id: "q1",
+      question: "Which pedagogical principle encourages students to construct knowledge through active experience?",
+      options: ["Behaviorism", "Constructivism", "Rote Memorization", "Passive Instruction"],
+      correct_index: 1,
+      time_limit_seconds: 30,
+    },
+    {
+      id: "q2",
+      question: "What is formative assessment primarily used for?",
+      options: ["Assigning final grades", "Monitoring student learning and providing feedback", "Standardized rankings", "College admissions"],
+      correct_index: 1,
+      time_limit_seconds: 25,
+    },
+  ],
+  online_income: [
+    {
+      id: "q1",
+      question: "In audio transcription, what is 'verbatim transcription'?",
+      options: ["Summarizing key points", "Transcribing every spoken word including stutters and filler sounds", "Translating to another language", "Cleaning up grammar mistakes"],
+      correct_index: 1,
+      time_limit_seconds: 30,
+    },
+    {
+      id: "q2",
+      question: "Which quality check is most critical in AI data labeling tasks?",
+      options: ["Speed over accuracy", "Consistency with bounding box and label annotation guidelines", "Random sampling without rules", "Ignoring edge cases"],
+      correct_index: 1,
+      time_limit_seconds: 25,
+    },
+  ],
 };

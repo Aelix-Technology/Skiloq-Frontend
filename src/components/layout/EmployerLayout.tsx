@@ -9,6 +9,8 @@ import { toasts } from "@/lib/toasts";
 const navLinks = [
   { label: "Dashboard", href: "/employer/dashboard" },
   { label: "Jobs", href: "/employer/jobs" },
+  { label: "Enterprise Teams", href: "/employer/teams" },
+  { label: "B2B API Portal", href: "/b2b" },
   { label: "Messages", href: "/employer/messages" },
 ];
 
@@ -201,7 +203,7 @@ export function EmployerLayout({ children }: { children: React.ReactNode }) {
         )}
       </header>
 
-      <main className="p-5 md:p-8 max-w-[1600px] mx-auto">{children}</main>
+      <main className="w-full flex-1 p-4 sm:p-6 lg:p-8 max-w-[1600px] mx-auto">{children}</main>
     </div>
   );
 }

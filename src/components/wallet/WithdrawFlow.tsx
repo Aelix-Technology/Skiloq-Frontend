@@ -25,6 +25,7 @@ export function WithdrawFlow({
 }: WithdrawFlowProps) {
   const [step, setStep] = useState<Step>("amount");
   const [amount, setAmount] = useState("");
+  const [provider, setProvider] = useState<"mtn_momo" | "orange_money" | "wave" | "telecel">("mtn_momo");
   const [pin, setPin] = useState<string[]>(new Array(4).fill(""));
 
   const maskedNumber = momo_number.replace(/(\d{3})\d{4}(\d{3})/, "$1****$2");
@@ -136,6 +137,34 @@ export function WithdrawFlow({
               </p>
             </div>
 
+            <div>
+              <label className="text-xs font-bold text-gray-500 mb-1.5 block">
+                Disbursement Gateway
+              </label>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                {[
+                  { id: "mtn_momo", label: "MTN MoMo", flag: "🇬🇭" },
+                  { id: "orange_money", label: "Orange Money", flag: "🇨🇮/🇨🇲" },
+                  { id: "wave", label: "Wave Mobile", flag: "🇸🇳/🇨🇮" },
+                  { id: "telecel", label: "Telecel Cash", flag: "🇬🇭" },
+                ].map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => setProvider(p.id as any)}
+                    className={`py-2 px-3 rounded-xl border font-bold flex items-center justify-between transition-all ${
+                      provider === p.id
+                        ? "border-accent bg-accent-50 text-accent"
+                        : "border-primary-100 bg-white text-gray-600 hover:bg-gray-50"
+                    }`}
+                  >
+                    <span>{p.label}</span>
+                    <span className="text-[10px] text-gray-400">{p.flag}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="rounded-2xl bg-primary-50 p-3">
               <div className="flex justify-between text-xs text-primary-300">
                 <span>Available</span>
@@ -174,6 +203,10 @@ export function WithdrawFlow({
                 <div className="flex justify-between text-sm pt-2 border-t border-primary-100">
                   <span className="text-primary-300">You receive</span>
                   <span className="font-bold text-accent">GHS {netAmount.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-sm pt-2 border-t border-primary-100">
+                  <span className="text-primary-300">Gateway</span>
+                  <span className="font-semibold text-primary capitalize">{provider.replace("_", " ")}</span>
                 </div>
                 <div className="flex justify-between text-sm pt-2 border-t border-primary-100">
                   <span className="text-primary-300">To</span>

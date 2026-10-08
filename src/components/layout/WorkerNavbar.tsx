@@ -44,7 +44,7 @@ export function WorkerNavbar() {
 
   return (
     <header className="sticky top-0 z-50 glass-nav shadow-[0_1px_0_rgba(26,31,54,0.04)]">
-      <div className="flex items-center justify-between h-16 px-4 max-w-2xl mx-auto">
+      <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         {/* ── Left: Logo ── */}
         <button
           onClick={() => router.push("/worker/dashboard")}

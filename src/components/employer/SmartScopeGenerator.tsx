@@ -169,7 +169,7 @@ export function SmartScopeGenerator({
             <div className="flex items-center gap-2">
               <h3 className="font-bold text-gray-900 text-base">Smart Scope Generator</h3>
               <span className="px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 text-[10px] font-bold border border-indigo-200">
-                Phase 2 Escrow Shield
+                Escrow Shield
               </span>
             </div>
             <p className="text-xs text-gray-500">Auto-generate structured deliverables to prevent scope creep disputes</p>

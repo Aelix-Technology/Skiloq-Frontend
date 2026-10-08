@@ -20,13 +20,13 @@ export const workerCategories: CategoryOption[] = [
     id: "educator",
     icon: "📚",
     label: "Educators & Tutors",
-    description: "Academic, language, music, coding, vocational — sell session bundles. (Phase 2)",
+    description: "Academic, language, music, coding, vocational — sell session bundles.",
   },
   {
     id: "online_income",
     icon: "📊",
     label: "Online Income",
-    description: "Verified data entry, transcription, micro-tasks — curated listings only. (Phase 2)",
+    description: "Verified data entry, transcription, micro-tasks — curated listings only.",
   },
 ];
 

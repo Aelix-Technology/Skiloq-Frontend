@@ -137,7 +137,7 @@ export default function LeaderboardsPage() {
             <div>
               <div className="inline-flex items-center gap-2 bg-amber-400/20 text-amber-300 border border-amber-400/30 px-3 py-1 rounded-full text-xs font-bold mb-3">
                 <Trophy className="w-3.5 h-3.5" />
-                Phase 2 Regional Rankings
+                Verified Regional Rankings
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Regional Skills Leaderboards</h1>
               <p className="text-sm text-white/70 max-w-xl mt-1.5 leading-relaxed">

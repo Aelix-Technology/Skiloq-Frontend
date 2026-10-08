@@ -107,7 +107,7 @@ export function AICoachPanel() {
             <div className="flex items-center gap-2">
               <h3 className="font-bold text-base tracking-tight text-white">AI Career Coach</h3>
               <span className="px-2 py-0.5 rounded-full bg-[#4F6AF5]/20 text-[#6885FA] border border-[#4F6AF5]/30 text-[10px] font-semibold">
-                Phase 2 AI
+                Smart AI
               </span>
             </div>
             <p className="text-xs text-white/60">Real-time Trust Score & career insights</p>

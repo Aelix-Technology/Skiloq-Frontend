@@ -56,6 +56,6 @@ export const toasts = {
     }),
 
   // ── General ───────────────────────────────
-  comingSoon: () => toast.info("Coming in Phase 2"),
+  comingSoon: () => toast.info("Feature coming soon"),
   error: (message: string) => toast.error(message),
 };

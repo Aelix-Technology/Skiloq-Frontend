@@ -48,7 +48,7 @@ export function BottomTabBar() {
   const router = useRouter();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 glass-bottom-tab shadow-[0_-4px_20px_-8px_rgba(26,31,54,0.12)] safe-area-bottom z-50">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 glass-bottom-tab shadow-[0_-4px_20px_-8px_rgba(26,31,54,0.12)] safe-area-bottom z-50">
       <div className="flex items-center justify-around gap-0 sm:gap-1 h-16 max-w-2xl mx-auto px-1 sm:px-2">
         {tabs.map((tab) => {
           const isActive = pathname.startsWith(tab.href);

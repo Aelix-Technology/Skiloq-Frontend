@@ -121,7 +121,7 @@ export default function CommunityPage() {
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2 bg-[#4F6AF5]/20 text-[#6F8AFF] border border-[#4F6AF5]/30 px-3 py-1 rounded-full text-xs font-bold mb-3">
               <Users className="w-3.5 h-3.5" />
-              Phase 2 Verified Community
+              Verified Worker Network
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Verified Worker Community</h1>
             <p className="text-sm text-white/70 max-w-xl mt-1.5 leading-relaxed">

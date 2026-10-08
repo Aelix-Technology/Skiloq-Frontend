@@ -25,6 +25,9 @@ const countries = [
   { code: "GH", name: "Ghana", currency: "GHS", currencySymbol: "GHS" },
   { code: "NG", name: "Nigeria", currency: "NGN", currencySymbol: "NGN" },
   { code: "KE", name: "Kenya", currency: "KES", currencySymbol: "KES" },
+  { code: "CI", name: "Côte d'Ivoire", currency: "XOF", currencySymbol: "CFA" },
+  { code: "SN", name: "Sénégal", currency: "XOF", currencySymbol: "CFA" },
+  { code: "CM", name: "Cameroun", currency: "XAF", currencySymbol: "FCFA" },
 ];
 
 const districtsByCountry: Record<string, string[]> = {
@@ -40,6 +43,18 @@ const districtsByCountry: Record<string, string[]> = {
   KE: [
     "Nairobi Central", "Westlands", "Kibera", "Mombasa Island", "Kisauni",
     "Nyali",
+  ],
+  CI: [
+    "Abidjan - Plateau", "Abidjan - Cocody", "Abidjan - Marcory",
+    "Abidjan - Yopougon", "Bouaké", "San-Pédro",
+  ],
+  SN: [
+    "Dakar - Plateau", "Dakar - Almadies", "Dakar - Mermoz",
+    "Thiès", "Saint-Louis",
+  ],
+  CM: [
+    "Douala - Akwa", "Douala - Bonanjo", "Yaoundé - Bastos",
+    "Yaoundé - Centre",
   ],
 };
 

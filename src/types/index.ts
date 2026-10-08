@@ -52,3 +52,6 @@ export * from "./agent";
 
 // Phase 2 Expansion Features
 export * from "./phase2";
+
+// Phase 3 Continental Scale Features
+export * from "./phase3";
